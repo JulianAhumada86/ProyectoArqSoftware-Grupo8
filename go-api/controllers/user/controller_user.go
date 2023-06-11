@@ -1,13 +1,12 @@
 package controllers
 
-// Funciones que hay que poner
-// get, post y put
-<<<<<<< HEAD
-
 import (
 	"go-api/controllers"
 	"net/http"
 	"strconv"
+
+	user_dto "go-api/dto/user_dto"
+	service "go-api/services"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -140,5 +139,3 @@ func UserLogin(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, loginResponse)
 }
-=======
->>>>>>> 7064868 (base de datos)
