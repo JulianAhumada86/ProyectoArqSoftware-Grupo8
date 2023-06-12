@@ -76,7 +76,7 @@ func AddUser(ctx *gin.Context) {
 	userDto, e := se.UserService.AddUser(userDto)
 	// Error del Insert
 	if e != nil {
-		ctx.JSON(e.Status(), err) //no puedo conectarlo al archivo errors.go
+		//ctx.JSON(e.Status(), err) //no puedo conectarlo al archivo errors.go
 		return
 	}
 
@@ -120,7 +120,7 @@ func Login(ctx *gin.Context) {
 
 	log.Debug(loginDto)
 
-	var loginResponseDto users_dto.LoginDto
+	var loginResponseDto users_dto.LoginResponseDto
 	loginResponseDto, err := se.UserService.Login(loginDto)
 	if err != nil {
 		if err.Status() == 400 {

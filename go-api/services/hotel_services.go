@@ -5,8 +5,9 @@ import (
 	"log"
 
 	hdto "go-api/dto/hotels_dto"
+	hotel_dto "go-api/dto/hotels_dto"
+	e "go-api/errors"
 	"go-api/model"
-	//e "go-api/utils/errors"
 )
 
 type hotelService struct{}
@@ -35,6 +36,19 @@ func (s *hotelService) GetHotelbyid(id int) (hdto.HotelDto, error) {
 	hotelDto.Id = id
 
 	return hotelDto, nil
+}
+
+func (s *hotelService) GetHotels(hotel_dto.HotelsDto, e.ErrorApi) {
+	var hotels model.Hotel = hClient.GetHotels()
+	var hotelsDto hotel_dto.HotelsDto
+
+	for _, hotel := range hotels {
+		var hotelDto hotel_dto.HotelDto
+		id := hotel.Id
+		hotelDto, _ = s.GetHotelbyid(id)
+		hotelsDto = append(hotelsDto, hotelDto)
+	}
+	return hotelsDto, nil
 }
 
 func (s *hotelService) InsertHotel(hotelDto hdto.HotelDto) (hdto.HotelDto, error) {

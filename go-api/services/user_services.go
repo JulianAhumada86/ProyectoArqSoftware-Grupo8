@@ -1,12 +1,12 @@
 package services
 
 import (
+	"fmt"
 	uClient "go-api/clients/user"
 	"go-api/dto/users_dto"
 	uDto "go-api/dto/users_dto"
 	e "go-api/errors"
 	"go-api/model"
-	"go-api/users_dto"
 
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
@@ -45,7 +45,7 @@ func (s *userService) GetUserById(id int) (uDto.UserDto, e.ErrorApi) {
 }
 
 func (s *userService) AddUser(userDto uDto.UserDto) (uDto.UserDto, e.ErrorApi) {
-	var userModel model.User
+	/*var userModel model.User
 
 	userModel.Admin = userDto.Admin
 	userModel.Email = userDto.Email
@@ -57,27 +57,56 @@ func (s *userService) AddUser(userDto uDto.UserDto) (uDto.UserDto, e.ErrorApi) {
 	uClient.AddUser(userModel)
 	userDto.Id = userModel.Id
 	return userDto, nil
+	*/
+
+	var user model.User
+
+	if !uClient.GetUserByEmail(userDto.Email) {
+		return userDto, e.NewBadRequestErrorApi("Mail ya registrado")
+	}
+
+	user.Name = userDto.Name
+	user.LastName = userDto.LastName
+	user.UserName = userDto.UserName
+
+	var hashedPassword, err = s.HashPassword(userDto.Password)
+
+	if err != nil {
+		return userDto, e.NewBadRequestErrorApi("Contraseña no válida")
+	}
+
+	user.Password = hashedPassword
+	user.Email = userDto.Email
+	user.Type = userDto.Type
+
+	user = uClient.AddUser(user)
+
+	if user.Id == 0 {
+		return userDto, e.NewBadRequestErrorApi("Nombre de usuario en uso")
+	}
+
+	userDto.Id = user.Id
+	return userDto, nil
 }
 
 func (s *userService) GetUsers() (uDto.UserDto, e.ErrorApi) {
 	var users model.Users = uClient.GetUsers()
-	uDto := users_dto.UsersDto{
-		Users: make([]users_dto.UserDto, len(users)),
-	}
+	var usersDto users_dto.UsersDto
 
-	for i, user := range users {
-		userDto := users_dto.UserDto{
-			Id:       user.Id,
-			Name:     user.Name,
-			LastName: user.LastName,
-			DNI:      user.DNI,
-			Email:    user.Email,
-			Admin:    user.Admin,
+	for _, user := range users {
+		var userDto users_dto.UserDto
+		if !userDto.Type {
+			userDto.Name = user.Name
+			userDto.LastName = user.LastName
+			userDto.UserName = user.UserName
+			userDto.Email = user.Email
+			userDto.Id = user.Id
+			userDto.Type = user.Type
 		}
 
-		uDto.Users[i] = userDto
+		usersDto = append(usersDto, userDto)
 	}
-	return uDto, nil //aca no se que tengo que cambiar para que este bien
+	return usersDto, nil
 }
 
 func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.LoginResponseDto, e.ErrorApi) {
@@ -122,8 +151,7 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.LoginRespons
 	return loginResponseDto, nil
 }
 
-//Esto es para  AddUser
-/*func (s *userService) HashPassword(password string)(string, error){
+func (s *userService) HashPassword(password string) (string, error) {
 	HashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 
 	if err != nil {
@@ -132,7 +160,6 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.LoginRespons
 
 	return string(HashedPassword), nil
 }
-*/
 
 func (s *userService) VerifyPassword(HashedPassword string, candidatePassword string) error {
 	return bcrypt.CompareHashAndPassword([]byte(HashedPassword), []byte(candidatePassword))

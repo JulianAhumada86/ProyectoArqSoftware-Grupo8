@@ -14,7 +14,13 @@ func GetHotelbyid(id int) model.Hotel {
 	Db.Where("id = ?", id).First(&hotel)
 	log.Debug("hotel:", hotel)
 	return hotel
+}
 
+func GetHotels() model.Hotels {
+	var hotels model.Hotels
+	Db.Find(&hotels)
+	log.Debug("Hotels: ", hotels)
+	return hotels
 }
 
 func InsertHotel(hotel model.Hotel) model.Hotel {

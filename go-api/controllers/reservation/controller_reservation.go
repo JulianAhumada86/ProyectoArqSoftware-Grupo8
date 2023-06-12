@@ -1,6 +1,7 @@
 package reservation
 
 import (
+	"go-api/dto/reservations_dto"
 	reservationDTO "go-api/dto/reservations_dto"
 	se "go-api/services"
 	"strings"
@@ -67,5 +68,16 @@ func GetReservaById(ctx *gin.Context) {
 	create = se.ReservationService.GetReservaById(id)
 
 	ctx.JSON(http.StatusOK, create)
+}
 
+func GetReservas(ctx *gin.Context) {
+	var reservasDto reservations_dto.ReservationDto
+	reservasDto, err := se.ReservationService.GetReservas()
+
+	if err != nil {
+		ctx.JSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, reservasDto)
 }

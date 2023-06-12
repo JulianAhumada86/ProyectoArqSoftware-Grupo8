@@ -2,7 +2,9 @@ package services
 
 import (
 	cl "go-api/clients/reservation"
+	"go-api/dto/reservations_dto"
 	reservationDTO "go-api/dto/reservations_dto"
+	e "go-api/errors"
 	"go-api/model"
 	"time"
 )
@@ -12,6 +14,7 @@ type reservationService struct{}
 type reservationServicesInterface interface {
 	NewReserva(reservationDTO.ReservationCreateDto) (reservationDTO.ReservationDto, error)
 	GetReservaById(int) reservationDTO.ReservationDto
+	GetReservas() (reservations_dto.ReservationsDto, e.ErrorApi)
 }
 
 var (
@@ -63,4 +66,8 @@ func (s *reservationService) GetReservaById(id int) reservationDTO.ReservationDt
 	re.UserName = (c.User.Name + " " + c.User.LastName)
 
 	return re
+}
+
+func (s *reservationService) GetReservas() (reservations_dto.ReservationDto, e.ErrorApi) {
+
 }
