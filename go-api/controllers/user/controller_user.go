@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"strconv"
 
-	log "github.com/sirupsen/logrus"
-
-	userdto "go-api/dto/users_dto"
+	"go-api/dto/users_dto"
 	se "go-api/services"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
 )
@@ -49,11 +49,42 @@ func GetUserById(ctx *gin.Context) {
 
 }
 
+func GetUsers(ctx *gin.Context) {
+	var userDto users_dto.UserDto
+	userDto, err := se.UserService.GetUsers()
+
+	if err != nil {
+		ctx.JSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, userDto)
+}
+
 // name/:LastName/:DNI/:Password/:Email/:Admin
 func AddUser(ctx *gin.Context) {
-	var userDto userdto.UserDto
+	var userDto users_dto.UserDto
+	err := ctx.BindJSON(&userDto)
 
-	userDto.Name = ctx.Param(";name")
+	// Error Parsing json param
+	if err != nil {
+		log.Error(err.Error())
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	userDto, e := se.UserService.AddUser(userDto)
+	// Error del Insert
+	if e != nil {
+		ctx.JSON(e.Status(), err) //no puedo conectarlo al archivo errors.go
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, userDto)
+
+	/*var userDto userdto.UserDto
+
+	userDto.Name = ctx.Param(":name")
 	userDto.LastName = ctx.Param(":LastName")
 	userDto.DNI = ctx.Param(":DNI")
 	userDto.Password = ctx.Param(":Password")
@@ -74,5 +105,31 @@ func AddUser(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, userDto)
+	*/
+}
+
+func Login(ctx *gin.Context) {
+	var loginDto users_dto.LoginDto
+	err := ctx.BindJSON(&loginDto)
+
+	if err != nil {
+		log.Error(err.Error())
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	log.Debug(loginDto)
+
+	var loginResponseDto users_dto.LoginDto
+	loginResponseDto, err := se.UserService.Login(loginDto)
+	if err != nil {
+		if err.Status() == 400 {
+			ctx.JSON(http.StatusBadRequest, err.Error())
+			return
+		}
+		ctx.JSON(http.StatusForbidden, err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, loginResponseDto)
 
 }

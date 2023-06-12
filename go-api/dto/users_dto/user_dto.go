@@ -11,5 +11,5 @@ type UserDto struct {
 }
 
 type UsersDto struct {
-	Hotels []UserDto `json:"hotels"`
+	Users []UserDto `json:"users"`
 }
