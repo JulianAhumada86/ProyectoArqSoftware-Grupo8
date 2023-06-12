@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import Admin from './Admin';
 import Register from './Register';
 import Reservation from './Reservation';
 
@@ -22,6 +22,7 @@ function App() {
 
   return (
     <Router>
+      <Route exact path="/admin" component={Admin} />
       <div>
         <Navbar bg="light" expand="lg">
           <Navbar.Brand>Maldron</Navbar.Brand>
