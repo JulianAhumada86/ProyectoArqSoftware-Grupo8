@@ -4,11 +4,11 @@ package hotel
 // get y post
 
 import (
-	hotel_dto "go-api/dto/hotels_dto"
 	"log"
 	"net/http"
 	"strconv"
 
+	hotel_dto "go-api/dto/hotels_dto"
 	se "go-api/services"
 
 	"github.com/gin-gonic/gin"
@@ -19,6 +19,7 @@ func GetHotelbyid(ctx *gin.Context) {
 	id, _ := strconv.Atoi(ctx.Param("id"))
 
 	var hotelDto hotel_dto.HotelDto
+
 	hotelDto, err := se.HotelService.GetHotelbyid(id)
 	ctx.JSON(http.StatusOK, hotelDto)
 

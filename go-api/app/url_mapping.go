@@ -2,6 +2,7 @@ package app
 
 import (
 	hotelc "go-api/controllers/hotel"
+	userc "go-api/controllers/user"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -9,7 +10,8 @@ import (
 func mapUrls() {
 
 	//router.GET("/prueba")
-	router.GET("/prueba/:id", hotelc.GetHotelbyid)
-	router.GET("/insert/:name/:Nroom/:descr", hotelc.InsertHotel)
-	log.Print("Hola")
+	router.GET("/hotelId/:id", hotelc.GetHotelbyid)
+	router.POST("/insert/:name/:Nroom/:descr", hotelc.InsertHotel)
+	router.GET("/userId/:id", userc.GetUserById)
+	log.Print("urls Cargadas")
 }
