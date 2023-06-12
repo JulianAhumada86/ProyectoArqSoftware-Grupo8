@@ -43,7 +43,8 @@ func (s *userService) AddUser(userDto uDto.UserDto) (uDto.UserDto, error) {
 	userModel.LastName = userDto.LastName
 	userModel.Password = userDto.Password
 	userModel.Name = userDto.Name
-	userModel.Id = userDto.Id
 
+	uClient.AddUser(userModel)
+	userDto.Id = userModel.Id
 	return userDto, nil
 }
