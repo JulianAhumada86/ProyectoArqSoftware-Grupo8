@@ -33,7 +33,6 @@ func GetUserByUsername(username string) (model.User, error) {
 func AddUser(user model.User) model.User {
 	Db.Create(&user)
 	log.Debug("User:", user)
-
 	return user
 }
 
