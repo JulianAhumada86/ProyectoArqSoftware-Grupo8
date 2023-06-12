@@ -1,5 +1,6 @@
 package controllers
 
+/*
 import (
 	"errors"
 	"net/http"
@@ -78,3 +79,4 @@ func Admin(userID int) bool {
 	}
 	return false
 }
+*/

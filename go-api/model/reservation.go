@@ -6,9 +6,11 @@ type Reservation struct {
 	Id          int       `gorm:"primaryKey"`
 	InitialDate time.Time `gorm:"column:initial_date;not null"`
 	FinalDate   time.Time `gorm:"column:final_date;not null"`
-	User        User      `gorm:"foreignKey:UserId"`
-	UserId      int
-	Hotel       Hotel `gorm:"foreignKey:HotelId"`
+	Habitacion  string
+	UserID      int
+	HotelID     int
+	User        User  `gorm:"foreignKey:UserID"`
+	Hotel       Hotel `gorm:"foreignKey:HotelID"`
 }
 
 type Reservations []Reservation

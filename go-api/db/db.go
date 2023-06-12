@@ -1,12 +1,11 @@
 package db
 
 import (
-	"go-api/model"
-
 	hotelClient "go-api/clients/hotel"
 	imageClient "go-api/clients/image"
 	reservationClient "go-api/clients/reservation"
 	userClient "go-api/clients/user"
+	"go-api/model"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -42,11 +41,12 @@ func init() {
 }
 
 func StartDbEngine() {
+
+	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.Hotel{})
 	db.AutoMigrate(&model.Amenitie{})
 	db.AutoMigrate(&model.Image{})
 	db.AutoMigrate(&model.Reservation{})
-	db.AutoMigrate(&model.User{})
 
 	log.Info("Llegue hasta aca pana")
 }
