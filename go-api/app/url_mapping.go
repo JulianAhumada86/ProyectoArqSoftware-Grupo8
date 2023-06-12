@@ -15,6 +15,6 @@ func mapUrls() {
 	router.POST("/insert/:name/:Nroom/:descr", hotelc.InsertHotel)
 	router.GET("/userId/:id", userc.GetUserById)
 	router.POST("/agReservation/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.NewReserva)
-	router.GET("/reserva/:id")
+	router.GET("/reserva/:id", resrc.GetReservaById)
 	log.Print("urls Cargadas")
 }

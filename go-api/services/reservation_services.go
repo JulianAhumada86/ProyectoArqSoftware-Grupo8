@@ -1,23 +1,22 @@
 package services
 
 import (
-	"fmt"
 	cl "go-api/clients/reservation"
 	reservationDTO "go-api/dto/reservations_dto"
 	"go-api/model"
 	"time"
-
-	log "github.com/sirupsen/logrus"
 )
 
 type reservationService struct{}
 
 type reservationServicesInterface interface {
 	NewReserva(reservationDTO.ReservationCreateDto) (reservationDTO.ReservationDto, error)
+	GetReservaById(int) reservationDTO.ReservationDto
 }
 
 var (
 	ReservationService reservationServicesInterface
+	Layoutd            = "02/01/2006"
 )
 
 func init() {
@@ -26,16 +25,19 @@ func init() {
 
 func (s *reservationService) NewReserva(reserva reservationDTO.ReservationCreateDto) (reservationDTO.ReservationDto, error) {
 	var Mreserva model.Reservation
-	Mreserva.Habitacion = reserva.Habitacion
-	Mreserva.Hotel.Id = reserva.HotelId
-	log.Debug("reservaAntes:", Mreserva)
-	Mreserva.InitialDate = convertirFecha(reserva.InitialDate)
 
-	Mreserva.FinalDate = convertirFecha(reserva.FinalDate)
-	Mreserva.User.Id = reserva.UserId
+	Mreserva.Habitacion = reserva.Habitacion
+	Mreserva.HotelID = reserva.HotelId
+
+	parseInitial, _ := time.Parse(Layoutd, reserva.InitialDate)
+	Mreserva.InitialDate = parseInitial
+	parseFinal, _ := time.Parse(Layoutd, reserva.FinalDate)
+
+	Mreserva.FinalDate = parseFinal
+	Mreserva.UserID = reserva.UserId
 
 	Mreserva = cl.NewReserva(Mreserva)
-	log.Debug("reservaDespues:", Mreserva)
+
 	var rf reservationDTO.ReservationDto
 
 	rf.FinalDate = Mreserva.FinalDate.String()
@@ -47,16 +49,18 @@ func (s *reservationService) NewReserva(reserva reservationDTO.ReservationCreate
 	return rf, nil
 }
 
-func convertirFecha(date string) time.Time {
-	layout := "2006-01-02"
+func (s *reservationService) GetReservaById(id int) reservationDTO.ReservationDto {
+	var re reservationDTO.ReservationDto
 
-	t, err := time.Parse(layout, date)
-	if err != nil {
-		fmt.Println("Error al convertir la cadena a tiempo:", err)
-		return time.Now()
-	} else {
-		fmt.Println(t)
+	re.Id = id
 
-	}
-	return t
+	c := cl.GetReservaById(id)
+
+	re.FinalDate = c.FinalDate.Format(Layoutd)
+	re.HotelName = c.Hotel.Name
+	re.Id = c.Id
+	re.InitialDate = c.InitialDate.Format(Layoutd)
+	re.UserName = (c.User.Name + " " + c.User.LastName)
+
+	return re
 }
