@@ -78,5 +78,4 @@ func Admin(userID int) bool {
 		return true
 	}
 	return false
-}
-*/
+}*/
