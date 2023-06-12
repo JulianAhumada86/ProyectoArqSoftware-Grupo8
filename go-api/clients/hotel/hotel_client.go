@@ -29,3 +29,25 @@ func InsertHotel(hotel model.Hotel) model.Hotel {
 	return hotel
 
 }
+
+func GetAmenitieById(id int) model.Amenitie {
+	var amenitie model.Amenitie
+	Db.Where("id = ?", id).First(&amenitie)
+	log.Debug("amenitie:", amenitie)
+	return amenitie
+}
+
+func InsertAmenitie(amenitie_model model.Amenitie) model.Amenitie {
+	Db.Create(amenitie_model)
+
+	return amenitie_model
+}
+
+func GetAmenities() model.Amenities {
+	var amenities model.Amenities
+
+	Db.Find(&amenities)
+	log.Debug("Amenities: ", amenities)
+
+	return amenities
+}
