@@ -46,24 +46,11 @@ func GetUserById(ctx *gin.Context) {
 		log.Print("error")
 	}
 	ctx.JSON(http.StatusOK, userDto)
-	
+
 }
 
 // name/:LastName/:DNI/:Password/:Email/:Admin
 func AddUser(ctx *gin.Context) {
-
-	var UserDto userdto.UserDto
-	err := ctx.BindJSON(&UserDto)
-
-	if err != nil {
-		log.Error(err.Error())
-		ctx.JSON(http.StatusBadRequest, err.Error())
-		return
-	}
-
-	if controllers.
-
-/*
 	var userDto userdto.UserDto
 
 	userDto.Name = ctx.Param(";name")
@@ -86,6 +73,6 @@ func AddUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, userDto) 
-*/
-} 
+	ctx.JSON(http.StatusOK, userDto)
+
+}
