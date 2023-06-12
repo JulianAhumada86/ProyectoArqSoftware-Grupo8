@@ -9,6 +9,7 @@ import (
 	"go-api/users_dto"
 
 	log "github.com/sirupsen/logrus"
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/golang-jwt/jwt"
 )
@@ -132,3 +133,7 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.LoginRespons
 	return string(HashedPassword), nil
 }
 */
+
+func (s *userService) VerifyPassword(HashedPassword string, candidatePassword string) error {
+	return bcrypt.CompareHashAndPassword([]byte(HashedPassword), []byte(candidatePassword))
+}
