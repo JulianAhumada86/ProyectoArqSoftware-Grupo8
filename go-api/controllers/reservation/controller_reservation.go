@@ -69,7 +69,7 @@ func GetReservaById(ctx *gin.Context) {
 }
 
 func GetReservas(ctx *gin.Context) {
-	var reservasDto reservations_dto.ReservationDto
+	var reservasDto reservations_dto.ReservationsDto
 	reservasDto, err := se.ReservationService.GetReservas()
 
 	if err != nil {

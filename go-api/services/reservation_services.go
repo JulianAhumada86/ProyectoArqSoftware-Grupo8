@@ -15,7 +15,7 @@ type reservationServicesInterface interface {
 	NewReserva(reservationDTO.ReservationCreateDto) (reservationDTO.ReservationDto, error)
 	GetReservaById(int) reservationDTO.ReservationDto
 	GetReservas() (reservations_dto.ReservationsDto, e.ErrorApi)
-	GetReservaByUserId(id int) (reservations_dto.ReservationDto, e.ErrorApi)
+	//GetReservaByUserId(id int) (reservations_dto.ReservationDto, e.ErrorApi)
 }
 
 var (
@@ -69,17 +69,20 @@ func (s *reservationService) GetReservaById(id int) reservationDTO.ReservationDt
 	return re
 }
 
-func (s *reservationService) GetReservas() (reservations_dto.ReservationDto, e.ErrorApi) {
+func (s *reservationService) GetReservas() (reservations_dto.ReservationsDto, e.ErrorApi) {
 	var reservas model.Reservations = cl.GetReservas()
-	var reservasDto reservations_dto.ReservationsDto
 
+	reservasList := make([]reservationDTO.ReservationDto, 0)
 	for _, reserva := range reservas {
 		var reservaDto reservations_dto.ReservationDto
 		id := reserva.Id
-		reservaDto, _ = s.GetReservaById(id)
-		reservasDto = append(reservasDto, reservaDto)
+		reservaDto = s.GetReservaById(id)
+
+		reservasList = append(reservasList, reservaDto)
 	}
-	return reservasDto, nil
+	return reservations_dto.ReservationsDto{
+		Reservations: reservasList,
+	}, nil
 }
 
 /*

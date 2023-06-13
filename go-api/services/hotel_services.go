@@ -5,8 +5,8 @@ import (
 	"log"
 
 	hdto "go-api/dto/hotels_dto"
-	hotel_dto "go-api/dto/hotels_dto"
-	e "go-api/errors"
+	//hotel_dto "go-api/dto/hotels_dto"
+	//e "go-api/errors"
 	"go-api/model"
 )
 
@@ -15,7 +15,7 @@ type hotelService struct{}
 type hotelServicesInterface interface {
 	GetHotelbyid(id int) (hdto.HotelDto, error)
 	InsertHotel(hotelDto hdto.HotelDto) (hdto.HotelDto, error)
-	GetHotels() (hotel_dto.HotelsDto, e.ErrorApi)
+	//GetHotels() (hotel_dto.HotelsDto, e.ErrorApi)
 }
 
 var (
@@ -39,19 +39,20 @@ func (s *hotelService) GetHotelbyid(id int) (hdto.HotelDto, error) {
 	return hotelDto, nil
 }
 
-func (s *hotelService) GetHotels() (hotel_dto.HotelsDto, e.ErrorApi) {
-	var hotels model.Hotel = hClient.GetHotels()
-	var hotelsDto hotel_dto.HotelsDto
+/*
+	func (s *hotelService) GetHotels() (hotel_dto.HotelsDto, e.ErrorApi) {
+		var hotels model.Hotel = hClient.GetHotels()
+		var hotelsDto hotel_dto.HotelsDto
 
-	for _, hotel := range hotels {
-		var hotelDto hotel_dto.HotelDto
-		id := hotel.Id
-		hotelDto, _ = s.GetHotelbyid(id)
-		hotelsDto = append(hotelsDto, hotelDto)
+		for _, hotel := range hotels {
+			var hotelDto hotel_dto.HotelDto
+			id := hotel.Id
+			hotelDto, _ = s.GetHotelbyid(id)
+			hotelsDto = append(hotelsDto, hotelDto)
+		}
+		return hotelsDto, nil
 	}
-	return hotelsDto, nil
-}
-
+*/
 func (s *hotelService) InsertHotel(hotelDto hdto.HotelDto) (hdto.HotelDto, error) {
 	var model_hotel model.Hotel
 

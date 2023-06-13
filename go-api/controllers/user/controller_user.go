@@ -3,7 +3,6 @@ package user
 import (
 	"go-api/dto/users_dto"
 	userdto "go-api/dto/users_dto"
-	e "go-api/errors"
 	se "go-api/services"
 	"net/http"
 	"strconv"
@@ -64,6 +63,7 @@ func GetUserById(ctx *gin.Context) {
 	*/
 }
 
+/*
 func GetUsers(ctx *gin.Context) {
 	var userDto users_dto.UserDto
 	userDto, err := se.UserService.GetUsers()
@@ -75,7 +75,7 @@ func GetUsers(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, userDto)
 }
-
+*/
 // name/:LastName/:DNI/:Password/:Email/:Admin
 func AddUser(ctx *gin.Context) {
 
@@ -136,7 +136,8 @@ func Login(ctx *gin.Context) {
 	}
 
 	log.Debug(loginDto)
-	e.Status()
+
+	/*e.Status()
 	//var loginResponseDto users_dto.LoginResponseDto
 	loginResponseDto, err := se.UserService.Login(loginDto)
 	if err != nil {
@@ -148,5 +149,5 @@ func Login(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, loginResponseDto)
-
+	*/
 }
