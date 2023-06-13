@@ -4,11 +4,9 @@ import (
 	"go-api/dto/reservations_dto"
 	reservationDTO "go-api/dto/reservations_dto"
 	se "go-api/services"
-	"strings"
-
 	"net/http"
 	"strconv"
-
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -81,3 +79,19 @@ func GetReservas(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, reservasDto)
 }
+
+/*
+func GetReservasByUserId(ctx *gin.Context) {
+	log.Debug("user id to load: " + ctx.Param("user_id"))
+	id, _ := strconv.Atoi(ctx.Param("user_id"))
+	var reservasDto reservations_dto.ReservationsDto
+	reservasDto, err := se.ReservationService.GetReservaByUserId(id)
+
+	if err != nil {
+		ctx.JSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, reservasDto)
+}
+*/

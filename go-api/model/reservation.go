@@ -9,8 +9,9 @@ type Reservation struct {
 	Habitacion  string
 	UserID      int
 	HotelID     int
-	User        User  `gorm:"foreignKey:UserID"`
-	Hotel       Hotel `gorm:"foreignKey:HotelID"`
+	User        User   `gorm:"foreignKey:UserID"`
+	Hotel       Hotel  `gorm:"foreignKey:HotelID"`
+	Address     string `json:"hotel_address"`
 }
 
 type Reservations []Reservation

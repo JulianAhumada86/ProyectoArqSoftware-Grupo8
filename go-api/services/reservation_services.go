@@ -15,6 +15,7 @@ type reservationServicesInterface interface {
 	NewReserva(reservationDTO.ReservationCreateDto) (reservationDTO.ReservationDto, error)
 	GetReservaById(int) reservationDTO.ReservationDto
 	GetReservas() (reservations_dto.ReservationsDto, e.ErrorApi)
+	GetReservaByUserId(id int) (reservations_dto.ReservationDto, e.ErrorApi)
 }
 
 var (
@@ -69,5 +70,33 @@ func (s *reservationService) GetReservaById(id int) reservationDTO.ReservationDt
 }
 
 func (s *reservationService) GetReservas() (reservations_dto.ReservationDto, e.ErrorApi) {
+	var reservas model.Reservations = cl.GetReservas()
+	var reservasDto reservations_dto.ReservationsDto
 
+	for _, reserva := range reservas {
+		var reservaDto reservations_dto.ReservationDto
+		id := reserva.Id
+		reservaDto, _ = s.GetReservaById(id)
+		reservasDto = append(reservasDto, reservaDto)
+	}
+	return reservasDto, nil
 }
+
+/*
+func (s *reservationService) GetReservaByUserId(id int)(reservations_dto.ReservationDto, e.ErrorApi){
+	var reserva model.Reservations = cl.GetReservaById(id)
+	var reservaDto reservations_dto.ReservationDto
+
+	if reserva.Id == 0 {
+		return reservaDto, e.NewBadRequestErrorApi("Reserva no encontrada")
+	}
+
+	reservaDto.Id = reserva.Id
+	reservaDto.InitialDate = reserva.InitialDate
+	reservaDto.FinalDate = reserva.FinalDate
+	reservaDto.UserName = reserva.UserName
+	reservaDto.HotelName = reserva.HotelName
+
+	return reservaDto, nil
+}
+*/

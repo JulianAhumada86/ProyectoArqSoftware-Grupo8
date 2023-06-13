@@ -27,3 +27,10 @@ func GetReservaById(id int) model.Reservation {
 	return reserva
 
 }
+
+func GetReservas() model.Reservations {
+	var reservas model.Reservations
+	Db.Find(&reservas)
+	log.Debug("Reservas: ", reservas)
+	return reservas
+}
