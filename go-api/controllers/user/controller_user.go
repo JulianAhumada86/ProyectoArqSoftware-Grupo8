@@ -63,9 +63,8 @@ func GetUserById(ctx *gin.Context) {
 	*/
 }
 
-/*
 func GetUsers(ctx *gin.Context) {
-	var userDto users_dto.UserDto
+	//var userDto users_dto.UsersDto
 	userDto, err := se.UserService.GetUsers()
 
 	if err != nil {
@@ -75,38 +74,43 @@ func GetUsers(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, userDto)
 }
-*/
+
 // name/:LastName/:DNI/:Password/:Email/:Admin
 func AddUser(ctx *gin.Context) {
-
-	/*
-
-		err := ctx.BindJSON(&userDto)
-
-		// Error Parsing json param
-		if err != nil {
-			log.Error(err.Error())
-			ctx.JSON(http.StatusBadRequest, err.Error())
-			return
-		}
-
-		userDto, e := se.UserService.AddUser(userDto)
-		// Error del Insert
-		if e != nil {
-			//ctx.JSON(e.Status(), err) //no puedo conectarlo al archivo errors.go
-			return
-		}
-
-		ctx.JSON(http.StatusCreated, userDto)
-	*/
 	var userDto userdto.UserDto
 
-	userDto.Name = ctx.Param(":name")         //
-	userDto.LastName = ctx.Param(":LastName") //
-	userDto.DNI = ctx.Param(":DNI")           //
-	userDto.Password = ctx.Param(":Password") //
-	userDto.Email = ctx.Param(":Email")       //
-	ad, err := strconv.Atoi(ctx.Param(":Admin"))
+	userDto.Name = ctx.Param("name")
+	if userDto.Name == "" {
+		log.Error("El campo 'name' está vacío")
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Name is required"})
+		return
+	}
+	userDto.LastName = ctx.Param("LastName")
+	if userDto.LastName == "" {
+		log.Error("El campo 'LastName' está vacío")
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "LastName is required"})
+		return
+	}
+	userDto.DNI = ctx.Param("DNI")
+	if userDto.DNI == "" {
+		log.Error("El campo 'DNI' está vacío")
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "DNI is required"})
+		return
+	}
+	userDto.Password = ctx.Param("Password")
+	if userDto.Password == "" {
+		log.Error("El campo 'Password' está vacío")
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Password is required"})
+		return
+	}
+	userDto.Email = ctx.Param("Email")
+	if userDto.Email == "" {
+		log.Error("El campo 'Email' está vacío")
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Email is required"})
+		return
+	}
+
+	ad, err := strconv.Atoi(ctx.Param("Admin"))
 	userDto.Admin = ad
 
 	if err != nil {
@@ -117,7 +121,7 @@ func AddUser(ctx *gin.Context) {
 	userDto, err = se.UserService.AddUser(userDto)
 
 	if err != nil {
-		log.Error("Algo falla y no me importa que")
+		log.Error("Algo falla al llamar al service para agregar el usuario")
 		return
 	}
 

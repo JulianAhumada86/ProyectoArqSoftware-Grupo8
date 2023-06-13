@@ -86,8 +86,8 @@ func (s *reservationService) GetReservas() (reservations_dto.ReservationsDto, e.
 }
 
 /*
-func (s *reservationService) GetReservaByUserId(id int)(reservations_dto.ReservationDto, e.ErrorApi){
-	var reserva model.Reservations = cl.GetReservaById(id)
+func (s *reservationService) GetReservaByUserId(id int)(reservationDTO.ReservationDto, e.ErrorApi){
+	var reserva model.Reservation = cl.GetReservaByUserId(id)
 	var reservaDto reservations_dto.ReservationDto
 
 	if reserva.Id == 0 {
@@ -97,8 +97,9 @@ func (s *reservationService) GetReservaByUserId(id int)(reservations_dto.Reserva
 	reservaDto.Id = reserva.Id
 	reservaDto.InitialDate = reserva.InitialDate
 	reservaDto.FinalDate = reserva.FinalDate
-	reservaDto.UserName = reserva.UserName
-	reservaDto.HotelName = reserva.HotelName
+	reservaDto.HotelId = reserva.HotelID
+	reservaDto.HotelName = reserva.Hotel
+	reservaDto.Address = reserva.
 
 	return reservaDto, nil
 }
