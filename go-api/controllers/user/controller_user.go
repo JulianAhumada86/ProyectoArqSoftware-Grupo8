@@ -2,6 +2,8 @@ package user
 
 import (
 	"go-api/dto/users_dto"
+	userdto "go-api/dto/users_dto"
+	e "go-api/errors"
 	se "go-api/services"
 	"net/http"
 	"strconv"
@@ -76,32 +78,34 @@ func GetUsers(ctx *gin.Context) {
 
 // name/:LastName/:DNI/:Password/:Email/:Admin
 func AddUser(ctx *gin.Context) {
-	var userDto users_dto.UserDto
-	err := ctx.BindJSON(&userDto)
 
-	// Error Parsing json param
-	if err != nil {
-		log.Error(err.Error())
-		ctx.JSON(http.StatusBadRequest, err.Error())
-		return
-	}
+	/*
 
-	userDto, e := se.UserService.AddUser(userDto)
-	// Error del Insert
-	if e != nil {
-		//ctx.JSON(e.Status(), err) //no puedo conectarlo al archivo errors.go
-		return
-	}
+		err := ctx.BindJSON(&userDto)
 
-	ctx.JSON(http.StatusCreated, userDto)
+		// Error Parsing json param
+		if err != nil {
+			log.Error(err.Error())
+			ctx.JSON(http.StatusBadRequest, err.Error())
+			return
+		}
 
-	/*var userDto userdto.UserDto
+		userDto, e := se.UserService.AddUser(userDto)
+		// Error del Insert
+		if e != nil {
+			//ctx.JSON(e.Status(), err) //no puedo conectarlo al archivo errors.go
+			return
+		}
 
-	userDto.Name = ctx.Param(":name")
-	userDto.LastName = ctx.Param(":LastName")
-	userDto.DNI = ctx.Param(":DNI")
-	userDto.Password = ctx.Param(":Password")
-	userDto.Email = ctx.Param(":Email")
+		ctx.JSON(http.StatusCreated, userDto)
+	*/
+	var userDto userdto.UserDto
+
+	userDto.Name = ctx.Param(":name")         //
+	userDto.LastName = ctx.Param(":LastName") //
+	userDto.DNI = ctx.Param(":DNI")           //
+	userDto.Password = ctx.Param(":Password") //
+	userDto.Email = ctx.Param(":Email")       //
 	ad, err := strconv.Atoi(ctx.Param(":Admin"))
 	userDto.Admin = ad
 
@@ -118,7 +122,7 @@ func AddUser(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, userDto)
-	*/
+
 }
 
 func Login(ctx *gin.Context) {
@@ -132,8 +136,8 @@ func Login(ctx *gin.Context) {
 	}
 
 	log.Debug(loginDto)
-
-	var loginResponseDto users_dto.LoginResponseDto
+	e.Status()
+	//var loginResponseDto users_dto.LoginResponseDto
 	loginResponseDto, err := se.UserService.Login(loginDto)
 	if err != nil {
 		if err.Status() == 400 {

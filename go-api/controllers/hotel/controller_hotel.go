@@ -54,6 +54,7 @@ func InsertHotel(ctx *gin.Context) {
 
 	hotelDto.Name = ctx.Param("name")
 	num, err := strconv.Atoi(ctx.Param("Nroom"))
+
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Parametro invalido: Nroom no int"})
 		return

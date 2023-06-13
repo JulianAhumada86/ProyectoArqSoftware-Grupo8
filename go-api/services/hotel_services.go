@@ -15,6 +15,7 @@ type hotelService struct{}
 type hotelServicesInterface interface {
 	GetHotelbyid(id int) (hdto.HotelDto, error)
 	InsertHotel(hotelDto hdto.HotelDto) (hdto.HotelDto, error)
+	GetHotels() (hotel_dto.HotelsDto, e.ErrorApi)
 }
 
 var (
@@ -38,7 +39,7 @@ func (s *hotelService) GetHotelbyid(id int) (hdto.HotelDto, error) {
 	return hotelDto, nil
 }
 
-func (s *hotelService) GetHotels(hotel_dto.HotelsDto, e.ErrorApi) {
+func (s *hotelService) GetHotels() (hotel_dto.HotelsDto, e.ErrorApi) {
 	var hotels model.Hotel = hClient.GetHotels()
 	var hotelsDto hotel_dto.HotelsDto
 
