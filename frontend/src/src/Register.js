@@ -131,17 +131,12 @@ async function getuser() {
   var id = document.getElementById("dnix").value
   var last = document.getElementById("h1")
   try {
-    const response = await getUsers(id); //response
+    const response = await getUserbyId(id); //response
     console.log(response.data.LastName)
     last.innerText = response.data.LastName;
   }
   catch(error){
     console.log(error.message)
   }
-  
-
-
-
-
 
 }*/

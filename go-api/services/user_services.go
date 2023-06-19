@@ -57,41 +57,19 @@ func (s *userService) AddUser(userDto uDto.UserDto) (uDto.UserDto, e.ErrorApi) {
 	userModel.Password = userDto.Password
 	userModel.Name = userDto.Name
 
+	if uClient.ExistUserByDni(userModel.DNI) {
+		log.Error("Algo salio mal en el email")
+		return userDto, e.NewBadRequestErrorApi("DNI Ya Registrado")
+	}
+	if uClient.ExistUserByEmail(userModel.Email) {
+		log.Error("Algo salio mal en el email")
+		return userDto, e.NewBadRequestErrorApi("Email Ya registrado")
+	}
+
 	uClient.AddUser(userModel)
 	userDto.Id = userModel.Id
 	return userDto, nil
 
-	/*
-	   var user model.User
-	   //ESTO
-
-	   	if !uClient.GetUserByEmail(userDto.Email) {
-	   		return userDto, e.NewBadRequestErrorApi("Mail ya registrado")
-	   	}
-
-	   user.Name = userDto.Name
-	   user.LastName = userDto.LastName
-	   user.UserName = userDto.UserName
-
-	   var hashedPassword, err = s.HashPassword(userDto.Password)
-
-	   	if err != nil {
-	   		return userDto, e.NewBadRequestErrorApi("Contraseña no válida")
-	   	}
-
-	   user.Password = hashedPassword
-	   user.Email = userDto.Email
-	   user.Type = userDto.Type
-
-	   user = uClient.AddUser(user)
-
-	   	if user.Id == 0 {
-	   		return userDto, e.NewBadRequestErrorApi("Nombre de usuario en uso")
-	   	}
-
-	   userDto.Id = user.Id
-	   return userDto, nil
-	*/
 }
 
 func (s *userService) GetUsers() (uDto.UsersDto, e.ErrorApi) {
