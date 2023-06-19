@@ -22,7 +22,7 @@ function App() {
 
   return (
     <Router>
-      <Route exact path="/admin" component={Admin} />
+      
       <div>
         <Navbar bg="light" expand="lg">
           <Navbar.Brand>Maldron</Navbar.Brand>
@@ -76,6 +76,7 @@ function App() {
             } />
             <Route path="/registro" element={<Register />} />
             <Route path="/reserva" element={<Reservation />} />
+            <Route exact path="/admin" component={Admin} />
           </Routes>
         </div>
         <Footer />

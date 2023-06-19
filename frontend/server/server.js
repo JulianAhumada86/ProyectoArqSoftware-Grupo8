@@ -1,13 +1,13 @@
 import { captureRejectionSymbol } from 'events';
 import express from 'express';
-
+import fetch from 'node-fetch';
 const app = express();
 
 const fetch = (...args) => 
     import ('node-fetch').then(({default: fetch}) => fetch(...args));
-const baseURL = "http://localhost:8080/items";
+const baseURL = "http://localhost:8000";
 
-app.get("/api/items/:id", async function(req, res){
+app.get("/userId/:id", async function(req, res){
     res.set("Acces-Control-Allow-Origin", "*");
     const url = `${baseURL}/${req.params.id}`;
     const options = {method: 'GET'};

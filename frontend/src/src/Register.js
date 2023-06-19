@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { getUsers } from './api'
+import { postUser } from './api'
+import { Axios } from 'axios';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +12,8 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
+  
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -23,7 +28,7 @@ const Register = () => {
 
   return (
     <div className="container">
-      <h1>Sign In</h1>
+      <h1 id="h1">Sign In</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="firstName">Nombre</label>
@@ -55,6 +60,7 @@ const Register = () => {
             id="dni"
             name="dni"
             value={formData.dni}
+
             onChange={handleChange}
           />
         </div>
@@ -87,11 +93,12 @@ const Register = () => {
             className="form-control"
             id="confirmPassword"
             name="confirmPassword"
+
             value={formData.confirmPassword}
             onChange={handleChange}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary" onClick={postuser}>
           Registrarse
         </button>
       </form>
@@ -100,3 +107,41 @@ const Register = () => {
 };
 
 export default Register;
+
+
+async function postuser(){
+  var dni = document.getElementById("dni").value
+  var lastName = document.getElementById("lastName").value
+  var firstName = document.getElementById("firstName").value
+  var email = document.getElementById("email").value
+  var password = document.getElementById("password").value
+  var cpassword =document.getElementById("confirmPassword").value
+
+  try{
+    const response = await postUser(firstName,lastName,dni,password,email,0)
+    
+  }catch(error){
+    
+  }
+
+  
+}
+/*Primera funcion para obtener datos
+async function getuser() {
+  var id = document.getElementById("dnix").value
+  var last = document.getElementById("h1")
+  try {
+    const response = await getUsers(id); //response
+    console.log(response.data.LastName)
+    last.innerText = response.data.LastName;
+  }
+  catch(error){
+    console.log(error.message)
+  }
+  
+
+
+
+
+
+}*/

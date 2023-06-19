@@ -4,7 +4,8 @@ import { getUsers } from './api'; // Importa las funciones de tu archivo api.js
 
 const AdminPanel = () => {
   useEffect(() => {
-    getUsers()
+    const userId = 123; // Define el ID del usuario que deseas obtener
+    getUsers(userId)
       .then(response => {
         console.log('Usuarios:', response.data);
       })
@@ -20,4 +21,4 @@ const AdminPanel = () => {
   );
 };
 
-export default AdminPanel;
+export default AdminPanel;

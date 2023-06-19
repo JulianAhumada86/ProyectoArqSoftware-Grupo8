@@ -103,7 +103,7 @@ func (s *userService) GetUsers() (uDto.UsersDto, e.ErrorApi) {
 		if !userDto.Type {
 			userDto.Name = user.Name
 			userDto.LastName = user.LastName
-			userDto.UserName = user.UserName
+
 			userDto.Email = user.Email
 			userDto.Id = user.Id
 			userDto.Type = user.Type
@@ -129,7 +129,7 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.LoginRespons
 
 	var comparison error = s.VerifyPassword(user.Password, loginDto.Password)
 
-	if loginDto.Username == user.UserName {
+	if loginDto.Username == user.Name {
 		{
 			if comparison != nil {
 				return loginResponseDto, e.NewUnauthorizedErrorApi("contraseña incorrecta")
@@ -146,7 +146,7 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.LoginRespons
 
 	var verifyToken error = s.VerifyPassword(user.Password, tokenString)
 
-	if loginDto.Username != user.UserName {
+	if loginDto.Username != user.Name {
 		if verifyToken != nil {
 			return loginResponseDto, e.NewUnauthorizedErrorApi("Contraseña incorrecta")
 		}

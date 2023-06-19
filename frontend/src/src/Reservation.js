@@ -45,9 +45,11 @@ function Reservation() {
         </div>
       </div>
       
-      <button className="btn btn-primary">Reservar</button>
+      <button className="btn btn-primary" >Reservar</button>
     </div>
   );
 }
 
 export default Reservation;
+
+

@@ -122,10 +122,11 @@ func AddUser(ctx *gin.Context) {
 
 	if err != nil {
 		log.Error("Algo falla al llamar al service para agregar el usuario")
+		ctx.JSON(http.StatusBadRequest, err)
 		return
+	} else {
+		ctx.JSON(http.StatusOK, userDto)
 	}
-
-	ctx.JSON(http.StatusOK, userDto)
 
 }
 
