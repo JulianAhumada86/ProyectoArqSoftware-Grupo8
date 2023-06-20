@@ -1,4 +1,7 @@
 import React from 'react';
+import { getReservaById } from './api';
+import { agregarReservation } from './api';
+
 
 function Reservation() {
   return (
@@ -50,6 +53,39 @@ function Reservation() {
   );
 }
 
-export default Reservation;
 
+/*
+
+//esta función no se si tiene que ir aca, me parece que no
+async function fetchReservaById() { //cambie el nombre para que no sea igual a la importada
+  var id = document.getElementById("Rid").value;
+  try {
+    const response = await getReservaById(id);
+    console.log(response.data);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+function Reservation() { //esto es para un POST reserva
+  const handleReservarClick = async () => { //PARA ESTO, CREO QUE HAY QUE AGREGAR UN ONCLICK EN EL BOTON RESERVAR
+    const idHotel = document.getElementById('option1').value;
+    const habitacion = document.getElementById('option2').value;
+    const inicio = document.getElementById('startDate').value;
+    const final = document.getElementById('endDate').value;
+    const idUser = ''; // Obtén el ID de usuario según tus necesidades
+
+    try {
+      const response = await agregarReservation(idHotel, inicio, final, idUser, habitacion);
+      // Manejar la respuesta exitosa, por ejemplo, mostrar un mensaje de éxito
+      console.log('Reserva agregada exitosamente');
+    } catch (error) {
+      // Manejar el error, por ejemplo, mostrar un mensaje de error
+      console.error('Error al agregar reserva:', error.message);
+    }
+  };
+}
+*/
+export default Reservation;
 
