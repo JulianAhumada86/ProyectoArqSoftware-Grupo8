@@ -43,7 +43,7 @@ const Register = ({ onLogin }) => {
         formData.email,
         0
       );
-      onLogin(formData.firstName); // Llama a la función onLogin pasando el nombre del usuario registrado
+      onLogin(formData.firstName, formData); // Llama a la función onLogin pasando el nombre del usuario registrado y los datos del formulario
       navigate('/'); // Redirige al usuario a la página principal después de registrar exitosamente
     } catch (error) {
       // Manejo de error
@@ -95,7 +95,6 @@ const Register = ({ onLogin }) => {
             id="dni"
             name="dni"
             value={formData.dni}
-
             onChange={handleChange}
           />
         </div>
@@ -133,7 +132,7 @@ const Register = ({ onLogin }) => {
           />
         </div>
         {showError && <p style={{ color: 'red' }}>{errorMessage}</p>}
-        <button type="submit" className="btn btn-primary" onClick={postuser}>
+        <button type="submit" className="btn btn-primary">
           Registrarse
         </button>
       </form>

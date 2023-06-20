@@ -8,14 +8,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Admin from './Admin';
 import Register from './Register';
 import Reservation from './Reservation';
+import MiCuenta from './MiCuenta';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accountName, setAccountName] = useState('');
+  const [userData, setUserData] = useState(null);
 
-  const handleLogin = (name) => {
+  const handleLogin = (name, data) => {
     setIsLoggedIn(true);
     setAccountName(name);
+    setUserData(data);
   };
 
   const Footer = () => {
@@ -95,8 +98,14 @@ function App() {
                 </Carousel.Item>
               </Carousel>
             } />
-            <Route path="/registro" element={<Register onLogin={handleLogin} />} />
-            <Route path="/registro" element={<Register />} />
+            <Route
+              path="/micuenta"
+              element={<MiCuenta usuario={userData} />}
+            />
+            <Route
+              path="/registro"
+              element={<Register onLogin={handleLogin} />}
+            />
             <Route path="/reserva" element={<Reservation />} />
             <Route exact path="/admin" component={Admin} />
           </Routes>
