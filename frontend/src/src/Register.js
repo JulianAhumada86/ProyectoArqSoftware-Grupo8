@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { getUsers } from './api'
-import { postUser } from './api'
+import { useNavigate } from 'react-router-dom';
+import { getUsers } from './api';
+import { postUser } from './api';
 import { Axios } from 'axios';
 
-const Register = () => {
+const Register = ({ onLogin }) => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -12,18 +15,50 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
-  
 
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showError, setShowError] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Aquí puedes realizar la lógica para enviar los datos de registro al servidor
-    console.log(formData);
+
+    if (formData.password !== formData.confirmPassword) {
+      // Las contraseñas no coinciden, muestra un mensaje de error
+      setErrorMessage('Las contraseñas no coinciden');
+      setShowError(true);
+      return;
+    }
+
+    try {
+      const response = await postUser(
+        formData.firstName,
+        formData.lastName,
+        formData.dni,
+        formData.password,
+        formData.email,
+        0
+      );
+      onLogin(formData.firstName); // Llama a la función onLogin pasando el nombre del usuario registrado
+      navigate('/'); // Redirige al usuario a la página principal después de registrar exitosamente
+    } catch (error) {
+      // Manejo de error
+    }
+
+    // Restablece los valores y oculta el mensaje de error
+    setFormData({
+      firstName: '',
+      lastName: '',
+      dni: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    });
+    setShowError(false);
   };
 
   return (
@@ -93,11 +128,11 @@ const Register = () => {
             className="form-control"
             id="confirmPassword"
             name="confirmPassword"
-
             value={formData.confirmPassword}
             onChange={handleChange}
           />
         </div>
+        {showError && <p style={{ color: 'red' }}>{errorMessage}</p>}
         <button type="submit" className="btn btn-primary" onClick={postuser}>
           Registrarse
         </button>
