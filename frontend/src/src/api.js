@@ -49,6 +49,27 @@ export const deleteUser = async (userId) => {
   }
 };
 
+export const loginUser = async (email, password) => {
+  try {
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error('Error al iniciar sesión');
+    }
+  } catch (error) {
+    throw new Error('Error al iniciar sesión: ' + error.message);
+  }
+};
+
 export const getReservaById = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/reserva/${id}`);
@@ -100,9 +121,6 @@ export const postUser = async (name,LastName,DNI,Password,Email,Admin) => {
     
   throw new Error('Error al agregar reserva');
 }
-
-
-
 
 
 export const insertHotel = async (name, Nroom, descr) => {

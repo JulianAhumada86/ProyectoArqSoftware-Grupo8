@@ -9,6 +9,7 @@ import AdminPanel from './AdminPanel';
 import Register from './Register';
 import Reservation from './Reservation';
 import MiCuenta from './MiCuenta';
+import LogIn from './LogIn';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -53,8 +54,8 @@ function App() {
                 Mi Cuenta ({accountName})
               </Nav.Link>
             ) : (
-              <Nav.Link as={Link} to="/registro">
-                Sign In
+              <Nav.Link as={Link} to="/login">
+                Log In
               </Nav.Link>
             )}
           </Nav>
@@ -109,6 +110,7 @@ function App() {
               path="/registro"
               element={<Register onLogin={handleLogin} />}
             />
+            <Route path="/login" element={<LogIn onLogin={handleLogin} />} />
             <Route path="/reserva" element={<Reservation />} />
             <Route path="/admin" element={<AdminPanel />} />
           </Routes>
