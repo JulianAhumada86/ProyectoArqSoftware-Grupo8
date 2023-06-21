@@ -4,10 +4,9 @@ import (
 	"go-api/dto/reservations_dto"
 	reservationDTO "go-api/dto/reservations_dto"
 	se "go-api/services"
+	"log"
 	"net/http"
 	"strconv"
-	"strings"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,26 +16,28 @@ func NewReserva(ctx *gin.Context) {
 
 	idH, _ := strconv.Atoi(ctx.Param("idHotel"))
 	inicio := ctx.Param("inicio")
-	inicio = strings.Replace(inicio, "-", "/", -1)
-	fechaInicialTest, err := time.Parse(se.Layoutd, inicio)
+	log.Println(inicio)
+	/*fechaInicialTest, err := time.Parse(se.Layoutd, inicio)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Fecha inicial inválida"})
+		log.Error(err)
 		return
 	}
-
+	*/
 	final := ctx.Param("final")
-	final = strings.Replace(final, "-", "/", -1)
-	fechaFinalTest, err := time.Parse(se.Layoutd, final)
+	/*
+		fechaFinalTest, err := time.Parse(se.Layoutd, final)
 
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Fecha inicial inválida"})
-		return
-	}
-	if fechaFinalTest.Before(fechaInicialTest) {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Fecha final sucede despues de fecha inicial"})
-	}
-
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Fecha inicial inválida"})
+			return
+		}
+		if fechaFinalTest.Before(fechaInicialTest) {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Fecha final sucede despues de fecha inicial"})
+			return
+		}
+	*/
 	idU, _ := strconv.Atoi(ctx.Param("idUser"))
 	habitacion := ctx.Param("habitacion")
 
@@ -80,7 +81,7 @@ func GetReservas(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, reservasDto)
 }
 
-/*
+/* FUTURA FUNCION
 func GetReservasByUserId(ctx *gin.Context) {
 	log.Debug("user id to load: " + ctx.Param("user_id"))
 	id, _ := strconv.Atoi(ctx.Param("user_id"))
