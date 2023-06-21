@@ -35,7 +35,7 @@ const AdminPanel = () => {
 
   return (
     <Admin>
-      <Resource name="users" list={UserList} edit={UserEdit} />
+      <Resource name="admin" list={UserList} edit={UserEdit} />
       {/* Agrega más rutas personalizadas aquí si es necesario */}
     </Admin>
   );

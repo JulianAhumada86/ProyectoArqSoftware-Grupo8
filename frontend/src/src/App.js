@@ -107,7 +107,7 @@ function App() {
               element={<Register onLogin={handleLogin} />}
             />
             <Route path="/reserva" element={<Reservation />} />
-            <Route exact path="/admin" component={Admin} />
+            <Route exact path="/admin" element={<Admin/>} />
           </Routes>
         </div>
         <Footer />
