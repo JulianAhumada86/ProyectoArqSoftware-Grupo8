@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
-import { getUsers } from './api'; // Importa las funciones de tu archivo api.js
+import { Admin, Resource, List, Edit, Datagrid, TextField, TextInput, EditButton, DeleteButton } from 'react-admin';
+import { getUsers, updateUser, deleteUser } from './api';
 
 const AdminPanel = () => {
   useEffect(() => {
@@ -14,11 +14,31 @@ const AdminPanel = () => {
       });
   }, []);
 
+  const UserList = (props) => (
+    <List {...props}>
+      <Datagrid>
+        <TextField source="id" />
+        <TextField source="name" label="Nombre" />
+        <TextField source="email" label="Email" />
+        <EditButton basePath="/users" />
+        <DeleteButton basePath="/users" />
+      </Datagrid>
+    </List>
+  );
+
+  const UserEdit = (props) => (
+    <Edit {...props}>
+      <TextInput source="name" label="Nombre" />
+      <TextInput source="email" label="Email" />
+    </Edit>
+  );
+
   return (
     <Admin>
-      <Resource name="users" list={ListGuesser} edit={EditGuesser} />
+      <Resource name="users" list={UserList} edit={UserEdit} />
+      {/* Agrega más rutas personalizadas aquí si es necesario */}
     </Admin>
   );
 };
 
-export default AdminPanel;
+export default AdminPanel;

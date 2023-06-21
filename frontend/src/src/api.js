@@ -31,6 +31,24 @@ export const getUsers = async () => {
   }
 };
 
+export const updateUser = async (userId, userData) => {
+  try {
+    const response = await axios.put(`${API_URL}/users/${userId}`, userData);
+    return response.data;
+  } catch (error) {
+    throw new Error('Error al actualizar usuario');
+  }
+};
+
+export const deleteUser = async (userId) => {
+  try {
+    const response = await axios.delete(`${API_URL}/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Error al eliminar usuario');
+  }
+};
+
 export const getReservaById = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/reserva/${id}`);
