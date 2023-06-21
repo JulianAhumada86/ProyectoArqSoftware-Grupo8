@@ -157,11 +157,11 @@ async function postuser(){
   }catch(error){
     
   }
-
-  
 }
+
+//ACA HAY QUE ARERGLAR LO DEL NOMBRE QUE EN REALIDAD ES USER BY ID
 /*Primera funcion para obtener datos
-async function getuser() {
+async function getuser() { //Aca deberia llamarse get user by id
   var id = document.getElementById("dnix").value
   var last = document.getElementById("h1")
   try {
@@ -173,4 +173,5 @@ async function getuser() {
     console.log(error.message)
   }
 
-}*/
+}
+*/
