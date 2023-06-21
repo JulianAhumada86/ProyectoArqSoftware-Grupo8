@@ -1,57 +1,106 @@
-import React from 'react';
+import React, { useState }  from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getReservaById } from './api';
 import { agregarReservation } from './api';
 
 
+
+
+
+
+
+
+
 function Reservation() {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    option1: '',
+    startDate: '',
+    endDate: '',
+    option2: '',
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+    console.log(formData.option1)
+  };
+
+  const handleSubmit = async (event) => {
+    console.log("llegue")
+    event.preventDefault(); 
+  
+    try {
+      
+    const response = await agregarReservation(
+      formData.option1,
+      formData.startDate,
+      formData.endDate,
+      1,
+      formData.option2
+    );
+  }catch(error){
+  }
+  };
+  
+
+
+
+
+
   return (
     <div className="container mt-5">
-      <h1>Reserva</h1>
-
-      <div className="row">
-        <div className="col-md-6">
-          <div className="form-group">
-            <label htmlFor="option1">Locación</label>
-            <select className="form-control" id="option1">
-              <option value="">Seleccionar el lugar de su estadía</option>
-              <option value="option1-1">Maldron Dublín</option>
-              <option value="option1-2">Maldron Buenos Aires</option>
-            </select>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="form-group">
-            <label htmlFor="option2">Habitación</label>
-            <select className="form-control" id="option2">
-              <option value="">Seleccionar el tipo de habitación</option>
-              <option value="option2-1">1 Cama Matrimonial</option>
-              <option value="option2-1">2 Camas Matrimoniales</option>
-              <option value="option2-2">1 Cucheta</option>
-              <option value="option2-3">1 Cama Matrimonial y 1 Cucheta</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col-md-6">
-          <div className="form-group">
-            <label htmlFor="startDate">Fecha de inicio</label>
-            <input type="date" className="form-control" id="startDate" />
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="form-group">
-            <label htmlFor="endDate">Fecha de fin</label>
-            <input type="date" className="form-control" id="endDate" />
-          </div>
-        </div>
-      </div>
       
-      <button className="btn btn-primary" >Reservar</button>
-    </div>
+      <h1>Reserva</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="option1">Locación</label>
+              <select onChange={handleChange} className="form-control" id="option1" name="option1">
+                <option value="0">Seleccionar el lugar de su estadía</option>
+                <option value="1">Maldron Dublín</option>
+                <option value="2">Maldron Buenos Aires</option>
+              </select>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="option2">Habitación</label>
+              <select onChange={handleChange} className="form-control" id="option2" name="option2">
+                <option  value="0">Seleccionar el tipo de habitación</option>
+                <option value="1 Cama Matrimonial">1 Cama Matrimonial</option>
+                <option value="2 Camas Matrimoniales">2 Camas Matrimoniales</option>
+                <option value="1 Cucheta">1 Cucheta</option>
+                <option value="1 Cama Matrimonial y 1 Cucheta">1 Cama Matrimonial y 1 Cucheta</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="startDate">Fecha de inicio</label>
+              <input onChange={handleChange} type="date" className="form-control" id="startDate" name="startDate" />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="endDate">Fecha de fin</label>
+              <input onChange={handleChange} type="date" className="form-control" id="endDate" name="endDate"/>
+            </div>
+          </div>
+        </div>
+        
+        <button type="submit" className="btn btn-primary" >Reservar</button>
+        </form>
+      </div>
+    
   );
 }
+export default Reservation;
 
 
 /*
@@ -87,5 +136,4 @@ function Reservation() { //esto es para un POST reserva
   };
 }
 */
-export default Reservation;
 

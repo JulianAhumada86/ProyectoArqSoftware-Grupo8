@@ -5,7 +5,7 @@ const UserCreate = (props) => (
   <Create {...props}>
     <SimpleForm>
       <TextInput source="name" />
-      <EmailInput source="email" />
+      <TextInput source="email" />
     </SimpleForm>
   </Create>
 );

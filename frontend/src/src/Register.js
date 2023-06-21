@@ -59,7 +59,7 @@ const Register = ({ onLogin }) => {
     
   
     // Restablece los valores y oculta el mensaje de error
-    /*
+    
     setFormData({
       firstName: '',
       lastName: '',
@@ -68,7 +68,7 @@ const Register = ({ onLogin }) => {
       password: '',
       confirmPassword: '',
     });
-    */
+    
     setShowError(false);
   };
 
@@ -153,49 +153,3 @@ const Register = ({ onLogin }) => {
 
 export default Register;
 
-/*
-async function postuser(){
-  var dni = document.getElementById("dni").value
-  var lastName = document.getElementById("lastName").value
-  var firstName = document.getElementById("firstName").value
-  var email = document.getElementById("email").value
-  var password = document.getElementById("password").value
-
-  
-  try{
-    //const response = await postUser(firstName,lastName,dni,password,email,0)
-    
-    console.log("hola")
-    
-  }catch(error ) {
-    if (error.response) {
-      console.log("hola")
-      
-      const errorMessage = error.response.data;
-      console.log(errorMessage)
-
-    } else {
-      console.log(error.response.data)
-      console.error('Error en la solicitud:', error.message);
-      
-  }
-  }
-  
-}
-*/
-//ACA HAY QUE ARERGLAR LO DEL NOMBRE QUE EN REALIDAD ES USER BY ID
-/*Primera funcion para obtener datos
-async function getuser() { //Aca deberia llamarse get user by id
-  var id = document.getElementById("dnix").value
-  var last = document.getElementById("h1")
-  try {
-    const response = await getUserbyId(id); //response
-    console.log(response.data.LastName)
-    last.innerText = response.data.LastName;
-  }
-  catch(error){
-    console.log(error.message)
-  }
-
-}
-*/

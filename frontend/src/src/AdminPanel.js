@@ -1,13 +1,15 @@
+
 import React, { useEffect } from 'react';
 import { Admin, Resource, List, Edit, Datagrid, TextField, TextInput, EditButton, DeleteButton } from 'react-admin';
 import { getUsers, updateUser, deleteUser } from './api';
+import UserCreate from './UserCreate';
+import UserEdit from './UserEdit';
 
 const AdminPanel = () => {
   useEffect(() => {
-    const userId = 123; // Define el ID del usuario que deseas obtener
-    getUsers(userId)
+    getUsers()
       .then(response => {
-        console.log('Usuarios:', response.data);
+        console.log('Usuarios:', response);
       })
       .catch(error => {
         console.error('Error al obtener usuarios:', error);
@@ -20,23 +22,15 @@ const AdminPanel = () => {
         <TextField source="id" />
         <TextField source="name" label="Nombre" />
         <TextField source="email" label="Email" />
-        <EditButton basePath="/users" />
-        <DeleteButton basePath="/users" />
+        <EditButton basePath="/admin/users" />
+        <DeleteButton basePath="/admin/users" />
       </Datagrid>
     </List>
   );
 
-  const UserEdit = (props) => (
-    <Edit {...props}>
-      <TextInput source="name" label="Nombre" />
-      <TextInput source="email" label="Email" />
-    </Edit>
-  );
-
   return (
     <Admin>
-      <Resource name="users" list={UserList} edit={UserEdit} />
-      {/* Agrega más rutas personalizadas aquí si es necesario */}
+      <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} />
     </Admin>
   );
 };
