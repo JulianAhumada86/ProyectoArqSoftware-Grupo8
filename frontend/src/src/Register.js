@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUsers } from './api';
 import { postUser } from './api';
-import { Axios } from 'axios';
 
 const Register = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -26,15 +24,16 @@ const Register = ({ onLogin }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     if (formData.password !== formData.confirmPassword) {
       // Las contraseñas no coinciden, muestra un mensaje de error
       setErrorMessage('Las contraseñas no coinciden');
       setShowError(true);
       return;
     }
-
+  
     try {
+      
       const response = await postUser(
         formData.firstName,
         formData.lastName,
@@ -42,14 +41,25 @@ const Register = ({ onLogin }) => {
         formData.password,
         formData.email,
         0
-      );
-      onLogin(formData.firstName, formData); // Llama a la función onLogin pasando el nombre del usuario registrado y los datos del formulario
-      navigate('/'); // Redirige al usuario a la página principal después de registrar exitosamente
-    } catch (error) {
-      // Manejo de error
-    }
+      ) ;
 
+      if (response.status === 200) {
+        onLogin(formData.firstName, formData); // Llama a la función onLogin pasando el nombre del usuario registrado y los datos del formulario
+        navigate('/'); // Redirige al usuario a la página principal después de registrar exitosamente
+      } else if (response.status == 400) {
+        setErrorMessage('El correo electrónico o DNI ya está en uso');
+        setShowError(true);
+        return;
+      } else {
+        setErrorMessage('Error al registrar el usuario');
+      }
+    } catch(error) {
+      
+    }
+    
+  
     // Restablece los valores y oculta el mensaje de error
+    /*
     setFormData({
       firstName: '',
       lastName: '',
@@ -58,6 +68,7 @@ const Register = ({ onLogin }) => {
       password: '',
       confirmPassword: '',
     });
+    */
     setShowError(false);
   };
 
@@ -140,25 +151,38 @@ const Register = ({ onLogin }) => {
   );
 };
 
-export default Register;
+export default Register;
 
-
+/*
 async function postuser(){
   var dni = document.getElementById("dni").value
   var lastName = document.getElementById("lastName").value
   var firstName = document.getElementById("firstName").value
   var email = document.getElementById("email").value
   var password = document.getElementById("password").value
-  var cpassword =document.getElementById("confirmPassword").value
 
+  
   try{
-    const response = await postUser(firstName,lastName,dni,password,email,0)
+    //const response = await postUser(firstName,lastName,dni,password,email,0)
     
-  }catch(error){
+    console.log("hola")
     
-  }
-}
+  }catch(error ) {
+    if (error.response) {
+      console.log("hola")
+      
+      const errorMessage = error.response.data;
+      console.log(errorMessage)
 
+    } else {
+      console.log(error.response.data)
+      console.error('Error en la solicitud:', error.message);
+      
+  }
+  }
+  
+}
+*/
 //ACA HAY QUE ARERGLAR LO DEL NOMBRE QUE EN REALIDAD ES USER BY ID
 /*Primera funcion para obtener datos
 async function getuser() { //Aca deberia llamarse get user by id
