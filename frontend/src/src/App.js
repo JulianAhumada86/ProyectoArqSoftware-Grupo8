@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Carousel from 'react-bootstrap/Carousel';
@@ -61,43 +61,46 @@ function App() {
         </Navbar>
         <div className="container mt-5">
           <Routes>
-            <Route path="/" element={
-              <Carousel>
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100"
-                    src="https://mcaleer-rushe.co.uk/site/wp-content/uploads/2019/05/Maldron-Hotel-Belfast-IntAirport-I.jpg"
-                    alt="Imagen 1"
-                  />
-                  <Carousel.Caption>
-                    <h3>Maldron Hotel</h3>
-                    <p>Ubicado en Dublín</p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100"
-                    src="https://www.maldronhotelnewcastle.com/wp-content/uploads/sites/25/2017/10/Room-Double-Single-Maldron-Newcastle-1-1680x860.jpg"
-                    alt="Imagen 2"
-                  />
-                  <Carousel.Caption>
-                    <h3>Mejores Habitaciones</h3>
-                    <p>Las más deluxe de toda Irlanda!</p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100"
-                    src="https://www.mac-group.com/wp-content/uploads/2018/03/800x400-2.jpg"
-                    alt="Imagen 3"
-                  />
-                  <Carousel.Caption>
-                    <h3>Salón de Eventos</h3>
-                    <p>Con acomodaciones para celebrar las mejores fiestas</p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-              </Carousel>
-            } />
+            <Route
+              path="/"
+              element={
+                <Carousel>
+                  <Carousel.Item>
+                    <img
+                      className="d-block w-100"
+                      src="https://mcaleer-rushe.co.uk/site/wp-content/uploads/2019/05/Maldron-Hotel-Belfast-IntAirport-I.jpg"
+                      alt="Imagen 1"
+                    />
+                    <Carousel.Caption>
+                      <h3>Maldron Hotel</h3>
+                      <p>Ubicado en Dublín</p>
+                    </Carousel.Caption>
+                  </Carousel.Item>
+                  <Carousel.Item>
+                    <img
+                      className="d-block w-100"
+                      src="https://www.maldronhotelnewcastle.com/wp-content/uploads/sites/25/2017/10/Room-Double-Single-Maldron-Newcastle-1-1680x860.jpg"
+                      alt="Imagen 2"
+                    />
+                    <Carousel.Caption>
+                      <h3>Mejores Habitaciones</h3>
+                      <p>Las más deluxe de toda Irlanda!</p>
+                    </Carousel.Caption>
+                  </Carousel.Item>
+                  <Carousel.Item>
+                    <img
+                      className="d-block w-100"
+                      src="https://www.mac-group.com/wp-content/uploads/2018/03/800x400-2.jpg"
+                      alt="Imagen 3"
+                    />
+                    <Carousel.Caption>
+                      <h3>Salón de Eventos</h3>
+                      <p>Con acomodaciones para celebrar las mejores fiestas</p>
+                    </Carousel.Caption>
+                  </Carousel.Item>
+                </Carousel>
+              }
+            />
             <Route
               path="/micuenta"
               element={<MiCuenta usuario={userData} />}
@@ -108,7 +111,6 @@ function App() {
             />
             <Route path="/reserva" element={<Reservation />} />
             <Route path="/admin" element={<AdminPanel />} />
-            <Route path="/*" element={<Redirect to="/" />} />
           </Routes>
         </div>
         <Footer />
