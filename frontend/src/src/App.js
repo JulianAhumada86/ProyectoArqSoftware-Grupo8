@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Redirect } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Admin from './Admin';
+import AdminPanel from './AdminPanel';
 import Register from './Register';
 import Reservation from './Reservation';
 import MiCuenta from './MiCuenta';
@@ -107,7 +107,8 @@ function App() {
               element={<Register onLogin={handleLogin} />}
             />
             <Route path="/reserva" element={<Reservation />} />
-            <Route exact path="/admin" element={<Admin/>} />
+            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/*" element={<Redirect to="/" />} />
           </Routes>
         </div>
         <Footer />
