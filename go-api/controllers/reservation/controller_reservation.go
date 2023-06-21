@@ -4,7 +4,6 @@ import (
 	"go-api/dto/reservations_dto"
 	reservationDTO "go-api/dto/reservations_dto"
 	se "go-api/services"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -16,13 +15,16 @@ func NewReserva(ctx *gin.Context) {
 
 	idH, _ := strconv.Atoi(ctx.Param("idHotel"))
 	inicio := ctx.Param("inicio")
-	log.Println(inicio)
-	/*fechaInicialTest, err := time.Parse(se.Layoutd, inicio)
 
+	/*inicio = strings.Replace(inicio, "-", "/", -1)
+	fechaInicialTest, err := time.Parse("02-01-2006", inicio)
+	log.Print(fechaInicialTest)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Fecha inicial inválida"})
 		log.Error(err)
 		return
+	} else {
+		log.Print(fechaInicialTest)
 	}
 	*/
 	final := ctx.Param("final")

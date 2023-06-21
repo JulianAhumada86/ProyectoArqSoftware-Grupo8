@@ -20,7 +20,7 @@ type reservationServicesInterface interface {
 
 var (
 	ReservationService reservationServicesInterface
-	Layoutd            = "02/01/2006"
+	Layoutd            = "2006-01-02"
 )
 
 func init() {
@@ -34,6 +34,7 @@ func (s *reservationService) NewReserva(reserva reservationDTO.ReservationCreate
 	Mreserva.HotelID = reserva.HotelId
 
 	parseInitial, _ := time.Parse(Layoutd, reserva.InitialDate)
+
 	Mreserva.InitialDate = parseInitial
 	parseFinal, _ := time.Parse(Layoutd, reserva.FinalDate)
 
