@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginUser } from './api';
-import {User} from './Usuario.js'
-
+import Cookies from 'js-cookie';
 
 const LogIn = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -11,7 +10,13 @@ const LogIn = ({ onLogin }) => {
     email: '',
     password: '',
   });
-  
+
+  const [userData, setUserData] = useState({
+    email: '',
+    name: '',
+    lastName: '',
+    dni: ''
+  });
 
   const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(false);
@@ -28,13 +33,11 @@ const LogIn = ({ onLogin }) => {
       const response = await loginUser(formData.email, formData.password);
   
       if (response.status === 200) {
-        User.email = response.data.email
-        //User.name = response.data.name
-        User.lastname = response.data.lastname
-        User.dni = response.data.dni
-        User.dni.
-        //onLogin(formData.firstName, response.data);
-        //navigate('/');
+        userData.email = response.data.email
+        userData.name =response.data.name
+        userData.lastName = response.data.lastName
+        userData.dni =response.data.dni
+        Cookies.set('userData', JSON.stringify(userData))
       } else if (response.status === 401) {
         setErrorMessage('El usuario no existe o la contraseña es incorrecta');
         setShowError(true);
