@@ -11,11 +11,14 @@ import MiCuenta from './MiCuenta';
 import LogIn from './LogIn';
 import Cookies from 'js-cookie';
 
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accountName, setAccountName] = useState('');
   const [userData, setUserData] = useState(null);
-  
+
   const userDatax = Cookies.get('userData');
   const user = userDatax ? JSON.parse(userDatax) : null;
 
@@ -40,7 +43,6 @@ function App() {
     setAccountName('');
     setUserData(null);
     Cookies.remove('userData');
-    
   };
 
   const Footer = () => {
@@ -52,6 +54,8 @@ function App() {
       </footer>
     );
   };
+
+  const dataProvider = jsonServerProvider('http://localhost:3000');
 
   return (
     <Router>
@@ -73,9 +77,9 @@ function App() {
             {isLoggedIn ? (
               <>
                 <Nav.Link as={Link} to="/micuenta">
-                  {user.name} {user.lastName} 
+                  {user.name} {user.lastName}
                 </Nav.Link>
-                <Nav.Link onClick={handleLogout } >Cerrar sesión</Nav.Link>
+                <Nav.Link onClick={handleLogout}>Cerrar sesión</Nav.Link>
               </>
             ) : (
               <Nav.Link as={Link} to="/login">
@@ -136,6 +140,15 @@ function App() {
             />
             <Route path="/login" element={<LogIn onLogin={handleLogin} />} />
             <Route path="/reserva" element={<Reservation />} />
+            <Route
+              path="/admin/*"
+              element={
+                  <Admin dataProvider={dataProvider}>
+                    <Resource name="reservations" list={ListGuesser} />
+                    <Resource name="users" list={ListGuesser} />
+                  </Admin>
+              }
+            />
           </Routes>
         </div>
         <Footer />
