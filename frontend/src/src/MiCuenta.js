@@ -1,16 +1,21 @@
 import React from 'react';
 import './MiCuenta.css';
 import Cookies from 'js-cookie';
-
+import { useNavigate } from 'react-router-dom';
 const MiCuenta = () => {
   const userData = Cookies.get('userData');
   
+
+  const navigate = useNavigate();
   if (!userData) {
+    navigate("/")
     return (
       <div className="container">
         <h1>Mi Cuenta</h1>
         <p>No se encontraron datos de usuario.</p>
+        
       </div>
+      
     );
   }
 

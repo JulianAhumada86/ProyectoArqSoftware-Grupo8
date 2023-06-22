@@ -130,7 +130,7 @@ export const insertHotel = async (name, Nroom, descr) => {
 export const agregarReservation = async (idHotel, inicio, final, idUser, habitacion) => {
   try {
     const response = await axios.post(`${API_URL}/agregarReservation/${idHotel}/${inicio}/${final}/${idUser}/${habitacion}`);
-    return response.data;
+    return response;
   } catch (error) {
     return error.response
     

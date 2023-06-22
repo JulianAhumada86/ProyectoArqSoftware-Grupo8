@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Carousel from 'react-bootstrap/Carousel';
@@ -13,6 +13,7 @@ import LogIn from './LogIn';
 import Cookies from 'js-cookie';
 
 function App() {
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accountName, setAccountName] = useState('');
   const [userData, setUserData] = useState(null);
@@ -41,6 +42,7 @@ function App() {
     setAccountName('');
     setUserData(null);
     Cookies.remove('userData');
+    
   };
 
   const Footer = () => {
@@ -75,7 +77,7 @@ function App() {
                 <Nav.Link as={Link} to="/micuenta">
                   {user.name} {user.lastName} 
                 </Nav.Link>
-                <Nav.Link onClick={handleLogout}>Cerrar sesión</Nav.Link>
+                <Nav.Link onClick={handleLogout } >Cerrar sesión</Nav.Link>
               </>
             ) : (
               <Nav.Link as={Link} to="/login">

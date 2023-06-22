@@ -1,11 +1,12 @@
 import React, { useState }  from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { getReservaById } from './api';
 import { agregarReservation } from './api';
 import Cookies from 'js-cookie';
 
 function Reservation() {
-  const navigate = useNavigate();
+
   var user=JSON;
   const [formData, setFormData] = useState({
     option1: '',
@@ -14,7 +15,7 @@ function Reservation() {
     option2: '',
   });
 
-
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(false);
 
@@ -58,13 +59,17 @@ function Reservation() {
         formData.option2
       );
 
-
-      if (response.status===200){
+      if (response.status===200 ||response.status===201 ){
+        
         setShowError(false);
+        alert("Reserva registrada el dia " + formData.startDate)
+        navigate("/")
+
       }else if (response.status===400){
         setErrorMessage('Debe ingresar fechas validas');
         setShowError(true)
       }else{
+
         setErrorMessage('Error en los datos');
         setShowError(true)
       }
