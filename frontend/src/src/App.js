@@ -98,7 +98,7 @@ function App() {
                     <img
                       className="d-block w-100"
                       src="https://mcaleer-rushe.co.uk/site/wp-content/uploads/2019/05/Maldron-Hotel-Belfast-IntAirport-I.jpg"
-                      alt="Imagen 1"
+                      alt="Caca pedo"
                     />
                     <Carousel.Caption>
                       <h3>Maldron Hotel</h3>
