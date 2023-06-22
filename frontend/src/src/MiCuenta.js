@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './MiCuenta.css';
-import {User} from './Usuario.js';
+
 
 
 
@@ -43,16 +43,16 @@ export const MiCuenta = () => {
         </div>
         <div className="user-info">
           <p className="user-info-line">
-            <span className="label">Nombre:</span> <span className="value">{User.firstName}</span>
+            <span className="label">Nombre:</span> <span className="value">{firstName}</span>
           </p>
           <p className="user-info-line">
-            <span className="label">Apellido:</span> <span className="value">{User.lastName}</span>
+            <span className="label">Apellido:</span> <span className="value">{lastName}</span>
           </p>
           <p className="user-info-line">
-            <span className="label">Correo electrónico:</span> <span className="value">{User.email}</span>
+            <span className="label">Correo electrónico:</span> <span className="value">{email}</span>
           </p>
           <p className="user-info-line">
-            <span className="label">DNI:</span> <span className="value">{User.dni}</span>
+            <span className="label">DNI:</span> <span className="value">{dni}</span>
           </p>
         </div>
       </div>
