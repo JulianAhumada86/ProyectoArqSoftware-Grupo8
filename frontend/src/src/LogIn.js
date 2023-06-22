@@ -30,8 +30,11 @@ const LogIn = ({ onLogin }) => {
           email: response.data.Email,
           name: response.data.Name,
           lastName: response.data.LastName,
-          dni: response.data.DNI
+          dni: response.data.DNI,
+          id: response.data.Id
         };
+        console.log(user)
+
         Cookies.set('userData', JSON.stringify(user));
         onLogin(formData.firstName, formData);
       } else if (response.status === 401) {

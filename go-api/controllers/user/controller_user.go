@@ -147,9 +147,5 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
-	respuesta.DNI = "44193211"
-	respuesta.LastName = "Ahumada"
-	respuesta.Name = "Julian"
-	respuesta.Email = "2214335@ucc.edu.ar"
 	ctx.JSON(http.StatusOK, respuesta)
 }

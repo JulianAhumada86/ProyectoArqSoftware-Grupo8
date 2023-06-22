@@ -2,24 +2,20 @@ import React, { useState }  from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getReservaById } from './api';
 import { agregarReservation } from './api';
-
-
-
-
-
-
-
-
+import Cookies from 'js-cookie';
 
 function Reservation() {
   const navigate = useNavigate();
-
+  var user=JSON;
   const [formData, setFormData] = useState({
     option1: '',
     startDate: '',
     endDate: '',
     option2: '',
   });
+
+
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -30,17 +26,37 @@ function Reservation() {
   const handleSubmit = async (event) => {
     console.log("llegue")
     event.preventDefault(); 
-  
-    try {
+
+    try{
+      const userData = Cookies.get('userData');
+      user = JSON.parse(userData);
+
+    }catch(error){
+      console.log(error)
+      alert("No podes reservar sin estar registrado")
+      navigate("/login")
+    } 
+    if(formData.option1==0){
+    //Completa la casilla 
+    }else if(formData.option2==0){
+
+    //completa la casilla
+
+    }else{
+    
+      try {
+      console.log(user)
       
-    const response = await agregarReservation(
-      formData.option1,
-      formData.startDate,
-      formData.endDate,
-      1,
-      formData.option2
-    );
-  }catch(error){
+      const response = await agregarReservation(
+        formData.option1,
+        formData.startDate,
+        formData.endDate,
+        user.id,
+        formData.option2
+      );
+    }catch(error){
+    
+    }
   }
   };
   

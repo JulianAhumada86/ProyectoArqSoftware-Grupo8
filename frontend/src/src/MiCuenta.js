@@ -13,9 +13,9 @@ const MiCuenta = () => {
       </div>
     );
   }
-  console.log(userData);
 
   const user = JSON.parse(userData);
+  
 
   return (
     <div className="container">

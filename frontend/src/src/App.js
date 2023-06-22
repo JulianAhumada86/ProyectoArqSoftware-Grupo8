@@ -10,11 +10,15 @@ import Register from './Register';
 import Reservation from './Reservation';
 import MiCuenta from './MiCuenta';
 import LogIn from './LogIn';
+import Cookies from 'js-cookie';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accountName, setAccountName] = useState('');
   const [userData, setUserData] = useState(null);
+
+  const userDatax = Cookies.get('userData');
+  const user = JSON.parse(userDatax);
 
   const handleLogin = (name, data) => {
     setIsLoggedIn(true);
@@ -51,7 +55,7 @@ function App() {
           <Nav className="ml-auto">
             {isLoggedIn ? (
               <Nav.Link as={Link} to="/micuenta">
-                Mi Cuenta ({accountName})
+                {user.name} {user.lastName} 
               </Nav.Link>
             ) : (
               <Nav.Link as={Link} to="/login">

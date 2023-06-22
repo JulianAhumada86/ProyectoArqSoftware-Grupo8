@@ -70,12 +70,12 @@ func (s *userService) AddUser(userDto uDto.UserDto) (uDto.UserRequestDto, e.Erro
 	}
 
 	uClient.AddUser(userModel)
-	userDto.Id = userModel.Id
 
 	userRDto.Name = userDto.Name
 	userRDto.LastName = userDto.LastName
 	userRDto.Email = userDto.Email
 	userRDto.DNI = userDto.DNI
+	userRDto.Id = userModel.Id
 	return userRDto, nil
 
 }
@@ -140,6 +140,7 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.UserRequestD
 	userRequestDto.Name = user.Name
 	userRequestDto.LastName = user.LastName
 	userRequestDto.DNI = user.DNI
+	userRequestDto.Id = user.Id
 	return userRequestDto, nil
 }
 

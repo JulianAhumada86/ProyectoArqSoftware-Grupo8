@@ -15,31 +15,8 @@ func NewReserva(ctx *gin.Context) {
 
 	idH, _ := strconv.Atoi(ctx.Param("idHotel"))
 	inicio := ctx.Param("inicio")
-
-	/*inicio = strings.Replace(inicio, "-", "/", -1)
-	fechaInicialTest, err := time.Parse("02-01-2006", inicio)
-	log.Print(fechaInicialTest)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Fecha inicial inválida"})
-		log.Error(err)
-		return
-	} else {
-		log.Print(fechaInicialTest)
-	}
-	*/
 	final := ctx.Param("final")
-	/*
-		fechaFinalTest, err := time.Parse(se.Layoutd, final)
 
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Fecha inicial inválida"})
-			return
-		}
-		if fechaFinalTest.Before(fechaInicialTest) {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Fecha final sucede despues de fecha inicial"})
-			return
-		}
-	*/
 	idU, _ := strconv.Atoi(ctx.Param("idUser"))
 	habitacion := ctx.Param("habitacion")
 
