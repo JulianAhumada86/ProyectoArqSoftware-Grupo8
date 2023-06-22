@@ -20,23 +20,22 @@ const LogIn = ({ onLogin }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     try {
       const response = await loginUser(formData.email, formData.password);
-     
-      if (response.status == 200) {
-        onLogin(response.data.firstName, response.data);
+  
+      if (response.status === 200) {
+        onLogin(formData.firstName, response.data);
         navigate('/');
       } else if (response.status === 401) {
         setErrorMessage('El usuario no existe o la contraseña es incorrecta');
         setShowError(true);
       } else {
-        setErrorMessage('Terrible puto');
+        setErrorMessage('Error al iniciar sesión');
         setShowError(true);
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
-      setErrorMessage('Terrible gay');
       setShowError(true);
     }
   };
