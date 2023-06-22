@@ -1,6 +1,6 @@
 package users_dto
 
 type LoginDto struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }

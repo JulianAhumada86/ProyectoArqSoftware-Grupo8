@@ -13,15 +13,7 @@ export const getUserbyId = async (id) => {
   }
 }
 
-export const getUserbyEmail = async (Email) => {
-  try {
-    const response = await axios.get(`${API_URL}/${Email}`);
-    return response;
-    
-  } catch (error) {
-    throw new Error('Error al obtener usuario');
-  }
-}
+
 
 export const getHotelById = async (id) => {
   try {

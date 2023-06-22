@@ -78,7 +78,7 @@ func GetUsers(ctx *gin.Context) {
 // name/:LastName/:DNI/:Password/:Email/:Admin
 func AddUser(ctx *gin.Context) {
 	var userDto userdto.UserDto
-
+	var userRdto userdto.UserRequestDto
 	userDto.Name = ctx.Param("name")
 	if userDto.Name == "" {
 		log.Error("El campo 'name' está vacío")
@@ -118,14 +118,14 @@ func AddUser(ctx *gin.Context) {
 		return
 	}
 
-	userDto, err = se.UserService.AddUser(userDto)
+	userRdto, err = se.UserService.AddUser(userDto)
 
 	if err != nil {
 		log.Error("Algo falla al llamar al service para agregar el usuario")
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	} else {
-		ctx.JSON(http.StatusOK, userDto)
+		ctx.JSON(http.StatusOK, userRdto)
 	}
 
 }
@@ -140,22 +140,13 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
-	log.Debug(loginDto)
+	respuesta, err := se.UserService.Login(loginDto)
 
-	/*e.Status()
-	//var loginResponseDto users_dto.LoginResponseDto
-	loginResponseDto, err := se.UserService.Login(loginDto)
 	if err != nil {
-		if err.Status() == 400 {
-			ctx.JSON(http.StatusBadRequest, err.Error())
-			return
-		}
-		ctx.JSON(http.StatusForbidden, err.Error())
+		ctx.JSON(http.StatusBadRequest, respuesta)
 		return
 	}
-	ctx.JSON(http.StatusOK, loginResponseDto)
-	*/
-	var respuesta userdto.UserRequestDto
+
 	respuesta.DNI = "44193211"
 	respuesta.LastName = "Ahumada"
 	respuesta.Name = "Julian"

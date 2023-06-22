@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getUserbyEmail } from './api'; // Importa la función para obtener los datos del usuario por correo electrónico
 import './MiCuenta.css';
+import {User} from './Usuario.js';
 
-const MiCuenta = () => {
+
+
+export const MiCuenta = () => {
   const location = useLocation();
-  const email = location.state;
-  const [userData, setUserData] = useState({}); // Inicializa con un objeto vacío
-
+  
+   // Inicializa con un objeto vacío
+      /*
   useEffect(() => {
     const fetchUserData = async () => {
+
       try {
         const response = await getUserbyEmail(email);
         if (response.status === 200) {
@@ -25,7 +28,7 @@ const MiCuenta = () => {
 
     fetchUserData();
   }, [email]);
-
+*/
   return (
     <div className="container">
       <h1>Mi Cuenta</h1>
@@ -40,16 +43,16 @@ const MiCuenta = () => {
         </div>
         <div className="user-info">
           <p className="user-info-line">
-            <span className="label">Nombre:</span> <span className="value">{userData.firstName}</span>
+            <span className="label">Nombre:</span> <span className="value">{User.firstName}</span>
           </p>
           <p className="user-info-line">
-            <span className="label">Apellido:</span> <span className="value">{userData.lastName}</span>
+            <span className="label">Apellido:</span> <span className="value">{User.lastName}</span>
           </p>
           <p className="user-info-line">
-            <span className="label">Correo electrónico:</span> <span className="value">{userData.email}</span>
+            <span className="label">Correo electrónico:</span> <span className="value">{User.email}</span>
           </p>
           <p className="user-info-line">
-            <span className="label">DNI:</span> <span className="value">{userData.dni}</span>
+            <span className="label">DNI:</span> <span className="value">{User.dni}</span>
           </p>
         </div>
       </div>
@@ -58,3 +61,4 @@ const MiCuenta = () => {
 };
 
 export default MiCuenta;
+

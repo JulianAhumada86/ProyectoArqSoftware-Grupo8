@@ -8,10 +8,9 @@ import (
 	e "go-api/errors"
 	"go-api/model"
 
+	"github.com/golang-jwt/jwt"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
-
-	"github.com/golang-jwt/jwt"
 )
 
 type userService struct{}
@@ -19,8 +18,8 @@ type userService struct{}
 type userServiceInterface interface {
 	GetUserById(id int) (uDto.UserDto, e.ErrorApi)
 	GetUsers() (uDto.UsersDto, e.ErrorApi)
-	AddUser(userDto uDto.UserDto) (uDto.UserDto, e.ErrorApi)
-	Login(loginDto users_dto.LoginDto) (users_dto.LoginResponseDto, e.ErrorApi)
+	AddUser(userDto uDto.UserDto) (uDto.UserRequestDto, e.ErrorApi)
+	Login(loginDto users_dto.LoginDto) (users_dto.UserRequestDto, e.ErrorApi)
 
 	HashPassword(string) (string, error)
 	VerifyPassword(string, string) error
@@ -47,28 +46,37 @@ func (s *userService) GetUserById(id int) (uDto.UserDto, e.ErrorApi) {
 	return userDto, nil
 }
 
-func (s *userService) AddUser(userDto uDto.UserDto) (uDto.UserDto, e.ErrorApi) {
+func (s *userService) AddUser(userDto uDto.UserDto) (uDto.UserRequestDto, e.ErrorApi) {
 	var userModel model.User
+	var userRDto uDto.UserRequestDto
 
 	userModel.Admin = userDto.Admin
 	userModel.Email = userDto.Email
 	userModel.DNI = userDto.DNI
 	userModel.LastName = userDto.LastName
-	userModel.Password = userDto.Password
+
+	hashedPassword, _ := UserService.HashPassword(userDto.Password)
+
+	userModel.Password = hashedPassword
 	userModel.Name = userDto.Name
 
 	if uClient.ExistUserByDni(userModel.DNI) {
 		log.Error("Algo salio mal en el email")
-		return userDto, e.NewBadRequestErrorApi("DNI Ya Registrado")
+		return userRDto, e.NewBadRequestErrorApi("DNI Ya Registrado")
 	}
 	if uClient.ExistUserByEmail(userModel.Email) {
 		log.Error("Algo salio mal en el email")
-		return userDto, e.NewBadRequestErrorApi("Email Ya registrado")
+		return userRDto, e.NewBadRequestErrorApi("Email Ya registrado")
 	}
 
 	uClient.AddUser(userModel)
 	userDto.Id = userModel.Id
-	return userDto, nil
+
+	userRDto.Name = userDto.Name
+	userRDto.LastName = userDto.LastName
+	userRDto.Email = userDto.Email
+	userRDto.DNI = userDto.DNI
+	return userRDto, nil
 
 }
 
@@ -95,58 +103,59 @@ func (s *userService) GetUsers() (uDto.UsersDto, e.ErrorApi) {
 
 }
 
-func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.LoginResponseDto, e.ErrorApi) {
-	var user model.User
-	user, err := uClient.GetUserByUsername(loginDto.Username)
-	var loginResponseDto users_dto.LoginResponseDto
-	loginResponseDto.UserId = -1
+func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.UserRequestDto, e.ErrorApi) {
+	var userRequestDto users_dto.UserRequestDto
+	userRequestDto.Email = loginDto.Email
+	user, err := uClient.GetUserByEmail(loginDto.Email)
 
 	if err != nil {
-		return loginResponseDto, e.NewBadRequestErrorApi("Usuario no encontrado")
+		return userRequestDto, e.NewBadRequestErrorApi("Email no existe o no esta registrado")
 	}
 
 	var comparison error = s.VerifyPassword(user.Password, loginDto.Password)
 
-	if loginDto.Username == user.Name {
-		{
-			if comparison != nil {
-				return loginResponseDto, e.NewUnauthorizedErrorApi("contraseña incorrecta")
-			}
+	if loginDto.Email == user.Email {
+		if comparison != nil {
+			log.Error(comparison)
+			return userRequestDto, e.NewUnauthorizedErrorApi("contraseña incorrecta")
 		}
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"username": loginDto.Username,
+		"email":    loginDto.Email,
 		"password": loginDto.Password,
 	})
+
 	var jwtKey = []byte("Secret key")
 	tokenString, _ := token.SignedString(jwtKey)
 
 	var verifyToken error = s.VerifyPassword(user.Password, tokenString)
 
-	if loginDto.Username != user.Name {
+	if loginDto.Email != user.Email {
 		if verifyToken != nil {
-			return loginResponseDto, e.NewUnauthorizedErrorApi("Contraseña incorrecta")
+			return userRequestDto, e.NewUnauthorizedErrorApi("Contraseña incorrecta")
 		}
 	}
 
-	loginResponseDto.UserId = user.Id
-	loginResponseDto.Token = tokenString
-	loginResponseDto.Type = user.Type
-	log.Debug(loginResponseDto)
-	return loginResponseDto, nil
+	userRequestDto.Name = user.Name
+	userRequestDto.LastName = user.LastName
+	userRequestDto.DNI = user.DNI
+	return userRequestDto, nil
+}
+
+func (s *userService) VerifyPassword(HashedPassword string, candidatePassword string) error {
+
+	return bcrypt.CompareHashAndPassword([]byte(HashedPassword), []byte(candidatePassword))
 }
 
 func (s *userService) HashPassword(password string) (string, error) {
-	HashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+
+	HashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+	log.Println("EL largo del ash es: " + string(len(string(HashedPassword))))
 
 	if err != nil {
 		return "", fmt.Errorf("No fue posible generar un Hash a partir de la password %w", err)
 	}
 
 	return string(HashedPassword), nil
-}
-
-func (s *userService) VerifyPassword(HashedPassword string, candidatePassword string) error {
-	return bcrypt.CompareHashAndPassword([]byte(HashedPassword), []byte(candidatePassword))
 }

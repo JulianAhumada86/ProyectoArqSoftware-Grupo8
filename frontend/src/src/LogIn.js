@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginUser } from './api';
+import {User} from './Usuario.js'
+
 
 const LogIn = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -9,6 +11,7 @@ const LogIn = ({ onLogin }) => {
     email: '',
     password: '',
   });
+  
 
   const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(false);
@@ -25,8 +28,13 @@ const LogIn = ({ onLogin }) => {
       const response = await loginUser(formData.email, formData.password);
   
       if (response.status === 200) {
-        onLogin(formData.firstName, response.data);
-        navigate('/');
+        User.email = response.data.email
+        //User.name = response.data.name
+        User.lastname = response.data.lastname
+        User.dni = response.data.dni
+        User.dni.
+        //onLogin(formData.firstName, response.data);
+        //navigate('/');
       } else if (response.status === 401) {
         setErrorMessage('El usuario no existe o la contraseña es incorrecta');
         setShowError(true);

@@ -7,7 +7,7 @@ type User struct {
 
 	DNI      string `gorm:"type:varchar(10);not null"`
 	Email    string `gorm:"type:varchar(100);not null;unique"`
-	Password string `gorm:"type:varchar(30);not null"`
+	Password string `gorm:"type:varchar(180);not null"`
 	Type     bool   `gorm:"not null;default:false"`
 	Admin    int
 

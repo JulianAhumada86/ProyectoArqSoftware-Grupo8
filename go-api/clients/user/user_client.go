@@ -30,6 +30,17 @@ func GetUserByUsername(username string) (model.User, error) {
 	return user, nil
 }
 
+func GetUserByEmail(email string) (model.User, error) {
+	var user model.User
+	result := Db.Where("email = ?", email).First(&user)
+
+	if result.Error != nil {
+		return user, result.Error
+	}
+
+	return user, nil
+}
+
 func ExistUserByEmail(email string) bool {
 	var user model.User
 	result := Db.Where("email = ?", email).First(&user)
