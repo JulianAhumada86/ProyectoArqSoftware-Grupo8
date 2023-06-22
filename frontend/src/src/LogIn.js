@@ -11,13 +11,6 @@ const LogIn = ({ onLogin }) => {
     password: '',
   });
 
-  const [userData, setUserData] = useState({
-    email: '',
-    name: '',
-    lastName: '',
-    dni: ''
-  });
-
   const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(false);
 
@@ -33,11 +26,14 @@ const LogIn = ({ onLogin }) => {
       const response = await loginUser(formData.email, formData.password);
   
       if (response.status === 200) {
-        userData.email = response.data.email
-        userData.name =response.data.name
-        userData.lastName = response.data.lastName
-        userData.dni =response.data.dni
-        Cookies.set('userData', JSON.stringify(userData))
+        const user = {
+          email: response.data.Email,
+          name: response.data.Name,
+          lastName: response.data.LastName,
+          dni: response.data.DNI
+        };
+        Cookies.set('userData', JSON.stringify(user));
+        onLogin(formData.firstName, formData);
       } else if (response.status === 401) {
         setErrorMessage('El usuario no existe o la contraseña es incorrecta');
         setShowError(true);

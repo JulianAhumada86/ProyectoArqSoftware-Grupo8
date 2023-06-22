@@ -1,34 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React from 'react';
 import './MiCuenta.css';
+import Cookies from 'js-cookie';
 
-
-
-
-export const MiCuenta = () => {
-  const location = useLocation();
+const MiCuenta = () => {
+  const userData = Cookies.get('userData');
   
-   // Inicializa con un objeto vacío
-      /*
-  useEffect(() => {
-    const fetchUserData = async () => {
+  if (!userData) {
+    return (
+      <div className="container">
+        <h1>Mi Cuenta</h1>
+        <p>No se encontraron datos de usuario.</p>
+      </div>
+    );
+  }
+  console.log(userData);
 
-      try {
-        const response = await getUserbyEmail(email);
-        if (response.status === 200) {
-          setUserData(response.data);
-        } else {
-          // Manejo de errores en caso de que no se pueda obtener los datos del usuario
-          console.error('Error al obtener los datos del usuario');
-        }
-      } catch (error) {
-        console.error('Error al obtener los datos del usuario:', error);
-      }
-    };
+  const user = JSON.parse(userData);
 
-    fetchUserData();
-  }, [email]);
-*/
   return (
     <div className="container">
       <h1>Mi Cuenta</h1>
@@ -43,16 +31,16 @@ export const MiCuenta = () => {
         </div>
         <div className="user-info">
           <p className="user-info-line">
-            <span className="label">Nombre:</span> <span className="value">{firstName}</span>
+            <span className="label">Nombre:</span> <span className="value">{user.name}</span>
           </p>
           <p className="user-info-line">
-            <span className="label">Apellido:</span> <span className="value">{lastName}</span>
+            <span className="label">Apellido:</span> <span className="value">{user.lastName}</span>
           </p>
           <p className="user-info-line">
-            <span className="label">Correo electrónico:</span> <span className="value">{email}</span>
+            <span className="label">Correo electrónico:</span> <span className="value">{user.email}</span>
           </p>
           <p className="user-info-line">
-            <span className="label">DNI:</span> <span className="value">{dni}</span>
+            <span className="label">DNI:</span> <span className="value">{user.dni}</span>
           </p>
         </div>
       </div>
@@ -61,4 +49,3 @@ export const MiCuenta = () => {
 };
 
 export default MiCuenta;
-
