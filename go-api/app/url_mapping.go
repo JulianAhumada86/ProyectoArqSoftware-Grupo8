@@ -19,6 +19,7 @@ func mapUrls() {
 	router.GET("/userId/:id", userc.GetUserById)
 	router.POST("/addUsuario/:name/:LastName/:DNI/:Password/:Email/:Admin", userc.AddUser)
 	router.GET("/users", userc.GetUsers)
+	router.POST("/login", userc.Login)
 
 	//Reservation
 	router.POST("/agregarReservation/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.NewReserva)

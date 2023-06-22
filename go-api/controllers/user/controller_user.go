@@ -131,9 +131,9 @@ func AddUser(ctx *gin.Context) {
 }
 
 func Login(ctx *gin.Context) {
+
 	var loginDto users_dto.LoginDto
 	err := ctx.BindJSON(&loginDto)
-
 	if err != nil {
 		log.Error(err.Error())
 		ctx.JSON(http.StatusBadRequest, err.Error())
@@ -155,4 +155,10 @@ func Login(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, loginResponseDto)
 	*/
+	var respuesta userdto.UserRequestDto
+	respuesta.DNI = "44193211"
+	respuesta.LastName = "Ahumada"
+	respuesta.Name = "Julian"
+	respuesta.Email = "2214335@ucc.edu.ar"
+	ctx.JSON(http.StatusOK, respuesta)
 }

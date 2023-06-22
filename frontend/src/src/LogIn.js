@@ -23,8 +23,8 @@ const LogIn = ({ onLogin }) => {
 
     try {
       const response = await loginUser(formData.email, formData.password);
-
-      if (response.status === 200) {
+     
+      if (response.status == 200) {
         onLogin(response.data.firstName, response.data);
         navigate('/');
       } else if (response.status === 401) {

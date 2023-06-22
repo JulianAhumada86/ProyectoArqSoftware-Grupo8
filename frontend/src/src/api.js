@@ -50,6 +50,19 @@ export const deleteUser = async (userId) => {
 };
 
 export const loginUser = async (email, password) => {
+    const data = {
+      email: email,
+      password:password
+    }
+
+  try{
+    const response = await axios.post(`${API_URL}/login`,data)
+    console.log(response.status)
+    return response;
+  }catch(error){
+  
+  }
+  /*
   try {
     const response = await fetch('/login', {
       method: 'POST',
@@ -58,7 +71,7 @@ export const loginUser = async (email, password) => {
       },
       body: JSON.stringify({ email, password })
     });
-
+    console.log("Anda")
     if (response.ok) {
       const data = await response.json();
       return data;
@@ -68,6 +81,7 @@ export const loginUser = async (email, password) => {
   } catch (error) {
     throw new Error('Error al iniciar sesión: ' + error.message);
   }
+  */
 };
 
 export const getReservaById = async (id) => {
