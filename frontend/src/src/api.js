@@ -38,7 +38,6 @@ export const postUser = async (name,LastName,DNI,Password,Email,Admin) => {
     } else {
       // Error de red o solicitud cancelada
       console.error('Error en la solicitud:', error.message)
-      console.log("Entre al else, me rompi")
     }
 
   }
@@ -72,9 +71,20 @@ export const loginUser = async (email, password) => {
 
   try{
     const response = await axios.post(`${API_URL}/login`,data)
-    console.log(response.status)
     return response;
   }catch(error){
+    if (error.response.status=400) {
+      // El servidor respondió con un código de estado de error
+      const errorMessage = error.response.data;
+      // Manejar el mensaje de error, por ejemplo, mostrarlo en la interfaz de usuario
+      console.error(errorMessage)
+      return error.response
+
+    } else {
+      // Error de red o solicitud cancelada
+      console.error('Error en la solicitud:', error.message)
+    }
+
   }
 };
 

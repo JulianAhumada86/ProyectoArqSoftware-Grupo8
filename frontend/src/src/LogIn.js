@@ -36,19 +36,20 @@ const LogIn = ({ onLogin }) => {
         console.log(user)
         Cookies.set('userData', JSON.stringify(user));
         onLogin(formData.firstName, formData);
+        navigate("/");
      
-      } else{
-        console.log("hola")
+      } else if (response.status === 400) {
         setErrorMessage('El usuario no existe o la contraseña es incorrecta');
+        setShowError(true);
+      } else{
+        setErrorMessage('Error al iniciar sesión');
         setShowError(true);
       }  
         
       } catch (error) {
-      setErrorMessage('Error al iniciar sesión');
+        setErrorMessage('Error al iniciar sesión');
         setShowError(true);
-      console.error( error);
-      setShowError(true);
-    
+        console.error(error);
     }
   };
 

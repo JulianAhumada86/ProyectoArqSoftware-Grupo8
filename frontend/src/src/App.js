@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
@@ -13,18 +13,34 @@ import LogIn from './LogIn';
 import Cookies from 'js-cookie';
 
 function App() {
-  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accountName, setAccountName] = useState('');
   const [userData, setUserData] = useState(null);
-
+  
   const userDatax = Cookies.get('userData');
-  const user = JSON.parse(userDatax);
+  const user = userDatax ? JSON.parse(userDatax) : null;
+
+  useEffect(() => {
+    const userDataCookie = Cookies.get('userData');
+    if (userDataCookie) {
+      const user = JSON.parse(userDataCookie);
+      setIsLoggedIn(true);
+      setAccountName(`${user.name} ${user.lastName}`);
+      setUserData(user);
+    }
+  }, []);
 
   const handleLogin = (name, data) => {
     setIsLoggedIn(true);
     setAccountName(name);
     setUserData(data);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setAccountName('');
+    setUserData(null);
+    Cookies.remove('userData');
   };
 
   const Footer = () => {
@@ -55,12 +71,15 @@ function App() {
           </Navbar.Collapse>
           <Nav className="ml-auto">
             {isLoggedIn ? (
-              <Nav.Link as={Link} to="/micuenta">
-                {user.name} {user.lastName} 
-              </Nav.Link>
+              <>
+                <Nav.Link as={Link} to="/micuenta">
+                  {user.name} {user.lastName} 
+                </Nav.Link>
+                <Nav.Link onClick={handleLogout}>Cerrar sesión</Nav.Link>
+              </>
             ) : (
               <Nav.Link as={Link} to="/login">
-                Log In
+                Iniciar sesión
               </Nav.Link>
             )}
           </Nav>
