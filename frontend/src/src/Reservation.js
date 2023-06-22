@@ -15,7 +15,8 @@ function Reservation() {
   });
 
 
-
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showError, setShowError] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -24,7 +25,6 @@ function Reservation() {
   };
 
   const handleSubmit = async (event) => {
-    console.log("llegue")
     event.preventDefault(); 
 
     try{
@@ -36,16 +36,19 @@ function Reservation() {
       alert("No podes reservar sin estar registrado")
       navigate("/login")
     } 
-    if(formData.option1==0){
-    //Completa la casilla 
-    }else if(formData.option2==0){
 
-    //completa la casilla
+    if(formData.option1==0||formData.option2==0){
+      setErrorMessage('Debe completar todas las opciones de selccion multiple');
+      setShowError(true);
+
+    }else if(formData.startDate =="" || formData.endDate ==""){
+
+      setErrorMessage('Debe ingresar fechas validas');
+      setShowError(true);
 
     }else{
     
       try {
-      console.log(user)
       
       const response = await agregarReservation(
         formData.option1,
@@ -54,17 +57,24 @@ function Reservation() {
         user.id,
         formData.option2
       );
+
+
+      if (response.status===200){
+        setShowError(false);
+      }else if (response.status===400){
+        setErrorMessage('Debe ingresar fechas validas');
+        setShowError(true)
+      }else{
+        setErrorMessage('Error en los datos');
+        setShowError(true)
+      }
+
     }catch(error){
-    
+
     }
   }
   };
   
-
-
-
-
-
   return (
     <div className="container mt-5">
       
@@ -109,7 +119,7 @@ function Reservation() {
             </div>
           </div>
         </div>
-        
+        {showError && <p style={{ color: 'red' }}>{errorMessage}</p>}
         <button type="submit" className="btn btn-primary" >Reservar</button>
         </form>
       </div>

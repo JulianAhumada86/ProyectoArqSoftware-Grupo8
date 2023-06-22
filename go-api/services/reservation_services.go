@@ -29,7 +29,7 @@ func init() {
 
 func (s *reservationService) NewReserva(reserva reservationDTO.ReservationCreateDto) (reservationDTO.ReservationDto, error) {
 	var Mreserva model.Reservation
-
+	var rf reservationDTO.ReservationDto
 	Mreserva.Habitacion = reserva.Habitacion
 	Mreserva.HotelID = reserva.HotelId
 
@@ -41,9 +41,12 @@ func (s *reservationService) NewReserva(reserva reservationDTO.ReservationCreate
 	Mreserva.FinalDate = parseFinal
 	Mreserva.UserID = reserva.UserId
 
-	Mreserva = cl.NewReserva(Mreserva)
+	if parseFinal.Before(parseInitial) {
 
-	var rf reservationDTO.ReservationDto
+		return rf, e.NewBadRequestErrorApi("Fecha inicial antes de la final")
+	}
+
+	Mreserva = cl.NewReserva(Mreserva)
 
 	rf.FinalDate = Mreserva.FinalDate.String()
 	rf.HotelName = Mreserva.Hotel.Name

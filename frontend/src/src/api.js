@@ -24,7 +24,7 @@ export const getUsers = async () => {
 
 export const postUser = async (name,LastName,DNI,Password,Email,Admin) => {
   try {
-    const response = await axios.post(`${API_URL}/addUsuario/${name}/${LastName}/${DNI}/${Password}/${Email}/${Admin}`);  
+    const response = await axios.post(`${API_URL}/addUsuario/${name}/${LastName}/${DNI}/${Password}/${Email}/0`);  
     return response;
     
   } catch (error) {
@@ -75,7 +75,6 @@ export const loginUser = async (email, password) => {
     console.log(response.status)
     return response;
   }catch(error){
-    throw new Error('Error al logear usuario');
   }
 };
 
@@ -123,16 +122,8 @@ export const agregarReservation = async (idHotel, inicio, final, idUser, habitac
     const response = await axios.post(`${API_URL}/agregarReservation/${idHotel}/${inicio}/${final}/${idUser}/${habitacion}`);
     return response.data;
   } catch (error) {
-    if (error.response) {
-      // El servidor respondió con un código de estado de error
-      const errorMessage = error.response.data;
-      // Manejar el mensaje de error, por ejemplo, mostrarlo en la interfaz de usuario
-      console.error(errorMessage);
-    } else {
-      // Error de red o solicitud cancelada
-      console.error('Error en la solicitud:', error.message);
-    }
-    throw new Error('Error al agregar reserva');
+    return error.response
+    
   }
 };
 

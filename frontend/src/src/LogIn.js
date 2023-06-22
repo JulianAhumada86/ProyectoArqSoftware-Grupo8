@@ -34,19 +34,21 @@ const LogIn = ({ onLogin }) => {
           id: response.data.Id
         };
         console.log(user)
-
         Cookies.set('userData', JSON.stringify(user));
         onLogin(formData.firstName, formData);
-      } else if (response.status === 401) {
+     
+      } else{
+        console.log("hola")
         setErrorMessage('El usuario no existe o la contraseña es incorrecta');
         setShowError(true);
-      } else {
-        setErrorMessage('Error al iniciar sesión');
+      }  
+        
+      } catch (error) {
+      setErrorMessage('Error al iniciar sesión');
         setShowError(true);
-      }
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
+      console.error( error);
       setShowError(true);
+    
     }
   };
 

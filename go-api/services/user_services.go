@@ -69,7 +69,7 @@ func (s *userService) AddUser(userDto uDto.UserDto) (uDto.UserRequestDto, e.Erro
 		return userRDto, e.NewBadRequestErrorApi("Email Ya registrado")
 	}
 
-	uClient.AddUser(userModel)
+	userModel = uClient.AddUser(userModel)
 
 	userRDto.Name = userDto.Name
 	userRDto.LastName = userDto.LastName
