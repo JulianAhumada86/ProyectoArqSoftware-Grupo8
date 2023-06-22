@@ -5,7 +5,6 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AdminPanel from './AdminPanel';
 import Register from './Register';
 import Reservation from './Reservation';
 import MiCuenta from './MiCuenta';
@@ -13,7 +12,6 @@ import LogIn from './LogIn';
 import Cookies from 'js-cookie';
 
 function App() {
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accountName, setAccountName] = useState('');
   const [userData, setUserData] = useState(null);
@@ -138,7 +136,6 @@ function App() {
             />
             <Route path="/login" element={<LogIn onLogin={handleLogin} />} />
             <Route path="/reserva" element={<Reservation />} />
-            <Route path="/admin" element={<AdminPanel />} />
           </Routes>
         </div>
         <Footer />
