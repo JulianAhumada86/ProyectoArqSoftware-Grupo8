@@ -66,9 +66,20 @@ export const agregarReservation = async (idHotel, inicio, final, idUser, habitac
   }
 };
 
-const getUsers = async () => {
+export const getUsers = async () => {
   try {
     const response = await axios.get(`${API_URL}/users`);
+    return response
+
+
+  } catch (error) {
+    console.error('Error al obtener los usuarios:', error);
+  }
+};
+
+export const getReservations = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/reservas`);
     return response
 
 

@@ -24,6 +24,7 @@ func mapUrls() {
 	//Reservation
 	router.POST("/agregarReservation/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.NewReserva)
 	router.GET("/reserva/:id", resrc.GetReservaById)
+	router.GET("/reservas", resrc.GetReservas)
 
 	//Amenmitie
 	router.POST("/insertAmenitie/:name", amenc.InsertAmenitie)

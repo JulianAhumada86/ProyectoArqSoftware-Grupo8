@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUser } from './api';
+import { loginUser,getUsers,getReservations} from './api';
 import Cookies from 'js-cookie';
 
 
@@ -36,14 +36,21 @@ const Admin = () => {
           setShowLogin(false);
           setShowOption(true);
           setShowError(false)
-          
+
+
+
         }else{
           alert("No sos administrador")
           navigate("/")
         }
 
       }catch{}
+    
+    
+    
+    
     }, []);
+
 
 
     const handleChange = (event) => {//Cuando se te cante el culo 
@@ -58,7 +65,7 @@ const Admin = () => {
       try {
         const response = await loginUser(formData.email, formData.password);
          if (response.status === 200) {
-          console.log(response)
+         
           
           const user = {
             email: response.data.Email,
@@ -72,7 +79,9 @@ const Admin = () => {
           if(user.admin==1){
             setShowLogin(false);
             setShowOption(true);
-            setShowError(false)
+            setShowError(false);
+
+            
           }else{
             alert("No tenes permiso de administracion");
             navigate("/");
@@ -94,16 +103,47 @@ const Admin = () => {
     };
 
 
+    function mostrarReservaciones(){
+        setShowReservations(true)
+        setShowUsers(false)
+    }
+    function mostrarUsuarios(){
+      setShowReservations(false)
+      setShowUsers(true)
+    }
+
+    const getUsuarios = async(event)=> {
+      const response =await getUsers();
+      const usersData = response.data.users;
+      setUsers(usersData)
+
+
+      
+    }
+    const getReservas = async(event)=>{
+      const response = await getReservations();
+      const reservasData = response.data.reservations;
+      setReservas(reservasData)
+      console.log(reservas)
+
+    };
+
     return (
       <div>
         {showOptions && 
         <div id="Usuarios">
-        <h1>Usuarios</h1>
+        <h1>Admin Panel</h1>
         <ul>
-        <button className="btn btn-primary">
+        <button className="btn btn-primary" onClick={() => {
+          mostrarReservaciones();
+          getReservas();
+        }}>
           Reservaciones
         </button>
-        <button className="btn btn-primary">
+        <button className="btn btn-primary" onClick={() => {
+          mostrarUsuarios();
+          getUsuarios();
+        }}>
           Usuarios
         </button>
         {showError && <p style={{ color: 'red' }}>{errorMessage}</p>}
@@ -148,17 +188,47 @@ const Admin = () => {
           }
 
           {showReservations && <div>
-
-
-
-
+            <table>
+              <thead>
+                <tr>
+                <th>Id</th>
+                  <th>Hotel</th>
+                  <th>Fecha</th>
+                  <th>Usuario</th>
+                </tr>
+              </thead>
+              <tbody>
+                {reservas.map((reserva) => (
+                  <tr key={reserva.reservation_id}>
+                    <td>{reserva.reservation_id}</td>
+                    <td>{reserva.hotel_name}</td>
+                    <td>{reserva.initial_date} - {reserva.final_date}</td>
+                    <td>{reserva.user_name}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>}
 
-
-
           {showUsers && <div>
-
-
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user.Id}>
+                    <td>{user.Id}</td>
+                    <td>{user.Name} {user.LastName}</td>
+                    <td>{user.Email}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
           </div>}
     </div>  
