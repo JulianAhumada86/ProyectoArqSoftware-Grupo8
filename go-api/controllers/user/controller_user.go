@@ -65,13 +65,14 @@ func GetUserById(ctx *gin.Context) {
 
 func GetUsers(ctx *gin.Context) {
 	//var userDto users_dto.UsersDto
-	userDto, err := se.UserService.GetUsers()
+	userDto, err, l := se.UserService.GetUsers()
 
 	if err != nil {
 		ctx.JSON(err.Status(), err)
 		return
 	}
-
+	log.Print(l)
+	ctx.Header("X-Total-Count", strconv.Itoa(l))
 	ctx.JSON(http.StatusOK, userDto)
 }
 

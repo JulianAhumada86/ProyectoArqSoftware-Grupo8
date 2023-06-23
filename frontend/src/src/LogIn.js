@@ -31,7 +31,8 @@ const LogIn = ({ onLogin }) => {
           name: response.data.Name,
           lastName: response.data.LastName,
           dni: response.data.DNI,
-          id: response.data.Id
+          id: response.data.Id,
+          admin: response.data.Admin
         };
         console.log(user)
         Cookies.set('userData', JSON.stringify(user));

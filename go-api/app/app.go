@@ -19,6 +19,7 @@ func init() {
 	config.AllowOrigins = []string{"*"}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE"}
 	config.AllowHeaders = []string{"Origin", "Authorization", "Content-Type"}
+	config.AddExposeHeaders("X-Total-Count")
 	router.Use(cors.New(config))
 
 	log.SetOutput(os.Stdout)

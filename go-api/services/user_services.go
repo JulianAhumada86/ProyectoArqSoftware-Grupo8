@@ -17,7 +17,7 @@ type userService struct{}
 
 type userServiceInterface interface {
 	GetUserById(id int) (uDto.UserDto, e.ErrorApi)
-	GetUsers() (uDto.UsersDto, e.ErrorApi)
+	GetUsers() (uDto.UsersDto, e.ErrorApi, int)
 	AddUser(userDto uDto.UserDto) (uDto.UserRequestDto, e.ErrorApi)
 	Login(loginDto users_dto.LoginDto) (users_dto.UserRequestDto, e.ErrorApi)
 
@@ -80,7 +80,7 @@ func (s *userService) AddUser(userDto uDto.UserDto) (uDto.UserRequestDto, e.Erro
 
 }
 
-func (s *userService) GetUsers() (uDto.UsersDto, e.ErrorApi) {
+func (s *userService) GetUsers() (uDto.UsersDto, e.ErrorApi, int) {
 	var users model.Users = uClient.GetUsers()
 
 	usersList := make([]uDto.UserDto, 0)
@@ -99,7 +99,7 @@ func (s *userService) GetUsers() (uDto.UsersDto, e.ErrorApi) {
 	}
 	return uDto.UsersDto{
 		Users: usersList,
-	}, nil
+	}, nil, len(usersList)
 
 }
 
@@ -141,6 +141,7 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.UserRequestD
 	userRequestDto.LastName = user.LastName
 	userRequestDto.DNI = user.DNI
 	userRequestDto.Id = user.Id
+	userRequestDto.Admin = user.Admin
 	return userRequestDto, nil
 }
 

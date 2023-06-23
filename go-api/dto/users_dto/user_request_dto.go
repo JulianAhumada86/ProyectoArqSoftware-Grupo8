@@ -6,6 +6,7 @@ type UserRequestDto struct {
 	LastName string `gorm:"type:varchar(80);not null"`
 	DNI      string `gorm:"type:varchar(10);not null;unique"`
 	Email    string `gorm:"type:varchar(100);not null;unique"`
+	Admin    int
 }
 
 type UsersRequestDto struct {
