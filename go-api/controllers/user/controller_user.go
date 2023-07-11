@@ -127,6 +127,20 @@ func AddUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	} else {
+
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+			"email":    userDto.Email,
+			"password": userDto.Password,
+			"admin":    userDto.Admin,
+		})
+
+		tokenString, err := token.SignedString([]byte("Secret key"))
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al generar el token"})
+			return
+		}
+		userDto.Token = tokenString
+
 		ctx.JSON(http.StatusOK, userRdto)
 	}
 

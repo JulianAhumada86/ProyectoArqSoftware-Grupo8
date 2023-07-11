@@ -52,3 +52,9 @@ func GetReservas() model.Reservations {
 
 	return reservas
 }
+func GetReservasByUserId(id int) model.Reservations {
+	var reservas model.Reservations
+	Db.Where("user_id = ?", id).Preload("Hotel").Preload("User").Find(&reservas)
+
+	return reservas
+}

@@ -98,3 +98,21 @@ export const getReservations = async () => {
     console.error('Error al obtener los usuarios:', error);
   }
 };
+
+
+export const getReservationsByUser = async () => {
+  try {
+    const userData = Cookies.get('userData');
+    const user = JSON.parse(userData);
+    
+    axios.defaults.headers.common['Authorization'] = user.token
+    const id = user.id
+    
+    const response = await axios.get(`${API_URL}/usuario/reservaByUserId/${id}`);
+    return response
+
+
+  } catch (error) {
+    console.error('Error al obtener los usuarios:', error);
+  }
+};

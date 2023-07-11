@@ -24,7 +24,6 @@ const LogIn = ({ onLogin }) => {
   
     try {
       const response = await loginUser(formData.email, formData.password);
-  
       if (response.status === 200) {
         const user = {
           email: response.data.email,
@@ -33,9 +32,10 @@ const LogIn = ({ onLogin }) => {
           dni: response.data.dni,
           id: response.data.id,
           admin: response.data.admin,
-          token: response.data.token 
+          token: response.data.token
         };
-        console.log(response.data.email)
+        console.log(response)
+
         Cookies.set('userData', JSON.stringify(user));
         onLogin(formData.firstName, formData);
         navigate("/");

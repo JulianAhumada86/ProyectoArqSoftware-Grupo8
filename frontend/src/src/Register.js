@@ -47,12 +47,14 @@ const Register = ({ onLogin }) => {
       if (response.status === 200) {
         console.log(response)
         const user = {
-          email: response.data.Email,
-          name: response.data.Name,
-          lastName: response.data.LastName,
-          dni: response.data.DNI,
-          id: response.data.Id
+          email: response.data.email,
+          name: response.data.name,
+          lastName: response.data.lastName,
+          dni: response.data.dni,
+          id: response.data.id,
+          token: response.data.token
           };
+          
         Cookies.set('userData', JSON.stringify(user));
         onLogin(formData.firstName, formData); // Llama a la función onLogin pasando el nombre del usuario registrado y los datos del formulario
         navigate('/'); // Redirige al usuario a la página principal después de registrar exitosamente

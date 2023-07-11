@@ -89,12 +89,12 @@ func Dispoibilidad_de_reserva(ctx *gin.Context) {
 	}
 }
 
-/* FUTURA FUNCION
 func GetReservasByUserId(ctx *gin.Context) {
-	log.Debug("user id to load: " + ctx.Param("user_id"))
+
 	id, _ := strconv.Atoi(ctx.Param("user_id"))
+
 	var reservasDto reservations_dto.ReservationsDto
-	reservasDto, err := se.ReservationService.GetReservaByUserId(id)
+	reservasDto, err := se.ReservationService.GetReservasByUserId(id)
 
 	if err != nil {
 		ctx.JSON(err.Status(), err)
@@ -103,4 +103,3 @@ func GetReservasByUserId(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, reservasDto)
 }
-*/

@@ -10,6 +10,7 @@ type UserDto struct {
 	Password string `json:"password"`
 	Type     bool   `json:"type"`
 	Admin    int    `json:"admin"`
+	Token    string `json:"token"`
 }
 
 type UsersDto struct {
