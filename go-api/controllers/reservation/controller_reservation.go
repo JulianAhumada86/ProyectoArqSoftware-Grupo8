@@ -4,6 +4,7 @@ import (
 	"go-api/dto/reservations_dto"
 	reservationDTO "go-api/dto/reservations_dto"
 	se "go-api/services"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -58,6 +59,34 @@ func GetReservas(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, reservasDto)
+}
+
+func Dispoibilidad_de_reserva(ctx *gin.Context) {
+	log.Println("La funcion es llamda")
+	var create reservationDTO.ReservationCreateDto
+
+	idH, _ := strconv.Atoi(ctx.Param("idHotel"))
+	inicio := ctx.Param("inicio")
+	final := ctx.Param("final")
+
+	idU, _ := strconv.Atoi(ctx.Param("idUser"))
+	habitacion := ctx.Param("habitacion")
+
+	create.HotelId = idH
+	create.InitialDate = inicio
+	create.FinalDate = final
+	create.UserId = idU
+	create.Habitacion = habitacion
+
+	reservationDTO, err := se.ReservationService.Disponibilidad_de_reserva(create)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err)
+
+	} else {
+		ctx.JSON(http.StatusOK, reservationDTO)
+
+	}
 }
 
 /* FUTURA FUNCION

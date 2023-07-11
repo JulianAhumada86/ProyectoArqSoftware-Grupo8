@@ -144,7 +144,7 @@ func Login(ctx *gin.Context) {
 	respuesta, err := se.UserService.Login(loginDto)
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, respuesta)
+		ctx.JSON(http.StatusBadRequest, err) //Mandar error
 		return
 	}
 

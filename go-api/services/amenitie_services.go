@@ -39,7 +39,6 @@ func (s *amenitiesService) InsertAmenitie(amenitiDto adto.AmenitieDto) (adto.Ame
 	model_amenities = hClient.InsertAmenitie(model_amenities)
 	amenitiDto.Id = model_amenities.Id
 	return amenitiDto, nil
-
 }
 
 func (s *amenitiesService) GetAmenities() (adto.AmenitiesDto, error) {

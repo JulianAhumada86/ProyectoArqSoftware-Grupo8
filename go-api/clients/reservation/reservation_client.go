@@ -27,10 +27,28 @@ func GetReservaById(id int) model.Reservation {
 	return reserva
 
 }
+func ComprobarReserva(reserva model.Reservation) bool {
+	var reservas model.Reservations
+	hId := reserva.HotelID
+	habitacion := reserva.Habitacion
+	inicio := reserva.InitialDate
+	final := reserva.FinalDate
+	final = final.AddDate(0, 0, 1) //Agrego un dia para comprobar el ultimo dia en el bucle de abajo
+
+	for inicio != final {
+		Db.Where("? BETWEEN initial_date AND final_date AND hotel_id = ? AND habitacion = ?", inicio, hId, habitacion).Find(&reservas)
+		if len(reservas) >= 4 {
+			return false //Esto quiere decir que no hay mas dispoibilidad, el signo > es por las dudas un error de la base de datos
+		}
+		inicio = inicio.AddDate(0, 0, 1)
+	}
+
+	return true
+}
 
 func GetReservas() model.Reservations {
 	var reservas model.Reservations
 	Db.Find(&reservas)
-	log.Debug("Reservas: ", reservas)
+
 	return reservas
 }

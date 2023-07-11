@@ -1,12 +1,12 @@
 package users_dto
 
 type UserRequestDto struct {
-	Id       int    `gorm:"prmaryKey"`
-	Name     string `gorm:"type:varchar(40);not null"`
-	LastName string `gorm:"type:varchar(80);not null"`
-	DNI      string `gorm:"type:varchar(10);not null;unique"`
-	Email    string `gorm:"type:varchar(100);not null;unique"`
-	Admin    int
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	LastName string `json:"lastName"`
+	DNI      string `json:"dni"`
+	Email    string `json:"email"`
+	Admin    int    `json:"admin"`
 }
 
 type UsersRequestDto struct {

@@ -6,6 +6,7 @@ import (
 	reservationDTO "go-api/dto/reservations_dto"
 	e "go-api/errors"
 	"go-api/model"
+	"log"
 	"time"
 )
 
@@ -16,6 +17,7 @@ type reservationServicesInterface interface {
 	GetReservaById(int) reservationDTO.ReservationDto
 	GetReservas() (reservations_dto.ReservationsDto, e.ErrorApi)
 	//GetReservaByUserId(id int) (reservations_dto.ReservationDto, e.ErrorApi)
+	Disponibilidad_de_reserva(reservationDTO.ReservationCreateDto) (reservationDTO.ReservationDto, error)
 }
 
 var (
@@ -46,7 +48,14 @@ func (s *reservationService) NewReserva(reserva reservationDTO.ReservationCreate
 		return rf, e.NewBadRequestErrorApi("Fecha inicial antes de la final")
 	}
 
-	Mreserva = cl.NewReserva(Mreserva)
+	if cl.ComprobarReserva(Mreserva) {
+		Mreserva = cl.NewReserva(Mreserva)
+		log.Println("Esta Disponible")
+
+	} else {
+		log.Println("No esta disponible")
+		return rf, e.NewBadRequestErrorApi("Cosas") //Completar este error bien, no me acuerdo como era
+	}
 
 	rf.FinalDate = Mreserva.FinalDate.String()
 	rf.HotelName = Mreserva.Hotel.Name
@@ -87,6 +96,34 @@ func (s *reservationService) GetReservas() (reservations_dto.ReservationsDto, e.
 	return reservations_dto.ReservationsDto{
 		Reservations: reservasList,
 	}, nil
+}
+
+func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.ReservationCreateDto) (reservationDTO.ReservationDto, error) {
+
+	var Mreserva model.Reservation
+	var rf reservationDTO.ReservationDto
+	Mreserva.Habitacion = reserva.Habitacion
+	Mreserva.HotelID = reserva.HotelId
+
+	parseInitial, _ := time.Parse(Layoutd, reserva.InitialDate)
+
+	Mreserva.InitialDate = parseInitial
+	parseFinal, _ := time.Parse(Layoutd, reserva.FinalDate)
+
+	Mreserva.FinalDate = parseFinal
+	Mreserva.UserID = reserva.UserId
+
+	if parseFinal.Before(parseInitial) {
+		return rf, e.NewBadRequestErrorApi("Fecha inicial antes de la final")
+	}
+
+	if cl.ComprobarReserva(Mreserva) {
+		return rf, nil
+
+	} else {
+		return rf, e.NewBadRequestErrorApi("Las fechas no estan disponibles") //Completar este error bien, no me acuerdo como era
+	}
+
 }
 
 /*

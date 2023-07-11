@@ -18,6 +18,7 @@ import (
 func GetHotelbyid(ctx *gin.Context) {
 
 	id, err := strconv.Atoi(ctx.Param("id"))
+
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Parametro invalido: ID no int"})
 		log.Error(err)
@@ -36,20 +37,7 @@ func GetHotelbyid(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, hotelDto)
 }
 
-/*
-	func GetHotels(ctx *gin.Context) {
-		var hotelsDto hotel_dto.HotelsDto
-		hotelsDto, err := se.HotelService.GetHotels()
-
-		if err != nil {
-			//ctx.JSON(e.Status(), err)
-			return
-		}
-		ctx.JSON(http.StatusOK, hotelsDto)
-	}
-*/
 func InsertHotel(ctx *gin.Context) {
-	//Aca hay que hacer el token verificacion, pero in pta idea como es, lo vemos despues.
 
 	var hotelDto hotel_dto.HotelDto
 

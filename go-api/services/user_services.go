@@ -77,7 +77,6 @@ func (s *userService) AddUser(userDto uDto.UserDto) (uDto.UserRequestDto, e.Erro
 	userRDto.DNI = userDto.DNI
 	userRDto.Id = userModel.Id
 	return userRDto, nil
-
 }
 
 func (s *userService) GetUsers() (uDto.UsersDto, e.ErrorApi, int) {

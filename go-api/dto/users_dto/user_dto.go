@@ -1,14 +1,15 @@
 package users_dto
 
+// Sacar los gorm po json
 type UserDto struct {
-	Id       int    `gorm:"prmaryKey"`
-	Name     string `gorm:"type:varchar(40);not null"`
-	LastName string `gorm:"type:varchar(80);not null"`
-	DNI      string `gorm:"type:varchar(10);not null;unique"`
-	Email    string `gorm:"type:varchar(100);not null;unique"`
-	Password string `gorm:"type:varchar(30);not null"`
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	LastName string `json:"lastName"`
+	DNI      string `json:"dni"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 	Type     bool   `json:"type"`
-	Admin    int
+	Admin    int    `json:"admin"`
 }
 
 type UsersDto struct {
