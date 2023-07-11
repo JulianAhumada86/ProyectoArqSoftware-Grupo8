@@ -56,9 +56,10 @@ export const loginUser = async (email, password) => {
 
 //Reservation
 
-export const agregarReservation = async (idHotel, inicio, final, idUser, habitacion) => {
-  try {
-    const response = await axios.post(`${API_URL}/agregarReservation/${idHotel}/${inicio}/${final}/${idUser}/${habitacion}`);
+export const agregarReservation = async (idHotel, inicio, final, idUser, habitacion,token) => {
+  try { 
+    axios.defaults.headers.common['Authorization'] = token
+    const response = await axios.post(`${API_URL}/usuario/agregarReservation/${idHotel}/${inicio}/${final}/${idUser}/${habitacion}`);
     return response;
   } catch (error) {
     return error.response

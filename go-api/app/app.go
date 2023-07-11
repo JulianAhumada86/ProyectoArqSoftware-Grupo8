@@ -36,8 +36,3 @@ func StartApp() {
 	router.Run(":8000")
 
 }
-
-func Hola() {
-	log.Info("Hola")
-
-}

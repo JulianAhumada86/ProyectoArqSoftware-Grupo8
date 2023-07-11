@@ -7,6 +7,7 @@ type UserRequestDto struct {
 	DNI      string `json:"dni"`
 	Email    string `json:"email"`
 	Admin    int    `json:"admin"`
+	Token    string `json:"token"`
 }
 
 type UsersRequestDto struct {

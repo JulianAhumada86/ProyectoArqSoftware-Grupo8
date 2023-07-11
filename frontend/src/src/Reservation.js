@@ -52,11 +52,13 @@ function Reservation() {
       try {
       
       const response = await agregarReservation(
+        
         formData.option1,
         formData.startDate,
         formData.endDate,
         user.id,
-        formData.option2
+        formData.option2,
+        user.token
       );
 
       if (response.status===200 ||response.status===201 ){

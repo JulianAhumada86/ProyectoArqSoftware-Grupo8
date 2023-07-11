@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/golang-jwt/jwt"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
@@ -143,10 +144,23 @@ func Login(ctx *gin.Context) {
 
 	respuesta, err := se.UserService.Login(loginDto)
 
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"email":    loginDto.Email,
+		"password": loginDto.Password,
+	})
+
+	tokenString, err := token.SignedString([]byte("Secret key"))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al generar el token"})
+		return
+	}
+	respuesta.Token = tokenString
+	log.Println(tokenString)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, err) //Mandar error
 		return
 	}
+	log.Println(respuesta)
 
 	ctx.JSON(http.StatusOK, respuesta)
 }

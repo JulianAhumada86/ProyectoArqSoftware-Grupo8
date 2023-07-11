@@ -11,20 +11,23 @@ import (
 
 func mapUrls() {
 
+	routerVerificado := router.Group("/usuario")
+	routerVerificado.Use(TokenMiddleware())
+
 	//Hotel
 	router.GET("/hotelId/:id", hotelc.GetHotelbyid)
-	router.POST("/insertHotel/:name/:Nroom/:descr", hotelc.InsertHotel)
+	routerVerificado.POST("/insertHotel/:name/:Nroom/:descr", hotelc.InsertHotel)
 
 	//User
-	router.GET("/userId/:id", userc.GetUserById)
+	routerVerificado.GET("/userId/:id", userc.GetUserById)
 	router.POST("/addUsuario/:name/:LastName/:DNI/:Password/:Email/:Admin", userc.AddUser)
-	router.GET("/users", userc.GetUsers)
+	routerVerificado.GET("/users", userc.GetUsers)
 	router.POST("/login", userc.Login)
 
 	//Reservation
-	router.POST("/agregarReservation/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.NewReserva)
-	router.GET("/reserva/:id", resrc.GetReservaById)
-	router.GET("/reservas", resrc.GetReservas)
+	routerVerificado.POST("/agregarReservation/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.NewReserva)
+	routerVerificado.GET("/reserva/:id", resrc.GetReservaById)
+	routerVerificado.GET("/reservas", resrc.GetReservas)
 	router.GET("/dispoibilidadDeReserva/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.Dispoibilidad_de_reserva)
 
 	//Amenmitie
