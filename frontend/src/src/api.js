@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const API_URL = 'http://localhost:8000'; // Reemplaza con la URL de tu API de Go
 
@@ -69,7 +70,11 @@ export const agregarReservation = async (idHotel, inicio, final, idUser, habitac
 
 export const getUsers = async () => {
   try {
-    const response = await axios.get(`${API_URL}/users`);
+    const userData = Cookies.get('userData');
+    const user = JSON.parse(userData);
+    
+    axios.defaults.headers.common['Authorization'] = user.token
+    const response = await axios.get(`${API_URL}/admin/users`);
     return response
 
 
@@ -80,7 +85,12 @@ export const getUsers = async () => {
 
 export const getReservations = async () => {
   try {
-    const response = await axios.get(`${API_URL}/reservas`);
+    const userData = Cookies.get('userData');
+    const user = JSON.parse(userData);
+    
+    axios.defaults.headers.common['Authorization'] = user.token
+
+    const response = await axios.get(`${API_URL}/admin/reservas`);
     return response
 
 

@@ -14,7 +14,7 @@ const Admin = () => {
   const [showOptions, setShowOption] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
   const [showReservations, setShowReservations] = useState(false);
-
+  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -46,14 +46,18 @@ const Admin = () => {
       const response = await loginUser(formData.email, formData.password);
       if (response.status === 200) {
         const user = {
-          email: response.data.Email,
-          name: response.data.Name,
-          lastName: response.data.LastName,
-          dni: response.data.DNI,
-          id: response.data.Id,
-          admin: response.data.Admin,
+          email: response.data.email,
+          name: response.data.name,
+          lastName: response.data.lastName,
+          dni: response.data.dni,
+          id: response.data.id,
+          admin: response.data.admin,
+          token: response.data.token
         };
+
+        console.log(user)
         Cookies.set('userData', JSON.stringify(user));
+
         if (user.admin === 1) {
           setShowLogin(false);
           setShowOption(true);
@@ -194,12 +198,12 @@ const Admin = () => {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user.Id}>
-                  <td>{user.Id}</td>
+                <tr key={user.id}>
+                  <td>{user.id}</td>
                   <td>
-                    {user.Name} {user.LastName}
+                    {user.name} {user.lastName}
                   </td>
-                  <td>{user.Email}</td>
+                  <td>{user.email}</td>
                 </tr>
               ))}
             </tbody>

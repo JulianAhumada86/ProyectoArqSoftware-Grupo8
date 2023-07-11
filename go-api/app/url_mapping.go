@@ -11,23 +11,26 @@ import (
 
 func mapUrls() {
 
-	routerVerificado := router.Group("/usuario")
-	routerVerificado.Use(TokenMiddleware())
+	routerUsuario := router.Group("/usuario")
+	routerUsuario.Use(TokenMiddleware())
+
+	routerAdmin := router.Group("/admin")
+	routerAdmin.Use(AdminTokenMiddleware())
 
 	//Hotel
 	router.GET("/hotelId/:id", hotelc.GetHotelbyid)
-	routerVerificado.POST("/insertHotel/:name/:Nroom/:descr", hotelc.InsertHotel)
+	routerAdmin.POST("/insertHotel/:name/:Nroom/:descr", hotelc.InsertHotel)
 
 	//User
-	routerVerificado.GET("/userId/:id", userc.GetUserById)
+	routerAdmin.GET("/userId/:id", userc.GetUserById)
 	router.POST("/addUsuario/:name/:LastName/:DNI/:Password/:Email/:Admin", userc.AddUser)
-	routerVerificado.GET("/users", userc.GetUsers)
+	routerAdmin.GET("/users", userc.GetUsers)
 	router.POST("/login", userc.Login)
 
 	//Reservation
-	routerVerificado.POST("/agregarReservation/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.NewReserva)
-	routerVerificado.GET("/reserva/:id", resrc.GetReservaById)
-	routerVerificado.GET("/reservas", resrc.GetReservas)
+	routerAdmin.POST("/agregarReservation/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.NewReserva)
+	routerUsuario.GET("/reserva/:id", resrc.GetReservaById)
+	routerAdmin.GET("/reservas", resrc.GetReservas)
 	router.GET("/dispoibilidadDeReserva/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.Dispoibilidad_de_reserva)
 
 	//Amenmitie

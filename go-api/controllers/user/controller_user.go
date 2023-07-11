@@ -147,6 +147,7 @@ func Login(ctx *gin.Context) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email":    loginDto.Email,
 		"password": loginDto.Password,
+		"admin":    respuesta.Admin,
 	})
 
 	tokenString, err := token.SignedString([]byte("Secret key"))
