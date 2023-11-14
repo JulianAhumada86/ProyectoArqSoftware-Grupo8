@@ -48,5 +48,4 @@ func StartDbEngine() {
 	db.AutoMigrate(&model.Image{})
 	db.AutoMigrate(&model.Reservation{})
 
-	log.Info("Llegue hasta aca pana")
 }

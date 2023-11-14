@@ -64,9 +64,10 @@ func InsertHotel(ctx *gin.Context) {
 	hotelDto, err = se.HotelService.InsertHotel(hotelDto)
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Error de comunicacion, Status Bad Rquest"})
+		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
+
 	ctx.JSON(http.StatusOK, hotelDto)
 
 }

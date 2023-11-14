@@ -33,6 +33,7 @@ func mapUrls() {
 	routerAdmin.GET("/reservas", resrc.GetReservas)
 	router.GET("/dispoibilidadDeReserva/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.Dispoibilidad_de_reserva)
 	routerUsuario.GET("/reservaByUserId/:user_id", resrc.GetReservasByUserId)
+
 	//Amenmitie
 	router.POST("/insertAmenitie/:name", amenc.InsertAmenitie)
 	router.GET("/getAmenitie/:id", amenc.GetAmenitieById)

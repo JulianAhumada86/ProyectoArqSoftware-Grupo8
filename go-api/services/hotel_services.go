@@ -66,5 +66,6 @@ func (s *hotelService) InsertHotel(hotelDto hdto.HotelDto) (hdto.HotelDto, error
 	model_hotel = hClient.InsertHotel(model_hotel)
 
 	hotelDto.Id = model_hotel.Id
+
 	return hotelDto, nil
 }
