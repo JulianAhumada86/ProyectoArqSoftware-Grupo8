@@ -111,7 +111,7 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.UserRequestD
 		return userRequestDto, e.NewBadRequestErrorApi("Email no existe o no esta registrado")
 	}
 
-	var comparison error = s.VerifyPassword(user.Password, loginDto.Password)
+	comparison := s.VerifyPassword(user.Password, loginDto.Password)
 
 	if loginDto.Email == user.Email {
 		if comparison != nil {
