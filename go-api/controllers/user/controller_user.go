@@ -157,6 +157,8 @@ func Login(ctx *gin.Context) {
 	}
 
 	respuesta, err := se.UserService.Login(loginDto)
+	log.Println("Token es:")
+	log.Print(respuesta.Token)
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email":    loginDto.Email,
@@ -175,7 +177,8 @@ func Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, err) //Mandar error
 		return
 	}
-	log.Println(respuesta)
 
+	log.Println("Token es:")
+	log.Print(respuesta.Token)
 	ctx.JSON(http.StatusOK, respuesta)
 }
