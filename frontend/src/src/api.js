@@ -11,7 +11,7 @@ export const postUser = async (name,LastName,DNI,Password,Email,Admin) => {
     return response;
     
   } catch (error) {
-    if (error.response.status=400) {
+    if (error.response.status===400) {
 
       // El servidor respondió con un código de estado de error
       const errorMessage = error.response.data;
@@ -40,7 +40,7 @@ export const loginUser = async (email, password) => {
     const response = await axios.post(`${API_URL}/login`,data)
     return response;
   }catch(error){
-    if (error.response.status=400) {
+    if (error.response.status===400) {
       // El servidor respondió con un código de estado de error
       const errorMessage = error.response.data;
       // Manejar el mensaje de error, por ejemplo, mostrarlo en la interfaz de usuario

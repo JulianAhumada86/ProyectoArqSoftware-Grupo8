@@ -9,9 +9,11 @@ import Register from './Register';
 import Reservation from './Reservation';
 import MiCuenta from './MiCuenta';
 import LogIn from './LogIn';
+import Hotel from './Hotel';
 import Cookies from 'js-cookie';
-import jsonServerProvider from 'ra-data-json-server';
+//import jsonServerProvider from 'ra-data-json-server';
 import Admin from './Admin';
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accountName, setAccountName] = useState('');
@@ -42,6 +44,8 @@ function App() {
     setUserData(null);
     Cookies.remove('userData');
   };
+  
+  const MaldronLogo = 'https://r7c7u2r3.rocketcdn.me/wp-content/uploads/2017/12/Maldron-Hotels-and-Partners.png';
 
   const Footer = () => {
     return (
@@ -53,15 +57,12 @@ function App() {
     );
   };
 
-  
-
-
 
   return (
     <Router>
       <div>
         <Navbar bg="light" expand="lg">
-          <Navbar.Brand>Maldron</Navbar.Brand>
+          <Navbar.Brand style={{marginLeft:'20px'}}><img src={MaldronLogo}/></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
@@ -73,59 +74,65 @@ function App() {
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
-          <Nav className="ml-auto">
-            {isLoggedIn ? (
-              <>
-                <Nav.Link as={Link} to="/micuenta">
-                  {user.name} {user.lastName}
+            <Nav className="ml-auto" style={{marginRight:'20px'}}>
+              {isLoggedIn ? (
+                <>
+                  <Nav.Link as={Link} to="/micuenta">
+                    {user.name} {user.lastName}
+                  </Nav.Link>
+                  <Nav.Link onClick={handleLogout}>Cerrar sesión</Nav.Link>
+                </>
+              ) : (
+                <Nav.Link as={Link} to="/login">
+                  Iniciar sesión
                 </Nav.Link>
-                <Nav.Link onClick={handleLogout}>Cerrar sesión</Nav.Link>
-              </>
-            ) : (
-              <Nav.Link as={Link} to="/login">
-                Iniciar sesión
-              </Nav.Link>
-            )}
-          </Nav>
+              )}
+            </Nav>
         </Navbar>
         <div className="container mt-5">
           <Routes>
             <Route
               path="/"
               element={
-                <Carousel>
+                <Carousel> 
+                  <Carousel.Item>
+                    <img
+                      className="d-block w-100"
+                      src="https://mcaleer-rushe.co.uk/site/wp-content/uploads/2019/08/Maldron-Glasgow-I.jpg"
+                      alt="Imagen 1"
+                    />
+                    <Link to="/hotel">
+                      <Carousel.Caption>
+                        <h3>Maldron Hotel Glasgow</h3>
+                        <p>Se encuentra en el centro de la capital escocesa</p>
+                      </Carousel.Caption>
+                    </Link>  
+                  </Carousel.Item>
                   <Carousel.Item>
                     <img
                       className="d-block w-100"
                       src="https://mcaleer-rushe.co.uk/site/wp-content/uploads/2019/05/Maldron-Hotel-Belfast-IntAirport-I.jpg"
-                      alt="Imagen 1"
-                    />
-                    <Carousel.Caption>
-                      <h3>Maldron Hotel</h3>
-                      <p>Ubicado en Dublín</p>
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                  <Carousel.Item>
-                    <img
-                      className="d-block w-100"
-                      src="https://www.maldronhotelnewcastle.com/wp-content/uploads/sites/25/2017/10/Room-Double-Single-Maldron-Newcastle-1-1680x860.jpg"
                       alt="Imagen 2"
                     />
-                    <Carousel.Caption>
-                      <h3>Mejores Habitaciones</h3>
-                      <p>Las más deluxe de toda Irlanda!</p>
-                    </Carousel.Caption>
+                    <Link to="/hotel">
+                      <Carousel.Caption>
+                        <h3>Maldron Hotel Belfast</h3>
+                        <p>El primer hotel de nuestra cadena fuera del Reino Unido</p>
+                      </Carousel.Caption>
+                    </Link>  
                   </Carousel.Item>
                   <Carousel.Item>
-                    <img
+                    <img 
                       className="d-block w-100"
-                      src="https://www.mac-group.com/wp-content/uploads/2018/03/800x400-2.jpg"
+                      src="https://apithegreeks.gumlet.io/hotels/maldron-hotel-manchester-city-centre/cover.jpg?w=1900&h=&v=1687503002&site=thegreeks"
                       alt="Imagen 3"
                     />
-                    <Carousel.Caption>
-                      <h3>Salón de Eventos</h3>
-                      <p>Con acomodaciones para celebrar las mejores fiestas</p>
-                    </Carousel.Caption>
+                    <Link to="/hotel">
+                      <Carousel.Caption>
+                        <h3>Maldron Hotel Dublín</h3>
+                        <p>Ubicado en el aeropuerto más importante de toda Irlanda</p>
+                      </Carousel.Caption>
+                    </Link>
                   </Carousel.Item>
                 </Carousel>
               }
@@ -140,7 +147,8 @@ function App() {
             />
             <Route path="/login" element={<LogIn onLogin={handleLogin} />} />
             <Route path="/reserva" element={<Reservation />} />
-            <Route path="/Admin" element={<Admin />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/hotel" element={<Hotel/>}/>
             
           </Routes>
         </div>

@@ -38,11 +38,11 @@ function Reservation() {
       navigate("/login")
     } 
 
-    if(formData.option1==0||formData.option2==0){
+    if(formData.option1===0||formData.option2===0){
       setErrorMessage('Debe completar todas las opciones de selccion multiple');
       setShowError(true);
 
-    }else if(formData.startDate =="" || formData.endDate ==""){
+    }else if(formData.startDate ==="" || formData.endDate ===""){
 
       setErrorMessage('Debe ingresar fechas validas');
       setShowError(true);
