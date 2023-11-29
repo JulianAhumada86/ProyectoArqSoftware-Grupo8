@@ -27,41 +27,6 @@ func GetUserById(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, userDto)
 
-	/*
-		controllers.VerificacionToken()(ctx)
-		if err := ctx.Errors.Last(); err != nil {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-		}
-
-		userID := ctx.GetInt("user_id")
-		if !controllers.Admin(userID){
-			ctx.JSON(http.StatusForbidden, gin.H{"error": "Debe tener permiso de administrador para realizar esta accion"})
-			return
-		}
-
-		log.Debug("User if to load: " + ctx.Param("id"))
-
-		id, _ := strconv.Atoi(ctx.Param("id"))
-		var userDto userdto.UserDto
-
-		userDto, err := se.UserService.GetUserById(id)
-
-		if err != nil {
-			ctx.JSON(err.Status(), err) //aca err status hay que implementarlo en manejo de errores
-			return
-		}
-
-		ctx.JSON(http.StatusOK, userDto)
-	*/
-	/*
-		id, _ := strconv.Atoi(ctx.Param("id"))
-		userDto, err := se.UserService.GetUserById(id)
-
-		if err != nil {
-			log.Print("error")
-		}
-		ctx.JSON(http.StatusOK, userDto)
-	*/
 }
 
 func GetUsers(ctx *gin.Context) {
