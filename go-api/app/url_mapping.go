@@ -3,6 +3,7 @@ package app
 import (
 	amenc "go-api/controllers/amenitie"
 	hotelc "go-api/controllers/hotel"
+	imagec "go-api/controllers/image"
 	resrc "go-api/controllers/reservation"
 	userc "go-api/controllers/user"
 
@@ -20,6 +21,9 @@ func mapUrls() {
 	//Hotel
 	router.GET("/hotelId/:id", hotelc.GetHotelbyid)
 	routerAdmin.POST("/insertHotel/:name/:Nroom/:descr", hotelc.InsertHotel)
+
+	//Image
+	router.POST("/image", imagec.InsertImage)
 
 	//User
 	routerAdmin.GET("/userId/:id", userc.GetUserById)
