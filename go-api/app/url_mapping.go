@@ -29,7 +29,7 @@ func mapUrls() {
 
 	//User
 	routerAdmin.GET("/userId/:id", userc.GetUserById)
-	router.POST("/addUsuario/:name/:LastName/:DNI/:Password/:Email/:Admin", userc.AddUser)
+	router.POST("/addUsuario/:name/:LastName/:DNI/:Password/:Email", userc.AddUser)
 	routerAdmin.GET("/users", userc.GetUsers)
 	router.POST("/login", userc.Login)
 

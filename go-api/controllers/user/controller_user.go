@@ -58,6 +58,7 @@ func AddUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "LastName is required"})
 		return
 	}
+	userDto.Admin = 0 //Pongo 0 porque por defecto no es admin
 	userDto.DNI = ctx.Param("DNI")
 	if userDto.DNI == "" {
 		log.Error("El campo 'DNI' está vacío")
@@ -77,15 +78,7 @@ func AddUser(ctx *gin.Context) {
 		return
 	}
 
-	ad, err := strconv.Atoi(ctx.Param("Admin"))
-	userDto.Admin = ad
-
-	if err != nil {
-		log.Error("Algo falla y no me importa que")
-		return
-	}
-
-	userRdto, err = se.UserService.AddUser(userDto)
+	userRdto, err := se.UserService.AddUser(userDto)
 
 	if err != nil {
 		log.Error("Algo falla al llamar al service para agregar el usuario")
@@ -104,7 +97,8 @@ func AddUser(ctx *gin.Context) {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al generar el token"})
 			return
 		}
-		userDto.Token = tokenString
+
+		userRdto.Token = tokenString
 
 		ctx.JSON(http.StatusOK, userRdto)
 	}
