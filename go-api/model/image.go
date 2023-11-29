@@ -2,7 +2,7 @@ package model
 
 type Image struct {
 	Id      int    `gorm:"primaryKey"`
-	Path    string `gorm:"not null"`
+	Imagen  []byte `gorm:"not null"`
 	HotelID int    `gorm:"not null"`
 	Hotel   Hotel  `gorm:"foreignKey:HotelID"`
 }

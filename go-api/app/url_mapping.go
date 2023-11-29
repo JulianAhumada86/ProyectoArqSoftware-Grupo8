@@ -23,7 +23,7 @@ func mapUrls() {
 	routerAdmin.POST("/insertHotel/:name/:Nroom/:descr", hotelc.InsertHotel)
 
 	//Image
-	router.POST("/image", imagec.InsertImage)
+	router.POST("/image/:idHotel", imagec.InsertImage)
 
 	//User
 	routerAdmin.GET("/userId/:id", userc.GetUserById)
