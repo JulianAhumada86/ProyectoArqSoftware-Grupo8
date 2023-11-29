@@ -21,9 +21,11 @@ func mapUrls() {
 	//Hotel
 	router.GET("/hotelId/:id", hotelc.GetHotelbyid)
 	routerAdmin.POST("/insertHotel/:name/:Nroom/:descr", hotelc.InsertHotel)
+	router.POST("/insertHotel/:name/:Nroom/:descr", hotelc.InsertHotel)
 
 	//Image
 	router.POST("/image/:idHotel", imagec.InsertImage)
+	router.GET("/getImagesByHotelId/:idHotel", imagec.GetImagesByHotelId)
 
 	//User
 	routerAdmin.GET("/userId/:id", userc.GetUserById)

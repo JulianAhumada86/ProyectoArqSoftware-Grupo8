@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"strconv"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -71,5 +73,26 @@ func InsertImage(ctx *gin.Context) {
 
 		ctx.Data(http.StatusOK, "image/jpeg", im3)
 	*/
+
+}
+
+func GetImagesByHotelId(ctx *gin.Context) {
+
+	id, err := strconv.Atoi(ctx.Param("idHotel"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Parametro invalido: ID no int"})
+		log.Error(err)
+		return
+	}
+
+	imagesDto, err := se.ImageService.GetImagesByHotelId(id)
+
+	if err != nil {
+		log.Error(err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Error Status Bad Request"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, imagesDto)
 
 }
