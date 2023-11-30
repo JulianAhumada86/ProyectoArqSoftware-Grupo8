@@ -10,9 +10,11 @@ import Reservation from './Reservation';
 import MiCuenta from './MiCuenta';
 import LogIn from './LogIn';
 import Hotel from './Hotel';
+import Confirmation from './Confirmation';
 import Cookies from 'js-cookie';
 //import jsonServerProvider from 'ra-data-json-server';
 import Admin from './Admin';
+import Confirmation from './Confirmation';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -149,7 +151,7 @@ function App() {
             <Route path="/reserva" element={<Reservation />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/hotel" element={<Hotel/>}/>
-            
+            <Route path="/confirmation" element={<Confirmation/>}/>
           </Routes>
         </div>
         <Footer />
