@@ -43,9 +43,13 @@ func GetAmenitieById(id int) model.Amenitie {
 	return amenitie
 }
 
+/*modifique el insert*/
 func InsertAmenitie(amenitie_model model.Amenitie) model.Amenitie {
-	Db.Create(amenitie_model)
-
+	result := Db.Create(amenitie_model)
+	if result.Error != nil {
+		log.Error("error")
+	}
+	log.Debug("Amenitie creada: ", amenitie_model.Id)
 	return amenitie_model
 }
 

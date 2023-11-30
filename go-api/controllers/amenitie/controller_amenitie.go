@@ -37,15 +37,22 @@ func GetAmenities(c *gin.Context) {
 	c.JSON(http.StatusOK, amenitiesDto)
 }
 
-func InsertAmenitie(ctx *gin.Context) {
-
+/*Modifique el Insert*/
+func InsertAmenitie(c *gin.Context) {
 	var amenitieDto amenities_dto.AmenitieDto
-	nombre := ctx.Param("/name")
-	amenitieDto.Name = nombre
+	err := c.BindJSON(&amenitieDto)
+
+	if err != nil {
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
 
 	amenitieDto, er := service.AmenitiesService.InsertAmenitie(amenitieDto)
 	if er != nil {
-		log.Error("No anda, no se porque")
+		log.Error("no se como implementar lo del paquete errors")
+		return
 	}
-	ctx.JSON(http.StatusCreated, amenitieDto)
+
+	c.JSON(http.StatusCreated, amenitieDto)
 }
