@@ -1,9 +1,9 @@
 import React, { useState }  from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { getReservaById } from './api';
 import { agregarReservation } from './api';
 import Cookies from 'js-cookie';
+import Swal from 'sweetalert2';
 
 function Reservation() {
 
@@ -43,11 +43,24 @@ function Reservation() {
       setShowError(true);
 
     }else if(formData.startDate ==="" || formData.endDate ===""){
-
-      setErrorMessage('Debe ingresar fechas validas');
-      setShowError(true);
-
-    }else{
+      Swal.fire({
+        title:"Hotel Completo",
+        text:"Nuestras habitaciones están ocupadas, prueba otra fecha",
+        icon: "info",
+        showCancelButton: false,
+        confirmButtonText: "OK",
+      }).then((result) =>{
+            if (result.isConfirmed){
+              console.log('OK');  
+              setFormData ({
+                startDate: '',
+                endDate: '',
+              });
+            }
+      });
+      //setErrorMessage('Debe ingresar fechas validas');
+      //setShowError(true);
+    } else{
     
       try {
       
@@ -62,14 +75,16 @@ function Reservation() {
       );
 
       if (response.status===200 ||response.status===201 ){
-        
-        setShowError(false);
-        alert("Reserva registrada el dia " + formData.startDate)
-        navigate("/")
+        navigate("/hotel")
+        //setShowError(false);
+        //alert("Reserva registrada el dia " + formData.startDate)
+        //navigate("/")
 
       }else if (response.status===400){
-        setErrorMessage('Debe ingresar fechas validas');
+        //
+        setErrorMessage('Algo no está funcionando');
         setShowError(true)
+
       }else{
 
         setErrorMessage('Error en los datos');
