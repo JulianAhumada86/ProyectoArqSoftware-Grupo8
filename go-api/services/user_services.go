@@ -7,6 +7,7 @@ import (
 	uDto "go-api/dto/users_dto"
 	e "go-api/errors"
 	"go-api/model"
+	"time"
 
 	"github.com/golang-jwt/jwt"
 	log "github.com/sirupsen/logrus"
@@ -146,6 +147,7 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.UserRequestD
 		"email":    user.Email,
 		"password": user.Password,
 		"admin":    user.Admin,
+		"fecha":    time.Now().Unix(),
 	})
 
 	tokenString, err := token.SignedString([]byte("Secret key"))

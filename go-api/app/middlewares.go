@@ -1,8 +1,8 @@
 package app
 
 import (
-	"log"
 	"net/http"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -30,14 +30,28 @@ func AdminTokenMiddleware() gin.HandlerFunc {
 		if token.Valid {
 			claims, ok := token.Claims.(jwt.MapClaims)
 			if ok {
-				isAdmin, ok := claims["admin"].(float64)
-				log.Println(isAdmin)
-				log.Println("esadmin")
+				// Obtener la fecha de creación del token como Unix timestamp
+				creationTime, ok := claims["fecha"].(float64)
+				if !ok {
+					c.JSON(http.StatusUnauthorized, gin.H{"error": "No se pudo obtener la fecha de creación del token"})
+					c.Abort()
+					return
+				}
 
-				if ok && isAdmin == 1 {
-					c.Next()
+				// Convertir el Unix timestamp a time.Time
+				creationDate := time.Unix(int64(creationTime), 0)
+
+				// Verificar si ha pasado más de un día
+				if time.Since(creationDate).Hours() <= 6 {
+					isAdmin, ok := claims["admin"].(float64)
+					if ok && isAdmin == 1 {
+						c.Next()
+					} else {
+						c.JSON(http.StatusUnauthorized, gin.H{"error": "Tienes que ser administrador para esta tarea"})
+						c.Abort()
+					}
 				} else {
-					c.JSON(http.StatusUnauthorized, gin.H{"error": "Tenes que ser administrador para esta tarea"})
+					c.JSON(http.StatusUnauthorized, gin.H{"error": "El token ha expirado"})
 					c.Abort()
 				}
 			}
@@ -69,8 +83,27 @@ func TokenMiddleware() gin.HandlerFunc {
 		}
 
 		if token.Valid {
-			// Token válido, continuar con la solicitud
-			c.Next()
+			claims, ok := token.Claims.(jwt.MapClaims)
+			if ok {
+				// Obtener la fecha de creación del token como Unix timestamp
+				creationTime, ok := claims["fecha"].(float64)
+				if !ok {
+					c.JSON(http.StatusUnauthorized, gin.H{"error": "No se pudo obtener la fecha de creación del token"})
+					c.Abort()
+					return
+				}
+
+				// Convertir el Unix timestamp a time.Time
+				creationDate := time.Unix(int64(creationTime), 0)
+
+				// Verificar si ha pasado más de un día
+				if time.Since(creationDate).Hours() <= 24 {
+					c.Next()
+				}
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Token expiro"})
+				c.Abort()
+				return
+			}
 		} else {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token de autorización inválido"})
 			c.Abort()

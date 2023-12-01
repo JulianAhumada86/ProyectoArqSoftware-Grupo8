@@ -4,7 +4,6 @@ import (
 	"go-api/dto/reservations_dto"
 	reservationDTO "go-api/dto/reservations_dto"
 	se "go-api/services"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -31,6 +30,7 @@ func NewReserva(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
+		return
 	}
 
 	ctx.JSON(http.StatusCreated, reservationDTO)
@@ -62,31 +62,27 @@ func GetReservas(ctx *gin.Context) {
 } //TOken Client
 
 func Dispoibilidad_de_reserva(ctx *gin.Context) {
-	log.Println("La funcion es llamda")
-	var create reservationDTO.ReservationCreateDto
+	var reserva reservationDTO.ReservationCreateDto
 
-	idH, _ := strconv.Atoi(ctx.Param("idHotel"))
+	idH, err := strconv.Atoi(ctx.Param("idHotel"))
 	inicio := ctx.Param("inicio")
 	final := ctx.Param("final")
 
 	idU, _ := strconv.Atoi(ctx.Param("idUser"))
 	habitacion := ctx.Param("habitacion")
 
-	create.HotelId = idH
-	create.InitialDate = inicio
-	create.FinalDate = final
-	create.UserId = idU
-	create.Habitacion = habitacion
-
-	reservationDTO, err := se.ReservationService.Disponibilidad_de_reserva(create)
-
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err)
-
+	reserva.HotelId = idH
+	reserva.InitialDate = inicio
+	reserva.FinalDate = final
+	reserva.UserId = idU
+	reserva.Habitacion = habitacion
+	err = se.ReservationService.Disponibilidad_de_reserva(reserva)
+	if err == nil {
+		ctx.JSON(http.StatusOK, reserva)
 	} else {
-		ctx.JSON(http.StatusOK, reservationDTO)
-
+		ctx.JSON(http.StatusBadRequest, err) //POner el error que corresponde
 	}
+
 }
 
 func GetReservasByUserId(ctx *gin.Context) {

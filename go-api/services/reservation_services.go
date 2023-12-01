@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	cl "go-api/clients/reservation"
 	"go-api/dto/reservations_dto"
 	reservationDTO "go-api/dto/reservations_dto"
@@ -17,7 +18,7 @@ type reservationServicesInterface interface {
 	GetReservaById(int) reservationDTO.ReservationDto
 	GetReservas() (reservations_dto.ReservationsDto, e.ErrorApi)
 	GetReservasByUserId(int) (reservations_dto.ReservationsDto, e.ErrorApi)
-	Disponibilidad_de_reserva(reservationDTO.ReservationCreateDto) (reservationDTO.ReservationDto, error)
+	Disponibilidad_de_reserva(reservationDTO.ReservationCreateDto) error
 }
 
 var (
@@ -30,8 +31,14 @@ func init() {
 }
 
 func (s *reservationService) NewReserva(reserva reservationDTO.ReservationCreateDto) (reservationDTO.ReservationDto, error) {
-	var Mreserva model.Reservation
 	var rf reservationDTO.ReservationDto
+	err := s.Disponibilidad_de_reserva(reserva) //Lo primero que hago es comprobar la disponibildad de la reserva
+
+	if err != nil {
+		log.Println(err.Error())
+		return rf, err
+	}
+	var Mreserva model.Reservation
 	Mreserva.Habitacion = reserva.Habitacion
 	Mreserva.HotelID = reserva.HotelId
 
@@ -42,20 +49,6 @@ func (s *reservationService) NewReserva(reserva reservationDTO.ReservationCreate
 
 	Mreserva.FinalDate = parseFinal
 	Mreserva.UserID = reserva.UserId
-
-	if parseFinal.Before(parseInitial) {
-
-		return rf, e.NewBadRequestErrorApi("Fecha inicial antes de la final")
-	}
-
-	if cl.ComprobarReserva(Mreserva) {
-		Mreserva = cl.NewReserva(Mreserva)
-		log.Println("Esta Disponible")
-
-	} else {
-		log.Println("No esta disponible")
-		return rf, e.NewBadRequestErrorApi("Cosas") //Completar este error bien, no me acuerdo como era
-	}
 
 	rf.FinalDate = Mreserva.FinalDate.String()
 	rf.HotelName = Mreserva.Hotel.Name
@@ -98,10 +91,10 @@ func (s *reservationService) GetReservas() (reservations_dto.ReservationsDto, e.
 	}, nil
 }
 
-func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.ReservationCreateDto) (reservationDTO.ReservationDto, error) {
+func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.ReservationCreateDto) error {
 
 	var Mreserva model.Reservation
-	var rf reservationDTO.ReservationDto
+
 	Mreserva.Habitacion = reserva.Habitacion
 	Mreserva.HotelID = reserva.HotelId
 
@@ -114,16 +107,30 @@ func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.Re
 	Mreserva.UserID = reserva.UserId
 
 	if parseFinal.Before(parseInitial) {
-		return rf, e.NewBadRequestErrorApi("Fecha inicial antes de la final")
+		return e.NewBadRequestErrorApi("Fecha inicial despues de final")
 	}
 
-	if cl.ComprobarReserva(Mreserva) {
-		return rf, nil
-
-	} else {
-		return rf, e.NewBadRequestErrorApi("Las fechas no estan disponibles") //Completar este error bien, no me acuerdo como era
+	var listaDias []time.Time
+	for i := Mreserva.InitialDate; i.Before(Mreserva.FinalDate) || i.Equal(Mreserva.FinalDate); i = i.AddDate(0, 0, 1) {
+		listaDias = append(listaDias, i)
 	}
+	hotel, _ := HotelService.GetHotelbyid(Mreserva.HotelID)
 
+	r, _ := cl.ComprobarReserva(Mreserva)
+	conteoDias := make([]int, len(listaDias))
+
+	for c, dia := range listaDias {
+		for _, reserva := range r {
+			if reserva.InitialDate.Before(dia.AddDate(0, 0, -1)) && reserva.FinalDate.After(dia.AddDate(0, 0, 1)) {
+				conteoDias[c]++
+				if conteoDias[c] >= hotel.RoomsAvailable {
+					return e.NewConflictErrorApi(fmt.Sprintf("El dia en la posicion %d no hay disponibilidad", c))
+				}
+			}
+		}
+	}
+	log.Println(conteoDias)
+	return nil
 }
 
 func (s *reservationService) GetReservasByUserId(id int) (reservations_dto.ReservationsDto, e.ErrorApi) {

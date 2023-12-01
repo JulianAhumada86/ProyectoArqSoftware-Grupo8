@@ -13,3 +13,9 @@ type UserRequestDto struct {
 type UsersRequestDto struct {
 	Users []UserDto `json:"users"`
 }
+
+/*
+[{4 2023-07-15 00:00:00 +0000 UTC 2023-07-25 00:00:00 +0000 UTC 1 Cama Matrimonial 1 1 {0      false 0 []} {0  0  [] []}}
+ {5 2023-07-15 00:00:00 +0000 UTC 2023-07-25 00:00:00 +0000 UTC 1 Cama Matrimonial 1 1 {0      false 0 []} {0  0  [] []}}
+  {6 2023-07-15 00:00:00 +0000 UTC 2023-07-28 00:00:00 +0000 UTC 1 Cama Matrimonial 1 1 {0      false 0 []} {0  0  [] []}}
+   {7 2023-07-15 00:00:00 +0000 UTC 2023-07-25 00:00:00 +0000 UTC 1 Cama Matrimonial 1 1 {0      false 0 []} {0  0  [] []}}] */
