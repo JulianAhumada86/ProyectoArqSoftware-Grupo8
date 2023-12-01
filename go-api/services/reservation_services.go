@@ -116,11 +116,11 @@ func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.Re
 	}
 	hotel, _ := HotelService.GetHotelbyid(Mreserva.HotelID)
 
-	r, _ := cl.ComprobarReserva(Mreserva)
+	listaReservas, _ := cl.ComprobarReserva(Mreserva)
 	conteoDias := make([]int, len(listaDias))
 
 	for c, dia := range listaDias {
-		for _, reserva := range r {
+		for _, reserva := range listaReservas {
 			if reserva.InitialDate.Before(dia.AddDate(0, 0, -1)) && reserva.FinalDate.After(dia.AddDate(0, 0, 1)) {
 				conteoDias[c]++
 				if conteoDias[c] >= hotel.RoomsAvailable {
@@ -129,7 +129,6 @@ func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.Re
 			}
 		}
 	}
-	log.Println(conteoDias)
 	return nil
 }
 
