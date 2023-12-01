@@ -14,7 +14,7 @@ import Confirmation from './Confirmation';
 import Cookies from 'js-cookie';
 //import jsonServerProvider from 'ra-data-json-server';
 import Admin from './Admin';
-import Confirmation from './Confirmation';
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

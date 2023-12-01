@@ -45,36 +45,7 @@ func InsertImage(ctx *gin.Context) {
 
 	ctx.Data(http.StatusOK, "image/jpeg", img.Data)
 
-	/*
-		im, err := ctx.FormFile("imagen")
-		log.Print(ctx.FormFile("hotel"))
-
-		if err != nil {
-			print(err)
-			ctx.Status(200)
-			return
-		}
-
-		im2, err := im.Open()
-
-		if err != nil {
-			log.Print(err)
-			ctx.Status(200)
-			return
-		}
-
-		im3, err := ioutil.ReadAll(im2)
-
-		if err != nil {
-			log.Print(err)
-			ctx.Status(200)
-			return
-		}
-
-		ctx.Data(http.StatusOK, "image/jpeg", im3)
-	*/
-
-}
+} //TOKEN ADMIN
 
 func GetImagesByHotelId(ctx *gin.Context) {
 

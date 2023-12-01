@@ -7,7 +7,7 @@ const API_URL = 'http://localhost:8000'; // Reemplaza con la URL de tu API de Go
 
 export const postUser = async (name,LastName,DNI,Password,Email,Admin) => {
   try {
-    const response = await axios.post(`${API_URL}/addUsuario/${name}/${LastName}/${DNI}/${Password}/${Email}/0`);  
+    const response = await axios.post(`${API_URL}/addUsuario/${name}/${LastName}/${DNI}/${Password}/${Email}`);  
     return response;
     
   } catch (error) {

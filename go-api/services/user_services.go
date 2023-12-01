@@ -120,15 +120,15 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.UserRequestD
 		}
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+	candidatePassword := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email":    loginDto.Email,
 		"password": loginDto.Password,
 	})
 
 	var jwtKey = []byte("Secret key")
-	tokenString, _ := token.SignedString(jwtKey)
+	stringCandidatePassword, _ := candidatePassword.SignedString(jwtKey)
 
-	var verifyToken error = s.VerifyPassword(user.Password, tokenString)
+	var verifyToken error = s.VerifyPassword(user.Password, stringCandidatePassword)
 
 	if loginDto.Email != user.Email {
 		if verifyToken != nil {
@@ -141,6 +141,25 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.UserRequestD
 	userRequestDto.DNI = user.DNI
 	userRequestDto.Id = user.Id
 	userRequestDto.Admin = user.Admin
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"email":    user.Email,
+		"password": user.Password,
+		"admin":    user.Admin,
+	})
+
+	tokenString, err := token.SignedString([]byte("Secret key"))
+	if err != nil {
+		return userRequestDto, e.NewBadRequestErrorApi("Imposible crear token")
+	}
+
+	userRequestDto.Token = tokenString
+	userRequestDto.Name = user.Name
+	userRequestDto.LastName = user.LastName
+	userRequestDto.DNI = user.DNI
+	userRequestDto.Id = user.Id
+	userRequestDto.Admin = user.Admin
+
 	return userRequestDto, nil
 }
 

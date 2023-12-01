@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/golang-jwt/jwt"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
@@ -84,24 +83,9 @@ func AddUser(ctx *gin.Context) {
 		log.Error("Algo falla al llamar al service para agregar el usuario")
 		ctx.JSON(http.StatusBadRequest, err)
 		return
-	} else {
-
-		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-			"email":    userDto.Email,
-			"password": userDto.Password,
-			"admin":    userDto.Admin,
-		})
-
-		tokenString, err := token.SignedString([]byte("Secret key"))
-		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al generar el token"})
-			return
-		}
-
-		userRdto.Token = tokenString
-
-		ctx.JSON(http.StatusOK, userRdto)
 	}
+
+	ctx.JSON(http.StatusOK, userRdto)
 
 }
 
@@ -114,30 +98,6 @@ func Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-
 	respuesta, err := se.UserService.Login(loginDto)
-	log.Println("Token es:")
-	log.Print(respuesta.Token)
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"email":    loginDto.Email,
-		"password": loginDto.Password,
-		"admin":    respuesta.Admin,
-	})
-
-	tokenString, err := token.SignedString([]byte("Secret key"))
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al generar el token"})
-		return
-	}
-	respuesta.Token = tokenString
-	log.Println(tokenString)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err) //Mandar error
-		return
-	}
-
-	log.Println("Token es:")
-	log.Print(respuesta.Token)
 	ctx.JSON(http.StatusOK, respuesta)
 }

@@ -35,7 +35,7 @@ func NewReserva(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, reservationDTO)
 
-}
+} //TOKEN Cliente
 
 func GetReservaById(ctx *gin.Context) {
 	var create reservationDTO.ReservationDto
@@ -47,7 +47,7 @@ func GetReservaById(ctx *gin.Context) {
 	create = se.ReservationService.GetReservaById(id)
 
 	ctx.JSON(http.StatusOK, create)
-}
+} //Token Admin
 
 func GetReservas(ctx *gin.Context) {
 	var reservasDto reservations_dto.ReservationsDto
@@ -59,7 +59,7 @@ func GetReservas(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, reservasDto)
-}
+} //TOken Client
 
 func Dispoibilidad_de_reserva(ctx *gin.Context) {
 	log.Println("La funcion es llamda")
@@ -102,4 +102,4 @@ func GetReservasByUserId(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, reservasDto)
-}
+} //Token Client

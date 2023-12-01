@@ -34,11 +34,12 @@ func mapUrls() {
 	router.POST("/login", userc.Login)
 
 	//Reservation
-	routerAdmin.POST("/agregarReservation/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.NewReserva)
+	routerUsuario.POST("/agregarReservation/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.NewReserva)
 	routerUsuario.GET("/reserva/:id", resrc.GetReservaById)
+	routerUsuario.GET("/reservaByUserId/:user_id", resrc.GetReservasByUserId)
+
 	routerAdmin.GET("/reservas", resrc.GetReservas)
 	router.GET("/dispoibilidadDeReserva/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.Dispoibilidad_de_reserva)
-	routerUsuario.GET("/reservaByUserId/:user_id", resrc.GetReservasByUserId)
 
 	//Amenmitie
 	router.POST("/insertAmenitie/:name", amenc.InsertAmenitie)

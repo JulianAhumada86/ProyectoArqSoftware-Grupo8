@@ -10,7 +10,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func GetAmenitieById(c *gin.Context) {
+func GetAmenitieById(c *gin.Context) { //Verificar Token admin
 	log.Debug("Amenitie ID to load: " + c.Param("id"))
 
 	id, _ := strconv.Atoi(c.Param("id"))

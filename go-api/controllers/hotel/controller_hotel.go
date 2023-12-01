@@ -1,8 +1,5 @@
 package hotel
 
-// Funciones que hay que poner
-// get y post
-
 import (
 	"net/http"
 	"strconv"
@@ -70,4 +67,4 @@ func InsertHotel(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, hotelDto)
 
-}
+} //ADMIN Token
