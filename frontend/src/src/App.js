@@ -14,6 +14,7 @@ import Confirmation from './Confirmation';
 import Cookies from 'js-cookie';
 //import jsonServerProvider from 'ra-data-json-server';
 import Admin from './Admin';
+import CreateHotel from './CreateHotel';
 
 
 function App() {
@@ -150,8 +151,9 @@ function App() {
             <Route path="/login" element={<LogIn onLogin={handleLogin} />} />
             <Route path="/reserva" element={<Reservation />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/createHotel" element={<CreateHotel />} />
             <Route path="/hotel" element={<Hotel/>}/>
-            <Route path="/confirmation" element={<Confirmation/>}/>
+            <Route path="/confirmacion" element={<Confirmation/>}/>
           </Routes>
         </div>
         <Footer />
