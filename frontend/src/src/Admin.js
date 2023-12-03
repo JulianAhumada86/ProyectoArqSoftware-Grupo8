@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser, getUsers, getReservations } from './api';
+import { loginUser, getUsers, getReservations, getHotels } from './api';
 import Cookies from 'js-cookie';
 import './Admin.css';
 
 const Admin = () => {
   const [reservas, setReservas] = useState([]);
   const [users, setUsers] = useState([]);
+  const [hotels, setHotels] = useState([]);
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(false);
@@ -14,6 +15,7 @@ const Admin = () => {
   const [showOptions, setShowOption] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
   const [showReservations, setShowReservations] = useState(false);
+  const [showHotels, setShowHotels] = useState(false);
   
   const [formData, setFormData] = useState({
     email: '',
@@ -82,12 +84,20 @@ const Admin = () => {
 
   const mostrarReservaciones = () => {
     setShowReservations(true);
+    setShowHotels(false);
     setShowUsers(false);
   };
 
   const mostrarUsuarios = () => {
     setShowReservations(false);
+    setShowHotels(false);
     setShowUsers(true);
+  };
+
+  const mostrarHoteles = () => {
+    setShowHotels(true);
+    setShowReservations(false);
+    setShowUsers(false);
   };
 
   const getUsuarios = async (event) => {
@@ -100,6 +110,12 @@ const Admin = () => {
     const response = await getReservations();
     const reservasData = response.data.reservations;
     setReservas(reservasData);
+  };
+
+  const getHoteles = async (event) => {
+    const response = await getHoteles();
+    const reservasData = response.data.hotels;
+    setHotels(reservasData);
   };
 
   return (
@@ -119,6 +135,12 @@ const Admin = () => {
               getUsuarios();
             }}>
               Usuarios
+            </div>
+            <div className={`tab ${showHotels ? 'active' : ''}`} onClick={() => {
+              mostrarHoteles();
+              getHoteles();
+            }}>
+              Hoteles
             </div>
           </div>
           {showError && <p style={{ color: 'red' }}>{errorMessage}</p>}
@@ -204,6 +226,31 @@ const Admin = () => {
                     {user.name} {user.lastName}
                   </td>
                   <td>{user.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {showHotels && (
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Habitaciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {hotels.map((hotel) => (
+                <tr key={hotel.id}>
+                  <td>{hotel.id}</td>
+                  <td>
+                    {hotel.name}
+                  </td>
+                  <td>{hotel.rooms_available}</td>
                 </tr>
               ))}
             </tbody>

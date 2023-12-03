@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:8000'; // Reemplaza con la URL de tu API de Go
 
 //Register
 
-export const postUser = async (name,LastName,DNI,Password,Email,Admin) => {
+export const postUser = async (name,LastName,DNI,Password,Email) => {
   try {
     const response = await axios.post(`${API_URL}/addUsuario/${name}/${LastName}/${DNI}/${Password}/${Email}`);  
     return response;
@@ -25,8 +25,58 @@ export const postUser = async (name,LastName,DNI,Password,Email,Admin) => {
 
   }
     
-  throw new Error('Error al agregar reserva');
+  throw new Error('Error al agregar usuario');
 }
+
+//Hotel
+
+export const postHotel = async (name,Nroom,descr) => {
+  try {
+    const response = await axios.post(`${API_URL}/insertHhotel/${name}/${Nroom}/${descr}`);  
+    return response;
+    
+  } catch (error) {
+    if (error.response.status===400) {
+
+      // El servidor respondió con un código de estado de error
+      const errorMessage = error.response.data;
+      // Manejar el mensaje de error, por ejemplo, mostrarlo en la interfaz de usuario
+      console.error(errorMessage)
+      return error.response
+    } else {
+      // Error de red o solicitud cancelada
+      console.error('Error en la solicitud:', error.message)
+    }
+
+  }
+    
+  throw new Error('Error al agregar hotel');
+}
+
+//Imagen
+export const postImage = async (image,idHotel) => {
+  try {
+    const response = await axios.post(`${API_URL}/${image}/${idHotel}`);  
+    return response;
+    
+  } catch (error) {
+    if (error.response.status===400) {
+
+      // El servidor respondió con un código de estado de error
+      const errorMessage = error.response.data;
+      // Manejar el mensaje de error, por ejemplo, mostrarlo en la interfaz de usuario
+      console.error(errorMessage)
+      return error.response
+    } else {
+      // Error de red o solicitud cancelada
+      console.error('Error en la solicitud:', error.message)
+    }
+
+  }
+    
+  throw new Error('Error al agregar imagenes');
+}
+
 
 //LogIn
 
@@ -75,6 +125,21 @@ export const getUsers = async () => {
     
     axios.defaults.headers.common['Authorization'] = user.token
     const response = await axios.get(`${API_URL}/admin/users`);
+    return response
+
+
+  } catch (error) {
+    console.error('Error al obtener los usuarios:', error);
+  }
+};
+
+export const getHotels = async () => {
+  try {
+    const userData = Cookies.get('userData');
+    const user = JSON.parse(userData);
+    
+    axios.defaults.headers.common['Authorization'] = user.token
+    const response = await axios.get(`${API_URL}/admin/hotels`);
     return response
 
 

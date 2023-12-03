@@ -15,7 +15,7 @@ import Cookies from 'js-cookie';
 //import jsonServerProvider from 'ra-data-json-server';
 import Admin from './Admin';
 import CreateHotel from './CreateHotel';
-
+import AddImages from './AddImages';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -151,7 +151,8 @@ function App() {
             <Route path="/login" element={<LogIn onLogin={handleLogin} />} />
             <Route path="/reserva" element={<Reservation />} />
             <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/createHotel" element={<CreateHotel />} />
+            <Route path="/admin/crearHotel" element={<CreateHotel />} />
+            <Route path="/admin/crearHotel/imagenes" element={<AddImages/>}/>
             <Route path="/hotel" element={<Hotel/>}/>
             <Route path="/confirmacion" element={<Confirmation/>}/>
           </Routes>

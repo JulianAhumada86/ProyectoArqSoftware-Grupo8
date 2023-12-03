@@ -34,6 +34,18 @@ func GetHotelbyid(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, hotelDto)
 }
 
+func GetHotels(ctx *gin.Context) {
+	var hotelesDto hotel_dto.HotelsDto
+	hotelesDto, err := se.HotelService.GetHotels()
+
+	if err != nil {
+		ctx.JSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, hotelesDto)
+} //TOken Client
+
 func InsertHotel(ctx *gin.Context) {
 
 	var hotelDto hotel_dto.HotelDto
