@@ -47,5 +47,6 @@ func mapUrls() {
 	router.GET("/getAmenitie/:id", amenc.GetAmenitieById)
 	router.GET("/getAmenities", amenc.GetAmenities)
 
+	router.POST("/insertHotel", hotelc.InsertHotel)
 	log.Info("Urls Cargadas")
 }

@@ -114,7 +114,7 @@ func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.Re
 	for i := Mreserva.InitialDate; i.Before(Mreserva.FinalDate) || i.Equal(Mreserva.FinalDate); i = i.AddDate(0, 0, 1) {
 		listaDias = append(listaDias, i)
 	}
-	hotel, _ := HotelService.GetHotelbyid(Mreserva.HotelID)
+	//hotel, _ := HotelService.GetHotelbyid(Mreserva.HotelID)
 
 	listaReservas, _ := cl.ComprobarReserva(Mreserva)
 	conteoDias := make([]int, len(listaDias))
@@ -123,7 +123,7 @@ func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.Re
 		for _, reserva := range listaReservas {
 			if reserva.InitialDate.Before(dia.AddDate(0, 0, -1)) && reserva.FinalDate.After(dia.AddDate(0, 0, 1)) {
 				conteoDias[c]++
-				if conteoDias[c] >= hotel.RoomsAvailable {
+				if conteoDias[c] >= 4 {
 					return e.NewConflictErrorApi(fmt.Sprintf("El dia en la posicion %d no hay disponibilidad", c))
 				}
 			}
