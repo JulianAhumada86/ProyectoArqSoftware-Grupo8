@@ -9,7 +9,12 @@ function CreateHotel() {
     nombre: '',
     descripcion: '',
     amenities: [],
-    numHabitaciones: 100,
+    habitaciones: [
+      { tipo: '', cantidad: 0 },
+      { tipo: '', cantidad: 0 },
+      { tipo: '', cantidad: 0 },
+      { tipo: '', cantidad: 0 },
+    ],
   });
 
   const navigate = useNavigate();
@@ -29,20 +34,12 @@ function CreateHotel() {
     }));
   };
 
-  const handleIncrementarHabitaciones = () => {
-    // Incrementar el número de habitaciones por 10
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      numHabitaciones: Math.max(110, prevFormData.numHabitaciones + 10),
-    }));
-  };
-
-  const handleDecrementarHabitaciones = () => {
-    // Decrementar el número de habitaciones por 10, asegurándote de que no sea menos de 100
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      numHabitaciones: Math.max(100, prevFormData.numHabitaciones - 10),
-    }));
+  const handleHabitacionesChange = (index, field, value) => {
+    setFormData((prevFormData) => {
+      const updatedHabitaciones = [...prevFormData.habitaciones];
+      updatedHabitaciones[index][field] = value;
+      return { ...prevFormData, habitaciones: updatedHabitaciones };
+    });
   };
 
   const handleCrearHotel = async (event) => {
@@ -104,7 +101,7 @@ function CreateHotel() {
                 name="descripcion"
                 value={formData.descripcion}
                 onChange={handleChange}
-                style={{ height: '80px' }}
+                style={{ height: '160px' }}
               />
             </Form.Group>
           </Form>
@@ -123,30 +120,34 @@ function CreateHotel() {
               onChange={handleAmenitiesChange}
             />
           </Form.Group>
-          <Form.Group style={{ marginTop: '10px' }}>
-            <Form.Label>Número de Habitaciones</Form.Label>
-            <div className="d-flex">
-              <Button
-                variant="outline-primary"
-                onClick={handleDecrementarHabitaciones}
-              >
-                -
-              </Button>
-              <Form.Control
-                type="text"
-                name="numHabitaciones"
-                value={formData.numHabitaciones}
-                readOnly
-                style={{ margin: '0 5px', textAlign: 'center' }}
-              />
-              <Button
-                variant="outline-primary"
-                onClick={handleIncrementarHabitaciones}
-              >
-                +
-              </Button>
-            </div>
+          <Form.Group style={{marginTop:'10px'}}>
+            <Form.Label>Tipo y Cantidad de Habitaciones</Form.Label>
+            {[0, 1, 2, 3].map((index) => (
+              <Row key={index}>
+                <Col md={4}>
+                  <Form.Control
+                    as="select"
+                    value={formData.habitaciones[index].tipo}
+                    onChange={(e) => handleHabitacionesChange(index, 'tipo', e.target.value)}
+                  >
+                    {/* Opciones de tipo */}
+                    <option value="">Seleccionar tipo</option>
+                    {/* Agrega más opciones según tus necesidades */}
+                  </Form.Control>
+                </Col>
+                <Col md={4}>
+                  <Form.Control
+                    type="number"
+                    min={0}
+                    max={800}
+                    value={formData.habitaciones[index].cantidad}
+                    onChange={(e) => handleHabitacionesChange(index, 'cantidad', e.target.value)}
+                  />
+                </Col>
+              </Row>
+            ))}
           </Form.Group>
+
         </Col>
       </Row>
       <Row className="mt-3">
