@@ -18,6 +18,7 @@ type hotelServicesInterface interface {
 	GetHotelbyid(id int) (hdto.HotelDto, error)
 	InsertHotel(hotelDto hdto.HotelConHabitaciones) (hdto.HotelConHabitaciones, error)
 	GetHotels() (hdto.HotelsDto, e.ErrorApi)
+	GetHotelsC() (hdto.HotelsDto, e.ErrorApi)
 }
 
 var (
@@ -42,6 +43,22 @@ func (s *hotelService) GetHotelbyid(id int) (hdto.HotelDto, error) {
 }
 
 func (s *hotelService) GetHotels() (hdto.HotelsDto, e.ErrorApi) {
+	var hotels model.Hotels = hClient.GetHotels()
+	hotelsList := make([]hdto.HotelDto, 0)
+
+	for _, hotel := range hotels {
+		var hotelDto hdto.HotelDto
+		id := hotel.Id
+		hotelDto, _ = s.GetHotelbyid(id)
+		hotelsList = append(hotelsList, hotelDto)
+	}
+
+	return hdto.HotelsDto{
+		Hotels: hotelsList,
+	}, nil
+}
+
+func (s *hotelService) GetHotelsC() (hdto.HotelsDto, e.ErrorApi) {
 	var hotels model.Hotels = hClient.GetHotels()
 	hotelsList := make([]hdto.HotelDto, 0)
 

@@ -12,10 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetHotels(ctx *gin.Context) {
-
-}
-
 func GetHotelbyid(ctx *gin.Context) {
 
 	id, err := strconv.Atoi(ctx.Param("id"))
@@ -41,6 +37,18 @@ func GetHotelbyid(ctx *gin.Context) {
 func GetHotels(ctx *gin.Context) {
 	var hotelesDto hotel_dto.HotelsDto
 	hotelesDto, err := se.HotelService.GetHotels()
+
+	if err != nil {
+		ctx.JSON(err.Status(), err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, hotelesDto)
+} //TOken Client
+
+func GetHotelsC(ctx *gin.Context) {
+	var hotelesDto hotel_dto.HotelsDto
+	hotelesDto, err := se.HotelService.GetHotelsC()
 
 	if err != nil {
 		ctx.JSON(err.Status(), err)

@@ -1,8 +1,9 @@
 package hotel_dto
 
 type Habitacion struct {
-	Id       int `json:"Id"`
-	Cantidad int `json:"Cantidad"`
+	Id       int    `json:"Id"`
+	Cantidad int    `json:"Cantidad"`
+	Nombre   string `json:"Nombre"`
 }
 
 type HotelConHabitaciones struct {
