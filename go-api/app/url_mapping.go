@@ -20,10 +20,8 @@ func mapUrls() {
 
 	//Hotel
 	router.GET("/hotelId/:id", hotelc.GetHotelbyid)
-	routerAdmin.POST("/insertHotel/:name/:Nroom/:descr", hotelc.InsertHotel)
-	router.POST("/insertHotel/:name/:Nroom/:descr", hotelc.InsertHotel)
-	routerAdmin.GET("/hotels", hotelc.GetHotels)
-
+	routerAdmin.POST("/insertHotel", hotelc.InsertHotel)
+	router.GET("/GetHotels", hotelc.GetHotels)
 
 	//Image
 	router.POST("/image/:idHotel", imagec.InsertImage)
@@ -40,8 +38,8 @@ func mapUrls() {
 	routerUsuario.GET("/dispoibilidadDeReserva/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.Dispoibilidad_de_reserva)
 	routerUsuario.GET("/reserva/:id", resrc.GetReservaById)
 	routerUsuario.GET("/reservaByUserId/:user_id", resrc.GetReservasByUserId)
-
 	routerAdmin.GET("/reservas", resrc.GetReservas)
+
 	router.GET("/dispoibilidadDeReserva/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.Dispoibilidad_de_reserva)
 
 	//Amenmitie

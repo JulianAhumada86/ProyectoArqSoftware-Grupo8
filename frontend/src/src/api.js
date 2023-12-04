@@ -181,3 +181,26 @@ export const getReservationsByUser = async () => {
     console.error('Error al obtener los usuarios:', error);
   }
 };
+
+
+export const InsertHotel = async (data) => {
+  try {
+    const userData = Cookies.get('userData');
+    const user = JSON.parse(userData);
+
+    axios.defaults.headers.common['Authorization'] = user.token;
+    
+    const response = await axios.post(`${API_URL}admin/InsertHotel`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        // Otros encabezados si es necesario
+      },
+    });
+
+    return response.data;  // Retorna los datos de la respuesta
+
+  } catch (error) {
+    console.error('Error al insertar el hotel:', error);
+    throw error;  // Lanza el error para que pueda ser manejado por el código que llama a InsertHotel
+  }
+};

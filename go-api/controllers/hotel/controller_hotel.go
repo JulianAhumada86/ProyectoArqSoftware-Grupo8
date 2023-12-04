@@ -12,6 +12,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetHotels(ctx *gin.Context) {
+
+}
+
 func GetHotelbyid(ctx *gin.Context) {
 
 	id, err := strconv.Atoi(ctx.Param("id"))
@@ -48,34 +52,15 @@ func GetHotels(ctx *gin.Context) {
 
 func InsertHotel(ctx *gin.Context) {
 
-	var hotelDto hotel_dto.HotelDto
-
-	hotelDto.Name = ctx.Param("name")
-	num, err := strconv.Atoi(ctx.Param("Nroom"))
+	var hotelDto hotel_dto.HotelConHabitaciones
+	err := ctx.ShouldBindJSON(&hotelDto)
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Parametro invalido: Nroom no int"})
-		return
-	}
-	hotelDto.RoomsAvailable = num
-	hotelDto.Description = ctx.Param("descr")
-
-	if hotelDto.Name == "" {
-
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Parametro invalido: Argumento vacio/no name"})
-		return
-	}
-	if hotelDto.Description == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Parametro invalido: Argumento vacio/no descrpiption"})
+		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
 
 	hotelDto, err = se.HotelService.InsertHotel(hotelDto)
-
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err.Error())
-		return
-	}
 
 	ctx.JSON(http.StatusOK, hotelDto)
 

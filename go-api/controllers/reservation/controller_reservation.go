@@ -18,13 +18,13 @@ func NewReserva(ctx *gin.Context) {
 	final := ctx.Param("final")
 
 	idU, _ := strconv.Atoi(ctx.Param("idUser"))
-	habitacion := ctx.Param("habitacion")
+	habitacion, _ := strconv.Atoi(ctx.Param("habitacion"))
 
 	create.HotelId = idH
 	create.InitialDate = inicio
 	create.FinalDate = final
 	create.UserId = idU
-	create.Habitacion = habitacion
+	create.HabitacionId = habitacion
 
 	reservationDTO, err := se.ReservationService.NewReserva(create)
 
@@ -69,13 +69,13 @@ func Dispoibilidad_de_reserva(ctx *gin.Context) {
 	final := ctx.Param("final")
 
 	idU, _ := strconv.Atoi(ctx.Param("idUser"))
-	habitacion := ctx.Param("habitacion")
+	habitacion, _ := strconv.Atoi(ctx.Param("habitacion"))
 
 	reserva.HotelId = idH
 	reserva.InitialDate = inicio
 	reserva.FinalDate = final
 	reserva.UserId = idU
-	reserva.Habitacion = habitacion
+	reserva.HabitacionId = habitacion
 	err = se.ReservationService.Disponibilidad_de_reserva(reserva)
 	if err == nil {
 		ctx.JSON(http.StatusOK, reserva)

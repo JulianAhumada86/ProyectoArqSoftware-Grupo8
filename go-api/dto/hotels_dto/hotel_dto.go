@@ -1,11 +1,11 @@
 package hotel_dto
 
 type HotelDto struct {
-	Id             int      `json:"id"`
-	Name           string   `json:"name"`
-	Description    string   `json:"description"`
-	Amenities      []string `json:"amenities"`
-	RoomsAvailable int      `json:"rooms_available"`
+	Id           int          `json:"id"`
+	Name         string       `json:"name"`
+	Description  string       `json:"description"`
+	Amenities    []int        `json:"amenities"`
+	Habitaciones []Habitacion `json:"habitaciones"`
 }
 
 type HotelsDto struct {

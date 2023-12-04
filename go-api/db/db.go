@@ -45,7 +45,8 @@ func StartDbEngine() {
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.Hotel{})
 	db.AutoMigrate(&model.Amenitie{})
+	db.AutoMigrate(&model.Habitacion{})
 	db.AutoMigrate(&model.Image{})
 	db.AutoMigrate(&model.Reservation{})
-
+	db.AutoMigrate(&model.Hotel_habitaciones{})
 }

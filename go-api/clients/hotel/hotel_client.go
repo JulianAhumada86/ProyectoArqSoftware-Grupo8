@@ -61,3 +61,28 @@ func GetAmenities() model.Amenities {
 
 	return amenities
 }
+
+func AmenitieInHotel(am model.Hotel_amenitie) model.Hotel_amenitie {
+	result := Db.Create(am)
+	if result.Error != nil {
+		log.Error("error")
+	}
+
+	return am
+}
+
+func HabitacionInHotel(hh model.Hotel_habitaciones) model.Hotel_habitaciones {
+	result := Db.Create(hh)
+	if result.Error != nil {
+		log.Error("error")
+	}
+
+	return hh
+}
+
+func CantHabitaciones(idH int, idA int) int {
+	var x model.Hotel_habitaciones
+	Db.Where("hotel_id = ? and habitacion_id = ?", idH, idA).First(&x)
+
+	return x.Cantidad
+}
