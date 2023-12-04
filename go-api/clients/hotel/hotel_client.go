@@ -79,3 +79,10 @@ func HabitacionInHotel(hh model.Hotel_habitaciones) model.Hotel_habitaciones {
 
 	return hh
 }
+
+func CantHabitaciones(idH int, idA int) int {
+	var x model.Hotel_habitaciones
+	Db.Where("hotel_id = ? and habitacion_id = ?", idH, idA).First(&x)
+
+	return x.Cantidad
+}
