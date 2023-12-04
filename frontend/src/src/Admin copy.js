@@ -30,6 +30,7 @@ const Admin = () => {
         setShowError(false);
       } else {
         alert('No sos administrador');
+        Cookies.remove('userData')
         navigate('/');
       }
     } catch {}

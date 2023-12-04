@@ -48,9 +48,12 @@ func (s *hotelService) GetHotels() (hdto.HotelsDto, e.ErrorApi) {
 
 	for _, hotel := range hotels {
 		var hotelDto hdto.HotelDto
-		id := hotel.Id
-		hotelDto, _ = s.GetHotelbyid(id)
+		hotelDto.Id = hotel.Id
+		hotelDto.Description = hotel.Description
+		hotelDto.Name = hotel.Name
+
 		hotelsList = append(hotelsList, hotelDto)
+		log.Println(hotel)
 	}
 
 	return hdto.HotelsDto{

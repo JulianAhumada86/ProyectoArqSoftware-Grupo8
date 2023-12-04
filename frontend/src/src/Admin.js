@@ -113,7 +113,7 @@ const Admin = () => {
   };
 
   const getHoteles = async (event) => {
-    const response = await getHoteles();
+    const response = await getHotels();
     const reservasData = response.data.hotels;
     setHotels(reservasData);
   };

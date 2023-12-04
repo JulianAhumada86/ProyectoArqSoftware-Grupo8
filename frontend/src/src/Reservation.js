@@ -1,71 +1,36 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getReservaById } from './api';
+import { getHotels } from './api';
 import { agregarReservation } from './api';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
 
 function Reservation() {
-
-  var user=JSON;
+  var user = JSON;
+  const [hoteles, setHoteles] = useState([]);
   const [formData, setFormData] = useState({
     option1: '',
     startDate: '',
     endDate: '',
     option2: '',
   });
-
-  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-    console.log(formData.option1)
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
 
-    try{
-      const userData = Cookies.get('userData');
-      user = JSON.parse(userData);
+    // ... código del formulario
 
-    }catch(error){
-      console.log(error)
-      alert("No podes reservar sin estar registrado")
-      navigate("/login")
-    } 
-
-    if(formData.option1===0||formData.option2===0){
-      setErrorMessage('Debe completar todas las opciones de selccion multiple');
-      setShowError(true);
-
-    }else if(formData.startDate ==="" || formData.endDate ===""){
-      Swal.fire({
-        title:"Hotel Completo",
-        text:"Nuestras habitaciones están ocupadas, prueba otra fecha",
-        icon: "info",
-        showCancelButton: false,
-        confirmButtonText: "OK",
-      }).then((result) =>{
-            if (result.isConfirmed){
-              console.log('OK');  
-              setFormData ({
-                startDate: '',
-                endDate: '',
-              });
-            }
-      });
-      //setErrorMessage('Debe ingresar fechas validas');
-      //setShowError(true);
-    } else{
-    
-      try {
-      
+    try {
       const response = await agregarReservation(
-        
         formData.option1,
         formData.startDate,
         formData.endDate,
@@ -74,54 +39,75 @@ function Reservation() {
         user.token
       );
 
-      if (response.status===200 ||response.status===201 ){
-        navigate("/hotel")
-        //setShowError(false);
-        //alert("Reserva registrada el dia " + formData.startDate)
-        //navigate("/")
-
-      }else if (response.status===400){
-        //
-        setErrorMessage('Algo no está funcionando');
-        setShowError(true)
-
-      }else{
-
+      if (response.status === 200 || response.status === 201) {
+        navigate('/hotel');
+      } else {
         setErrorMessage('Error en los datos');
-        setShowError(true)
+        setShowError(true);
       }
-
-    }catch(error){
-
+    } catch (error) {
+      console.error('Error al realizar la reserva:', error);
+      setErrorMessage('Algo salió mal');
+      setShowError(true);
     }
-  }
   };
-  
+
+  const getHoteles = async () => {
+    try {
+      const response = await getHotels();
+      const reservasData = response.data.hotels;
+      setHoteles(reservasData);
+    } catch (error) {
+      console.error('Error al obtener hoteles:', error);
+    }
+  };
+
+  useEffect(() => {
+    getHoteles();
+  }, []);
+
   return (
     <div className="container mt-5">
-      
       <h1>Reserva</h1>
       <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="option1">Locación</label>
-              <select onChange={handleChange} className="form-control" id="option1" name="option1">
+              <select
+                onChange={handleChange}
+                value={formData.option1}
+                className="form-control"
+                id="option1"
+                name="option1"
+              >
                 <option value="0">Seleccionar el lugar de su estadía</option>
-                <option value="1">Maldron Dublín</option>
-                <option value="2">Maldron Buenos Aires</option>
+                {hoteles.map((hotel) => (
+                  <option key={hotel.id} value={hotel.id}>
+                    {hotel.name}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
           <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="option2">Habitación</label>
-              <select onChange={handleChange} className="form-control" id="option2" name="option2">
-                <option  value="0">Seleccionar el tipo de habitación</option>
-                <option value="1 Cama Matrimonial">1 Cama Matrimonial</option>
-                <option value="2 Camas Matrimoniales">2 Camas Matrimoniales</option>
-                <option value="1 Cucheta">1 Cucheta</option>
-                <option value="1 Cama Matrimonial y 1 Cucheta">1 Cama Matrimonial y 1 Cucheta</option>
+              <select
+                onChange={handleChange}
+                value={formData.option2}
+                className="form-control"
+                id="option2"
+                name="option2"
+              >
+                <option value="0">Seleccionar el tipo de habitación</option>
+                {hoteles
+                  .find((hotel) => hotel.id === parseInt(formData.option1, 10))
+                  ?.habitaciones.map((habitacion) => (
+                    <option key={habitacion.id} value={habitacion.id}>
+                      {habitacion.tipo}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>
@@ -131,25 +117,41 @@ function Reservation() {
           <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="startDate">Fecha de inicio</label>
-              <input onChange={handleChange} type="date" className="form-control" id="startDate" name="startDate" />
+              <input
+                onChange={handleChange}
+                type="date"
+                className="form-control"
+                id="startDate"
+                name="startDate"
+                value={formData.startDate}
+              />
             </div>
           </div>
           <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="endDate">Fecha de fin</label>
-              <input onChange={handleChange} type="date" className="form-control" id="endDate" name="endDate"/>
+              <input
+                onChange={handleChange}
+                type="date"
+                className="form-control"
+                id="endDate"
+                name="endDate"
+                value={formData.endDate}
+              />
             </div>
           </div>
         </div>
+
         {showError && <p style={{ color: 'red' }}>{errorMessage}</p>}
-        <button type="submit" className="btn btn-primary" >Reservar</button>
-        </form>
-      </div>
-    
+        <button type="submit" className="btn btn-primary">
+          Reservar
+        </button>
+      </form>
+    </div>
   );
 }
-export default Reservation;
 
+export default Reservation;
 
 /*
 

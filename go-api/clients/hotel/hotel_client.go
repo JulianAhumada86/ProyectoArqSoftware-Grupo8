@@ -23,6 +23,13 @@ func GetHotels() model.Hotels {
 	return hotels
 }
 
+func GetHabitacionesByHotelId(hotelId int) model.Amenities {
+	var amenitie model.Amenities
+	Db.Where("id = ?", hotelId).First(&amenitie)
+	log.Debug("amenitie:", amenitie)
+	return amenitie
+}
+
 func InsertHotel(hotel model.Hotel) model.Hotel {
 	h := Db.Create(&hotel)
 
