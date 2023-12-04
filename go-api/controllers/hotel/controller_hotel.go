@@ -12,6 +12,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetHotels(ctx *gin.Context) {
+
+}
+
 func GetHotelbyid(ctx *gin.Context) {
 
 	id, err := strconv.Atoi(ctx.Param("id"))
