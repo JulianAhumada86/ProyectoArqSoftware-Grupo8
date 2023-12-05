@@ -99,6 +99,7 @@ func TokenMiddleware() gin.HandlerFunc {
 				// Verificar si ha pasado más de un día
 				if time.Since(creationDate).Hours() <= 24 {
 					c.Next()
+					return
 				}
 				c.JSON(http.StatusUnauthorized, gin.H{"error": "Token expiro"})
 				c.Abort()

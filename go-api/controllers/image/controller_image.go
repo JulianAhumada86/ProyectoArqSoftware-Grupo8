@@ -1,4 +1,4 @@
-package controllers
+package image
 
 import (
 	"go-api/dto/image_dto"
@@ -22,7 +22,7 @@ func InsertImage(ctx *gin.Context) {
 
 	imagenBytes, err := ioutil.ReadAll(ctx.Request.Body)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error al leer los bytes de la imagen"})
+		ctx.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -31,7 +31,7 @@ func InsertImage(ctx *gin.Context) {
 	hotelId, err := strconv.Atoi(ctx.Param("idHotel"))
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Falta id"})
+		ctx.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 	img.HotelId = hotelId
@@ -51,7 +51,7 @@ func GetImagesByHotelId(ctx *gin.Context) {
 
 	id, err := strconv.Atoi(ctx.Param("idHotel"))
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Parametro invalido: ID no int"})
+		ctx.JSON(http.StatusBadRequest, err.Error())
 		log.Error(err)
 		return
 	}
@@ -60,7 +60,7 @@ func GetImagesByHotelId(ctx *gin.Context) {
 
 	if err != nil {
 		log.Error(err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Error Status Bad Request"})
+		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 

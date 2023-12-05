@@ -29,7 +29,7 @@ func NewReserva(ctx *gin.Context) {
 	reservationDTO, err := se.ReservationService.NewReserva(create)
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err})
+		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -42,7 +42,7 @@ func GetReservaById(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Parametro invalido: ID no int"})
+		ctx.JSON(http.StatusBadRequest, err.Error())
 	}
 	create = se.ReservationService.GetReservaById(id)
 
@@ -80,7 +80,7 @@ func Dispoibilidad_de_reserva(ctx *gin.Context) {
 	if err == nil {
 		ctx.JSON(http.StatusOK, reserva)
 	} else {
-		ctx.JSON(http.StatusBadRequest, err) //POner el error que corresponde
+		ctx.JSON(http.StatusBadRequest, err.Error()) //POner el error que corresponde
 	}
 
 }
@@ -98,4 +98,4 @@ func GetReservasByUserId(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, reservasDto)
-} //Token Client
+} //Token Client

@@ -17,7 +17,7 @@ func GetHotelbyid(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Parametro invalido: ID no int"})
+		ctx.JSON(http.StatusBadRequest, err.Error())
 		log.Error(err)
 		return
 	}
@@ -27,7 +27,7 @@ func GetHotelbyid(ctx *gin.Context) {
 
 	if err != nil {
 		log.Error(err)
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Error Status Bad Request"})
+		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -64,7 +64,7 @@ func InsertHotel(ctx *gin.Context) {
 	err := ctx.ShouldBindJSON(&hotelDto)
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err)
+		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -72,4 +72,4 @@ func InsertHotel(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, hotelDto)
 
-} //ADMIN Token
+} //ADMIN Token

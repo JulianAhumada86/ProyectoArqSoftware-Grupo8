@@ -2,6 +2,7 @@ package amenitie
 
 import (
 	amenities_dto "go-api/dto/amenitie_dto"
+	"go-api/errors"
 	service "go-api/services"
 	"net/http"
 	"strconv"
@@ -19,7 +20,7 @@ func GetAmenitieById(c *gin.Context) { //Verificar Token admin
 	amenitieDto, err := service.AmenitiesService.GetAmenitiesbyid(id)
 
 	if err != nil {
-		log.Error("ERROR; FIJENSE")
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, amenitieDto)
@@ -30,27 +31,26 @@ func GetAmenities(c *gin.Context) {
 	amenitiesDto, err := service.AmenitiesService.GetAmenities()
 
 	if err != nil {
-		log.Error("ERROR; FIJENSE")
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	c.JSON(http.StatusOK, amenitiesDto)
 }
 
-/*Modifique el Insert*/
 func InsertAmenitie(c *gin.Context) {
 	var amenitieDto amenities_dto.AmenitieDto
 	err := c.BindJSON(&amenitieDto)
 
 	if err != nil {
 		log.Error(err.Error())
-		c.JSON(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, errors.NewBadRequestErrorApi("Error al procesar la solicitud"))
 		return
 	}
 
 	amenitieDto, er := service.AmenitiesService.InsertAmenitie(amenitieDto)
 	if er != nil {
-		log.Error("no se como implementar lo del paquete errors")
+		c.JSON(http.StatusBadRequest, er.Error())
 		return
 	}
 
