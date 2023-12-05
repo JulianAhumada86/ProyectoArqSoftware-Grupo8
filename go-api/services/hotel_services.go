@@ -52,8 +52,16 @@ func (s *hotelService) GetHotels() (hdto.HotelsDto, e.ErrorApi) {
 		hotelDto.Description = hotel.Description
 		hotelDto.Name = hotel.Name
 
+		for _, habitacion := range hotel.Habitaciones {
+			var habitacionDto hdto.Habitacion
+			habitacionDto.Nombre = habitacion.Name
+			habitacionDto.Id = habitacion.Id
+			habitacionDto.Cantidad = hClient.CantHabitaciones(hotel.Id, habitacion.Id)
+
+			hotelDto.Habitaciones = append(hotelDto.Habitaciones, habitacionDto)
+		}
+
 		hotelsList = append(hotelsList, hotelDto)
-		log.Println(hotel)
 	}
 
 	return hdto.HotelsDto{
@@ -67,10 +75,22 @@ func (s *hotelService) GetHotelsC() (hdto.HotelsDto, e.ErrorApi) {
 
 	for _, hotel := range hotels {
 		var hotelDto hdto.HotelDto
-		id := hotel.Id
-		hotelDto, _ = s.GetHotelbyid(id)
+		hotelDto.Id = hotel.Id
+		hotelDto.Description = hotel.Description
+		hotelDto.Name = hotel.Name
+
+		for _, habitacion := range hotel.Habitaciones {
+			var habitacionDto hdto.Habitacion
+			habitacionDto.Nombre = habitacion.Name
+			habitacionDto.Id = habitacion.Id
+			habitacionDto.Cantidad = hClient.CantHabitaciones(hotel.Id, habitacion.Id)
+
+			hotelDto.Habitaciones = append(hotelDto.Habitaciones, habitacionDto)
+		}
+
 		hotelsList = append(hotelsList, hotelDto)
 	}
+
 	return hdto.HotelsDto{
 		Hotels: hotelsList,
 	}, nil

@@ -42,7 +42,7 @@ func GetHotels(ctx *gin.Context) {
 		ctx.JSON(err.Status(), err)
 		return
 	}
-
+	log.Println(hotelesDto)
 	ctx.JSON(http.StatusOK, hotelesDto)
 } //TOken Client
 

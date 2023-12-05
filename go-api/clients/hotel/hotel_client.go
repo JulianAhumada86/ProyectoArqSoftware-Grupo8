@@ -11,21 +11,21 @@ var Db *gorm.DB
 
 func GetHotelbyid(id int) model.Hotel {
 	var hotel model.Hotel
-	Db.Where("id = ?", id).First(&hotel)
+	Db.Preload("Amenities").Preload("Habitaciones").Where("id = ?", id).First(&hotel)
 	log.Debug("hotel:", hotel)
 	return hotel
 }
 
 func GetHotels() model.Hotels {
 	var hotels model.Hotels
-	Db.Find(&hotels)
+	Db.Preload("Amenities").Preload("Habitaciones").Find(&hotels)
 	log.Debug("Hotels: ", hotels)
 	return hotels
 }
 
 func GetHabitacionesByHotelId(hotelId int) model.Amenities {
 	var amenitie model.Amenities
-	Db.Where("id = ?", hotelId).First(&amenitie)
+	Db.Where("id = ?", hotelId).Find(&amenitie)
 	log.Debug("amenitie:", amenitie)
 	return amenitie
 }
