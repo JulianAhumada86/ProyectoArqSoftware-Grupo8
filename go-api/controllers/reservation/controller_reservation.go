@@ -80,7 +80,7 @@ func Dispoibilidad_de_reserva(ctx *gin.Context) {
 	if err == nil {
 		ctx.JSON(http.StatusOK, reserva)
 	} else {
-		ctx.JSON(http.StatusBadRequest, err.Error()) //POner el error que corresponde
+		ctx.JSON(http.StatusConflict, err.Error()) //POner el error que corresponde
 	}
 
 }

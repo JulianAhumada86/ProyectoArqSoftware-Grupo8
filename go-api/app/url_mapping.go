@@ -41,7 +41,6 @@ func mapUrls() {
 	routerUsuario.GET("/reserva/:id", resrc.GetReservaById)
 	routerUsuario.GET("/reservaByUserId/:user_id", resrc.GetReservasByUserId)
 	routerAdmin.GET("/reservas", resrc.GetReservas)
-
 	router.GET("/dispoibilidadDeReserva/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.Dispoibilidad_de_reserva)
 
 	//Amenmitie
