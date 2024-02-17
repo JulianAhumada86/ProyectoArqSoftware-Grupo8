@@ -7,6 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	hotel_dto "go-api/dto/hotels_dto"
+	"go-api/errors"
 	se "go-api/services"
 
 	"github.com/gin-gonic/gin"
@@ -17,8 +18,10 @@ func GetHotelbyid(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err.Error())
-		log.Error(err)
+		errMsg := "ID inválido"
+		log.Error(errMsg)
+		apiErr := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(apiErr.Status(), apiErr)
 		return
 	}
 	var hotelDto hotel_dto.HotelDto
@@ -27,7 +30,8 @@ func GetHotelbyid(ctx *gin.Context) {
 
 	if err != nil {
 		log.Error(err)
-		ctx.JSON(http.StatusBadRequest, err.Error())
+		apiErr := errors.NewInternalServerErrorApi("Error al obtener hotel por ID", err)
+		ctx.JSON(apiErr.Status(), apiErr)
 		return
 	}
 
@@ -64,7 +68,10 @@ func InsertHotel(ctx *gin.Context) {
 	err := ctx.ShouldBindJSON(&hotelDto)
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err.Error())
+		errMsg := "Error en la solicitud JSON"
+		log.Error(errMsg)
+		apiErr := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(apiErr.Status(), apiErr)
 		return
 	}
 

@@ -3,6 +3,7 @@ package user
 import (
 	"go-api/dto/users_dto"
 	userdto "go-api/dto/users_dto"
+	"go-api/errors"
 	se "go-api/services"
 	"net/http"
 	"strconv"
@@ -47,41 +48,53 @@ func AddUser(ctx *gin.Context) {
 	var userRdto userdto.UserRequestDto
 	userDto.Name = ctx.Param("name")
 	if userDto.Name == "" {
-		log.Error("El campo 'name' está vacío")
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Name is required"})
+		errMsg := "El campo 'name' está vacío"
+		log.Error(errMsg)
+		err := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(err.Status(), err)
 		return
 	}
 	userDto.LastName = ctx.Param("LastName")
 	if userDto.LastName == "" {
-		log.Error("El campo 'LastName' está vacío")
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "LastName is required"})
+		errMsg := "El campo 'LastName' está vacío"
+		log.Error(errMsg)
+		err := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(err.Status(), err)
 		return
 	}
 	userDto.Admin = 0 //Pongo 0 porque por defecto no es admin
 	userDto.DNI = ctx.Param("DNI")
 	if userDto.DNI == "" {
-		log.Error("El campo 'DNI' está vacío")
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "DNI is required"})
+		errMsg := "El campo 'DNI' está vacío"
+		log.Error(errMsg)
+		err := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(err.Status(), err)
 		return
 	}
 	userDto.Password = ctx.Param("Password")
 	if userDto.Password == "" {
-		log.Error("El campo 'Password' está vacío")
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Password is required"})
+		errMsg := "El campo 'Password' está vacío"
+		log.Error(errMsg)
+		err := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(err.Status(), err)
 		return
 	}
 	userDto.Email = ctx.Param("Email")
 	if userDto.Email == "" {
-		log.Error("El campo 'Email' está vacío")
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Email is required"})
+		errMsg := "El campo 'Email' está vacío"
+		log.Error(errMsg)
+		err := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(err.Status(), err)
 		return
 	}
 
 	userRdto, err := se.UserService.AddUser(userDto)
 
 	if err != nil {
-		log.Error("Algo falla al llamar al service para agregar el usuario")
-		ctx.JSON(http.StatusBadRequest, err)
+		errMsg := "Algo falla al llamar al service para agregar el usuario"
+		log.Error(errMsg)
+		apiErr := errors.NewInternalServerErrorApi(errMsg, err)
+		ctx.JSON(apiErr.Status(), apiErr)
 		return
 	}
 
@@ -95,9 +108,17 @@ func Login(ctx *gin.Context) {
 	err := ctx.BindJSON(&loginDto)
 	if err != nil {
 		log.Error(err.Error())
-		ctx.JSON(http.StatusBadRequest, err.Error())
+		apiErr := errors.NewBadRequestErrorApi(err.Error())
+		ctx.JSON(apiErr.Status(), apiErr)
 		return
 	}
 	respuesta, err := se.UserService.Login(loginDto)
+	if err != nil {
+		errMsg := "Credenciales de inicio de sesión inválidas"
+		log.Error(errMsg)
+		apiErr := errors.NewForbiddenErrorApi(errMsg)
+		ctx.JSON(apiErr.Status(), apiErr)
+		return
+	}
 	ctx.JSON(http.StatusOK, respuesta)
 }
