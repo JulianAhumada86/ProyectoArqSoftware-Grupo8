@@ -21,20 +21,21 @@ func mapUrls() {
 
 	//Hotel
 	router.GET("/hotelId/:id", hotelc.GetHotelbyid)
-	routerAdmin.POST("/insertHotel", hotelc.InsertHotel)
 	router.GET("/hotels", hotelc.GetHotelsC)
-	routerAdmin.GET("/hotels", hotelc.GetHotels)
 	router.POST("/insertHotel", hotelc.InsertHotel)
+	routerAdmin.POST("/insertHotel", hotelc.InsertHotel)
+	routerAdmin.GET("/hotels", hotelc.GetHotels)
 
 	//Image
-	router.POST("/image/:idHotel", imagec.InsertImage)
 	router.GET("/getImagesByHotelId/:idHotel", imagec.GetImagesByHotelId)
+	routerAdmin.POST("/image/:idHotel", imagec.InsertImage)
 
 	//User
-	routerAdmin.GET("/userId/:id", userc.GetUserById)
 	router.POST("/addUsuario/:name/:LastName/:DNI/:Password/:Email", userc.AddUser)
-	routerAdmin.GET("/users", userc.GetUsers)
 	router.POST("/login", userc.Login)
+	routerUsuario.GET("/userId/", userc.GetUserById)
+	routerAdmin.GET("/userId/:idUsuario", userc.GetUserById)
+	routerAdmin.GET("/users", userc.GetUsers)
 
 	//Reservation
 	routerUsuario.POST("/agregarReservation/:idHotel/:inicio/:final/:habitacion", resrc.NewReserva)
@@ -49,6 +50,9 @@ func mapUrls() {
 	router.POST("/insertAmenitie/:name", amenc.InsertAmenitie)
 	router.GET("/getAmenitie/:id", amenc.GetAmenitieById)
 	router.GET("/getAmenities", amenc.GetAmenities)
+
+	//borrar al terminar
+	router.POST("/image/:idHotel", imagec.InsertImage)
 
 	log.Info("Urls Cargadas")
 }
