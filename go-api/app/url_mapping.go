@@ -11,10 +11,11 @@ import (
 )
 
 func mapUrls() {
-
+	//Comprueba que este logeado
 	routerUsuario := router.Group("/usuario")
 	routerUsuario.Use(TokenMiddleware())
 
+	//Comprueba si esta logueado y es admin
 	routerAdmin := router.Group("/admin")
 	routerAdmin.Use(AdminTokenMiddleware())
 

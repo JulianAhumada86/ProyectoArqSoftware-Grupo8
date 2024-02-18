@@ -14,7 +14,6 @@ func init() {
 
 	router = gin.Default()
 
-	router.Static("/images", "./images")
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"*"}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE"}
@@ -23,7 +22,7 @@ func init() {
 	router.Use(cors.New(config))
 
 	log.SetOutput(os.Stdout)
-	//log.SetFormatter(&log.JSONFormatter{})
+
 	log.SetLevel(log.DebugLevel)
 	log.Info("Starting logger system")
 }
