@@ -13,13 +13,25 @@ import (
 func NewReserva(ctx *gin.Context) {
 	var create reservationDTO.ReservationCreateDto
 
-	idH, _ := strconv.Atoi(ctx.Param("idHotel"))
+	idH, err := strconv.Atoi(ctx.Param("idHotel"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
 	inicio := ctx.Param("inicio")
 	final := ctx.Param("final")
+	idU, err := strconv.Atoi(ctx.Param("idUser"))
 
-	idU, _ := strconv.Atoi(ctx.Param("idUser"))
-	habitacion, _ := strconv.Atoi(ctx.Param("habitacion"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+	habitacion, err := strconv.Atoi(ctx.Param("habitacion"))
 
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
 	create.HotelId = idH
 	create.InitialDate = inicio
 	create.FinalDate = final

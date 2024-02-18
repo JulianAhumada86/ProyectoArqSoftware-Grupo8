@@ -1,8 +1,8 @@
 package reservations_dto
 
 type ReservationDto struct {
-	Id         int    `json:"reservation_id"`
-	Habitacion string `json:"habitacion"`
+	Id         int `json:"reservation_id"`
+	Habitacion int `json:"habitacion"`
 
 	HotelName   string `json:"hotel_name"`
 	HotelId     int    `json:"booked_hotel_id"`

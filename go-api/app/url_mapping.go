@@ -36,13 +36,13 @@ func mapUrls() {
 	router.POST("/login", userc.Login)
 
 	//Reservation
-	routerUsuario.POST("/agregarReservation/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.NewReserva)
-	routerUsuario.GET("/dispoibilidadDeReserva/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.Dispoibilidad_de_reserva)
+	routerUsuario.POST("/agregarReservation/:idHotel/:inicio/:final/:habitacion", resrc.NewReserva)
+	routerUsuario.GET("/disponibilidadDeReserva/:idHotel/:inicio/:final/:habitacion", resrc.Dispoibilidad_de_reserva)
 	routerUsuario.GET("/reserva/:id", resrc.GetReservaById)
 	routerUsuario.GET("/reservaByUserId/:user_id", resrc.GetReservasByUserId)
 	routerAdmin.GET("/reservas", resrc.GetReservas)
 
-	router.GET("/dispoibilidadDeReserva/:idHotel/:inicio/:final/:idUser/:habitacion", resrc.Dispoibilidad_de_reserva)
+	router.GET("/disponibilidadDeReserva/:idHotel/:inicio/:final/:habitacion", resrc.Dispoibilidad_de_reserva)
 
 	//Amenmitie
 	router.POST("/insertAmenitie/:name", amenc.InsertAmenitie)

@@ -77,6 +77,21 @@ func (s *userService) AddUser(userDto uDto.UserDto) (uDto.UserRequestDto, e.Erro
 	userRDto.Email = userDto.Email
 	userRDto.DNI = userDto.DNI
 	userRDto.Id = userModel.Id
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"email":    userModel.Email,
+		"password": userModel.Password,
+		"admin":    userModel.Admin,
+		"fecha":    time.Now().Unix(),
+		"id":       userModel.Id,
+	})
+
+	tokenString, err := token.SignedString([]byte("Secret key"))
+	userRDto.Token = tokenString
+
+	if err != nil {
+		return userRDto, e.NewBadRequestErrorApi("Imposible crear token")
+	}
 	return userRDto, nil
 }
 
@@ -148,6 +163,7 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.UserRequestD
 		"password": user.Password,
 		"admin":    user.Admin,
 		"fecha":    time.Now().Unix(),
+		"id":       user.Id,
 	})
 
 	tokenString, err := token.SignedString([]byte("Secret key"))
@@ -166,7 +182,6 @@ func (s *userService) Login(loginDto users_dto.LoginDto) (users_dto.UserRequestD
 }
 
 func (s *userService) VerifyPassword(HashedPassword string, candidatePassword string) error {
-
 	return bcrypt.CompareHashAndPassword([]byte(HashedPassword), []byte(candidatePassword))
 }
 

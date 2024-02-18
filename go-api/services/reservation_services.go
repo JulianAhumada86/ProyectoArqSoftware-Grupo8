@@ -42,20 +42,25 @@ func (s *reservationService) NewReserva(reserva reservationDTO.ReservationCreate
 	Mreserva.HabitacionId = reserva.HabitacionId
 	Mreserva.HotelID = reserva.HotelId
 
-	parseInitial, _ := time.Parse(Layoutd, reserva.InitialDate)
+	parseInitial, err := time.Parse(Layoutd, reserva.InitialDate)
 
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
 	Mreserva.InitialDate = parseInitial
-	parseFinal, _ := time.Parse(Layoutd, reserva.FinalDate)
-
+	parseFinal, err := time.Parse(Layoutd, reserva.FinalDate)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
 	Mreserva.FinalDate = parseFinal
 	Mreserva.UserID = reserva.UserId
-
+	Mreserva = cl.NewReserva(Mreserva)
 	rf.FinalDate = Mreserva.FinalDate.String()
 	rf.HotelName = Mreserva.Hotel.Name
 	rf.Id = Mreserva.Id
 	rf.InitialDate = Mreserva.InitialDate.String()
 	rf.UserName = Mreserva.User.Name
-
+	log.Println(Mreserva)
 	return rf, nil
 }
 
@@ -73,7 +78,7 @@ func (s *reservationService) GetReservaById(id int) reservationDTO.ReservationDt
 	re.UserName = (c.User.Name + " " + c.User.LastName)
 	//c.HabitacionId
 	//Poner un buscar habitacion por id
-	re.Habitacion = "Si lees esto, en la linea 75 hay que arreglar algo del service del reservation"
+	re.Habitacion = c.HabitacionId
 	return re
 }
 
@@ -96,10 +101,9 @@ func (s *reservationService) GetReservas() (reservations_dto.ReservationsDto, e.
 func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.ReservationCreateDto) error {
 
 	var Mreserva model.Reservation
-
 	Mreserva.HabitacionId = reserva.HabitacionId
-	Mreserva.HotelID = reserva.HotelId
-
+	Mreserva.Habitacion.Id = reserva.HabitacionId
+	Mreserva.Hotel.Id = reserva.HotelId
 	parseInitial, _ := time.Parse(Layoutd, reserva.InitialDate)
 
 	Mreserva.InitialDate = parseInitial
@@ -107,6 +111,7 @@ func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.Re
 
 	Mreserva.FinalDate = parseFinal
 	Mreserva.UserID = reserva.UserId
+	log.Println(Mreserva)
 
 	if parseFinal.Before(parseInitial) {
 		return e.NewBadRequestErrorApi("Fecha inicial despues de final")
@@ -116,21 +121,24 @@ func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.Re
 	for i := Mreserva.InitialDate; i.Before(Mreserva.FinalDate) || i.Equal(Mreserva.FinalDate); i = i.AddDate(0, 0, 1) {
 		listaDias = append(listaDias, i)
 	}
-	cl.CantHabitaciones(Mreserva.HotelID, Mreserva.HabitacionId)
 
+	cantHabitaciones := cl.CantHabitaciones(Mreserva.HotelID, Mreserva.Habitacion.Id)
 	listaReservas, _ := cl.ComprobarReserva(Mreserva)
-	conteoDias := make([]int, len(listaDias))
 
+	conteoDias := make([]int, len(listaDias))
 	for c, dia := range listaDias {
 		for _, reserva := range listaReservas {
+
 			if reserva.InitialDate.Before(dia.AddDate(0, 0, -1)) && reserva.FinalDate.After(dia.AddDate(0, 0, 1)) {
 				conteoDias[c]++
-				if conteoDias[c] >= 4 {
+				log.Println(conteoDias[c])
+				if conteoDias[c] >= cantHabitaciones {
 					return e.NewConflictErrorApi(fmt.Sprintf("El dia en la posicion %d no hay disponibilidad", c))
 				}
 			}
 		}
 	}
+
 	return nil
 }
 

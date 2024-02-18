@@ -29,13 +29,13 @@ func GetReservaById(id int) model.Reservation {
 }
 func ComprobarReserva(reserva model.Reservation) (model.Reservations, error) {
 	var reservas model.Reservations
-	hId := reserva.HotelID
+	hId := reserva.Hotel.Id
 	habitacion := reserva.Habitacion
 	inicio := reserva.InitialDate
 	final := reserva.FinalDate
 	final = final.AddDate(0, 0, 1) //Agrego un dia para comprobar el ultimo dia en el bucle de abajo
-
-	Db.Where("? < final_date AND hotel_id = ? AND habitacion = ?", inicio, hId, habitacion.Id).Find(&reservas)
+	log.Println(habitacion.Id)
+	Db.Where("? < final_date AND hotel_id = ? AND habitacion_id = ?", inicio, hId, habitacion.Id).Find(&reservas)
 
 	return reservas, nil
 }

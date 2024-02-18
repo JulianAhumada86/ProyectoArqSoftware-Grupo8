@@ -2,6 +2,7 @@ package app
 
 import (
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -45,6 +46,10 @@ func AdminTokenMiddleware() gin.HandlerFunc {
 				if time.Since(creationDate).Hours() <= 6 {
 					isAdmin, ok := claims["admin"].(float64)
 					if ok && isAdmin == 1 {
+						text := strconv.FormatFloat(claims["id"].(float64), 'f', -1, 64)
+						c.AddParam("idUser", text)
+						c.Next()
+
 						c.Next()
 					} else {
 						c.JSON(http.StatusUnauthorized, gin.H{"error": "Tienes que ser administrador para esta tarea"})
@@ -98,6 +103,8 @@ func TokenMiddleware() gin.HandlerFunc {
 
 				// Verificar si ha pasado más de un día
 				if time.Since(creationDate).Hours() <= 24 {
+					text := strconv.FormatFloat(claims["id"].(float64), 'f', -1, 64)
+					c.AddParam("idUser", text)
 					c.Next()
 					return
 				}
