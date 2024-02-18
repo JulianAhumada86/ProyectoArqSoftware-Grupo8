@@ -99,11 +99,13 @@ func (s *reservationService) GetReservas() (reservations_dto.ReservationsDto, e.
 }
 
 func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.ReservationCreateDto) error {
-
+	log.Println(reserva)
 	var Mreserva model.Reservation
 	Mreserva.HabitacionId = reserva.HabitacionId
 	Mreserva.Habitacion.Id = reserva.HabitacionId
 	Mreserva.Hotel.Id = reserva.HotelId
+	Mreserva.HotelID = reserva.HotelId
+
 	parseInitial, _ := time.Parse(Layoutd, reserva.InitialDate)
 
 	Mreserva.InitialDate = parseInitial
@@ -111,8 +113,8 @@ func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.Re
 
 	Mreserva.FinalDate = parseFinal
 	Mreserva.UserID = reserva.UserId
-	log.Println(Mreserva)
 
+	log.Println(Mreserva)
 	if parseFinal.Before(parseInitial) {
 		return e.NewBadRequestErrorApi("Fecha inicial despues de final")
 	}
@@ -123,15 +125,14 @@ func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.Re
 	}
 
 	cantHabitaciones := cl.CantHabitaciones(Mreserva.HotelID, Mreserva.Habitacion.Id)
+
 	listaReservas, _ := cl.ComprobarReserva(Mreserva)
 
 	conteoDias := make([]int, len(listaDias))
 	for c, dia := range listaDias {
 		for _, reserva := range listaReservas {
-
 			if reserva.InitialDate.Before(dia.AddDate(0, 0, -1)) && reserva.FinalDate.After(dia.AddDate(0, 0, 1)) {
 				conteoDias[c]++
-				log.Println(conteoDias[c])
 				if conteoDias[c] >= cantHabitaciones {
 					return e.NewConflictErrorApi(fmt.Sprintf("El dia en la posicion %d no hay disponibilidad", c))
 				}
