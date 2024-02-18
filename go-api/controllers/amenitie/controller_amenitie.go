@@ -11,22 +11,30 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func GetAmenitieById(c *gin.Context) { //Verificar Token admin
-	log.Debug("Amenitie ID to load: " + c.Param("id"))
+func GetAmenitieById(c *gin.Context) {
+    log.Debug("Amenitie ID to load: " + c.Param("id"))
 
-	id, _ := strconv.Atoi(c.Param("id"))
-	var amenitieDto amenities_dto.AmenitieDto
+    id, err := strconv.Atoi(c.Param("id"))
+    if err != nil {
+        errMsg := "Error al convertir ID a entero"
+        log.Error(errMsg)
+        apiErr := errors.NewBadRequestErrorApi(errMsg)
+        c.JSON(apiErr.Status(), apiErr)
+        return
+    }
 
-	amenitieDto, err := service.AmenitiesService.GetAmenitiesbyid(id)
+    var amenitieDto amenities_dto.AmenitieDto
+    amenitieDto, err = service.AmenitiesService.GetAmenitiesbyid(id)
 
-	if err != nil {
-		log.Error(err)
-		apiErr := errors.NewInternalServerErrorApi("Error al obtener amenitie por ID", err)
-		c.JSON(apiErr.Status(), apiErr)
-		return
-	}
-	c.JSON(http.StatusOK, amenitieDto)
+    if err != nil {
+        log.Error(err)
+        apiErr := errors.NewInternalServerErrorApi("Error al obtener amenitie por ID", err)
+        c.JSON(apiErr.Status(), apiErr)
+        return
+    }
+    c.JSON(http.StatusOK, amenitieDto)
 }
+
 
 func GetAmenities(c *gin.Context) {
 	var amenitiesDto amenities_dto.AmenitiesDto

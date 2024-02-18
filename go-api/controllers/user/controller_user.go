@@ -15,19 +15,33 @@ import (
 
 // Controlador para obtener un usuario por su ID
 func GetUserById(ctx *gin.Context) {
-	log.Debug("User id to load: " + ctx.Param("id"))
-	id, _ := strconv.Atoi(ctx.Param("id"))
+    log.Debug("User id to load: " + ctx.Param("id"))
+    id, err := strconv.Atoi(ctx.Param("id"))
 
-	var userDto users_dto.UserDto
-	userDto, err := se.UserService.GetUserById(id)
+    if err != nil {
+        errMsg := "Error al convertir ID a entero"
+        log.Error(errMsg)
+        apiErr := errors.NewBadRequestErrorApi(errMsg)
+        ctx.JSON(apiErr.Status(), apiErr)
+        return
+    }
 
-	if err != nil {
-		ctx.JSON(err.Status(), err)
-		return
-	}
-	ctx.JSON(http.StatusOK, userDto)
+    var userDto users_dto.UserDto
+    userDto, err = se.UserService.GetUserById(id)
 
+    if err != nil {
+        apiErr, ok := err.(errors.ErrorApi)
+        if !ok {
+            errMsg := "Error interno del servidor"
+            log.Error(errMsg)
+            apiErr = errors.NewInternalServerErrorApi(errMsg, err)
+        }
+        ctx.JSON(apiErr.Status(), apiErr)
+        return
+    }
+    ctx.JSON(http.StatusOK, userDto)
 }
+
 
 func GetUsers(ctx *gin.Context) {
 	//var userDto users_dto.UsersDto
