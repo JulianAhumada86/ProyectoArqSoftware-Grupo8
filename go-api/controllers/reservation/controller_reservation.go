@@ -19,7 +19,7 @@ func NewReserva(ctx *gin.Context) {
     idH, err := strconv.Atoi(ctx.Param("idHotel"))
     if err != nil {
         errMsg := "Error al convertir ID de Hotel a entero"
-        log.Error(errMsg)
+        log.Error(err.Error())
         apiErr := errors.NewBadRequestErrorApi(errMsg)
         ctx.JSON(apiErr.Status(), apiErr)
         return
@@ -31,7 +31,7 @@ func NewReserva(ctx *gin.Context) {
     idU, err := strconv.Atoi(ctx.Param("idUser"))
     if err != nil {
         errMsg := "Error al convertir ID de Usuario a entero"
-        log.Error(errMsg)
+        log.Error(err.Error())
         apiErr := errors.NewBadRequestErrorApi(errMsg)
         ctx.JSON(apiErr.Status(), apiErr)
         return
@@ -40,7 +40,7 @@ func NewReserva(ctx *gin.Context) {
     habitacion, err := strconv.Atoi(ctx.Param("habitacion"))
     if err != nil {
         errMsg := "Error al convertir ID de Habitación a entero"
-        log.Error(errMsg)
+        log.Error(err.Error())
         apiErr := errors.NewBadRequestErrorApi(errMsg)
         ctx.JSON(apiErr.Status(), apiErr)
         return
@@ -55,7 +55,7 @@ func NewReserva(ctx *gin.Context) {
     reservationDTO, err := se.ReservationService.NewReserva(create)
 
     if err != nil {
-        log.Error(err)
+        log.Error(err.Error())
         apiErr := errors.NewInternalServerErrorApi("Error al crear nueva reserva", err)
         ctx.JSON(apiErr.Status(), apiErr)
         return
@@ -71,6 +71,7 @@ func GetReservaById(ctx *gin.Context) {
 
 	if err != nil {
 		errMsg := "ID inválido"
+        log.Error(err.Error())
 		apiErr := errors.NewBadRequestErrorApi(errMsg)
 		ctx.JSON(apiErr.Status(), apiErr)
 		return
@@ -98,7 +99,7 @@ func Disponibilidad_de_reserva(ctx *gin.Context) {
     idH, err := strconv.Atoi(ctx.Param("idHotel"))
     if err != nil {
         errMsg := "Error al convertir ID de Hotel a entero"
-        log.Error(errMsg)
+        log.Error(err.Error())
         apiErr := errors.NewBadRequestErrorApi(errMsg)
         ctx.JSON(apiErr.Status(), apiErr)
         return
@@ -110,7 +111,7 @@ func Disponibilidad_de_reserva(ctx *gin.Context) {
     idU, err := strconv.Atoi(ctx.Param("idUser"))
     if err != nil {
         errMsg := "Error al convertir ID de Usuario a entero"
-        log.Error(errMsg)
+        log.Error(err.Error())
         apiErr := errors.NewBadRequestErrorApi(errMsg)
         ctx.JSON(apiErr.Status(), apiErr)
         return
@@ -119,7 +120,7 @@ func Disponibilidad_de_reserva(ctx *gin.Context) {
     habitacion, err := strconv.Atoi(ctx.Param("habitacion"))
     if err != nil {
         errMsg := "Error al convertir ID de Habitación a entero"
-        log.Error(errMsg)
+        log.Error(err.Error())
         apiErr := errors.NewBadRequestErrorApi(errMsg)
         ctx.JSON(apiErr.Status(), apiErr)
         return
@@ -136,7 +137,7 @@ func Disponibilidad_de_reserva(ctx *gin.Context) {
     if err == nil {
         ctx.JSON(http.StatusOK, reserva)
     } else {
-        log.Error(err)
+        log.Error(err.Error())
         apiErr := errors.NewBadRequestErrorApi("Error al verificar disponibilidad de reserva")
         ctx.JSON(apiErr.Status(), apiErr)
     }
@@ -147,7 +148,7 @@ func GetReservasByUserId(ctx *gin.Context) {
     id, err := strconv.Atoi(ctx.Param("user_id"))
     if err != nil {
         errMsg := "Error al convertir ID de Usuario a entero"
-        log.Error(errMsg)
+        log.Error(err.Error())
         apiErr := errors.NewBadRequestErrorApi(errMsg)
         ctx.JSON(apiErr.Status(), apiErr)
         return
@@ -157,7 +158,7 @@ func GetReservasByUserId(ctx *gin.Context) {
     reservasDto, err = se.ReservationService.GetReservasByUserId(id)
 
     if err != nil {
-        log.Error(err)
+        log.Error(err.Error())
         apiErr := errors.NewInternalServerErrorApi("Error al obtener reservas por ID de Usuario", err)
         ctx.JSON(apiErr.Status(), apiErr)
         return
