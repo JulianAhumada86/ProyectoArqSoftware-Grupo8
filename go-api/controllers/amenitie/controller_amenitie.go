@@ -20,7 +20,9 @@ func GetAmenitieById(c *gin.Context) { //Verificar Token admin
 	amenitieDto, err := service.AmenitiesService.GetAmenitiesbyid(id)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
+		log.Error(err)
+		apiErr := errors.NewInternalServerErrorApi("Error al obtener amenitie por ID", err)
+		c.JSON(apiErr.Status(), apiErr)
 		return
 	}
 	c.JSON(http.StatusOK, amenitieDto)
@@ -44,7 +46,8 @@ func InsertAmenitie(c *gin.Context) {
 
 	if err != nil {
 		log.Error(err.Error())
-		c.JSON(http.StatusBadRequest, errors.NewBadRequestErrorApi("Error al procesar la solicitud"))
+		apiErr := errors.NewBadRequestErrorApi("Error al procesar la solicitud")
+		c.JSON(apiErr.Status(), apiErr)
 		return
 	}
 

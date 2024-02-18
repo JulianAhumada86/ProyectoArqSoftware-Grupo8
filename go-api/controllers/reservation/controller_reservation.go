@@ -3,6 +3,7 @@ package reservation
 import (
 	"go-api/dto/reservations_dto"
 	reservationDTO "go-api/dto/reservations_dto"
+	"go-api/errors"
 	se "go-api/services"
 	"net/http"
 	"strconv"
@@ -13,25 +14,13 @@ import (
 func NewReserva(ctx *gin.Context) {
 	var create reservationDTO.ReservationCreateDto
 
-	idH, err := strconv.Atoi(ctx.Param("idHotel"))
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err.Error())
-		return
-	}
+	idH, _ := strconv.Atoi(ctx.Param("idHotel"))
 	inicio := ctx.Param("inicio")
 	final := ctx.Param("final")
-	idU, err := strconv.Atoi(ctx.Param("idUser"))
 
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err.Error())
-		return
-	}
-	habitacion, err := strconv.Atoi(ctx.Param("habitacion"))
+	idU, _ := strconv.Atoi(ctx.Param("idUser"))
+	habitacion, _ := strconv.Atoi(ctx.Param("habitacion"))
 
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err.Error())
-		return
-	}
 	create.HotelId = idH
 	create.InitialDate = inicio
 	create.FinalDate = final
@@ -54,7 +43,10 @@ func GetReservaById(ctx *gin.Context) {
 	id, err := strconv.Atoi(ctx.Param("id"))
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err.Error())
+		errMsg := "ID inválido"
+		apiErr := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(apiErr.Status(), apiErr)
+		return
 	}
 	create = se.ReservationService.GetReservaById(id)
 
@@ -92,7 +84,7 @@ func Dispoibilidad_de_reserva(ctx *gin.Context) {
 	if err == nil {
 		ctx.JSON(http.StatusOK, reserva)
 	} else {
-		ctx.JSON(http.StatusBadRequest, err.Error()) //POner el error que corresponde
+		ctx.JSON(http.StatusBadRequest, err.Error())
 	}
 
 }

@@ -2,6 +2,7 @@ package image
 
 import (
 	"go-api/dto/image_dto"
+	"go-api/errors"
 	se "go-api/services"
 	"io/ioutil"
 	"net/http"
@@ -16,13 +17,18 @@ func InsertImage(ctx *gin.Context) {
 
 	contentType := ctx.GetHeader("Content-Type")
 	if contentType != "image/jpeg" && contentType != "image/png" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Content-Type debe ser image/jpeg o image/png"})
+		errMsg := "Content-Type debe ser image/jpeg o image/png"
+		log.Error(errMsg)
+		apiErr := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(apiErr.Status(), apiErr)
 		return
 	}
 
 	imagenBytes, err := ioutil.ReadAll(ctx.Request.Body)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, err.Error())
+		log.Error(err.Error())
+		apiErr := errors.NewInternalServerErrorApi("Error al leer el cuerpo de la solicitud", err)
+		ctx.JSON(apiErr.Status(), apiErr)
 		return
 	}
 
@@ -31,7 +37,9 @@ func InsertImage(ctx *gin.Context) {
 	hotelId, err := strconv.Atoi(ctx.Param("idHotel"))
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, err.Error())
+		log.Error(err.Error())
+		apiErr := errors.NewInternalServerErrorApi("Error al convertir el ID del hotel", err)
+		ctx.JSON(apiErr.Status(), apiErr)
 		return
 	}
 	img.HotelId = hotelId
@@ -39,7 +47,9 @@ func InsertImage(ctx *gin.Context) {
 	img, err = se.ImageService.InsertImage(img)
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, err.Error())
+		log.Error(err.Error())
+		apiErr := errors.NewInternalServerErrorApi("Error al insertar la imagen", err)
+		ctx.JSON(apiErr.Status(), apiErr)
 		return
 	}
 
@@ -51,16 +61,19 @@ func GetImagesByHotelId(ctx *gin.Context) {
 
 	id, err := strconv.Atoi(ctx.Param("idHotel"))
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err.Error())
-		log.Error(err)
+		errMsg := "ID de hotel inválido"
+		log.Error(errMsg)
+		apiErr := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(apiErr.Status(), apiErr)
 		return
 	}
 
 	imagesDto, err := se.ImageService.GetImagesByHotelId(id)
 
 	if err != nil {
-		log.Error(err)
-		ctx.JSON(http.StatusBadRequest, err.Error())
+		log.Error(err.Error())
+		apiErr := errors.NewInternalServerErrorApi("Error al obtener imágenes por ID de hotel", err)
+		ctx.JSON(apiErr.Status(), apiErr)
 		return
 	}
 
