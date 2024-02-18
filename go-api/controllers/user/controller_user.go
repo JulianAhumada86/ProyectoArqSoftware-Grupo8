@@ -15,33 +15,54 @@ import (
 
 // Controlador para obtener un usuario por su ID
 func GetUserById(ctx *gin.Context) {
-    log.Debug("User id to load: " + ctx.Param("id"))
-    id, err := strconv.Atoi(ctx.Param("id"))
+	id, err := strconv.Atoi(ctx.Param("idUsuario"))
 
-    if err != nil {
-        errMsg := "Error al convertir ID a entero"
-        log.Error(errMsg)
-        apiErr := errors.NewBadRequestErrorApi(errMsg)
-        ctx.JSON(apiErr.Status(), apiErr)
-        return
-    }
+	admin, err2 := strconv.Atoi(ctx.Param("admin"))
 
-    var userDto users_dto.UserDto
-    userDto, err = se.UserService.GetUserById(id)
+	if err != nil {
+		//Si no mandaron idUsuario entra aca, por lo que el usuario se busca a si mismo
+		id, err = strconv.Atoi(ctx.Param("id"))
+		log.Info("Un usuario se busca a si mismo")
+		if err != nil {
+			errMsg := "Error al convertir ID a entero"
+			log.Error(errMsg)
+			apiErr := errors.NewBadRequestErrorApi(errMsg)
+			ctx.JSON(apiErr.Status(), apiErr)
+			return
+		}
+	} else if err2 != nil {
+		errMsg := "Error al convertir ID del admin entero"
+		log.Error(errMsg)
+		apiErr := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(apiErr.Status(), apiErr)
+		return
 
-    if err != nil {
-        apiErr, ok := err.(errors.ErrorApi)
-        if !ok {
-            errMsg := "Error interno del servidor"
-            log.Error(errMsg)
-            apiErr = errors.NewInternalServerErrorApi(errMsg, err)
-        }
-        ctx.JSON(apiErr.Status(), apiErr)
-        return
-    }
-    ctx.JSON(http.StatusOK, userDto)
+	} else if admin == 1 {
+
+		log.Info("Un administrador esta buscando a un usuario")
+	} else {
+		errMsg := "Error al convertir ID del admin entero"
+		log.Error(errMsg)
+		apiErr := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(apiErr.Status(), apiErr)
+		return
+	}
+
+	var userDto users_dto.UserDto
+	userDto, err = se.UserService.GetUserById(id)
+
+	if err != nil {
+		apiErr, ok := err.(errors.ErrorApi)
+		if !ok {
+			errMsg := "Error interno del servidor"
+			log.Error(errMsg)
+			apiErr = errors.NewInternalServerErrorApi(errMsg, err)
+		}
+		ctx.JSON(apiErr.Status(), apiErr)
+		return
+	}
+	ctx.JSON(http.StatusOK, userDto)
 }
-
 
 func GetUsers(ctx *gin.Context) {
 	//var userDto users_dto.UsersDto

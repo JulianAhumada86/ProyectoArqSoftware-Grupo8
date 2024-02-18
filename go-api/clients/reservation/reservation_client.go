@@ -57,6 +57,5 @@ func GetReservasByUserId(id int) model.Reservations {
 func CantHabitaciones(idH int, idA int) int {
 	var x model.Hotel_habitaciones
 	Db.Where("hotel_id = ? and habitacion_id = ?", idH, idA).First(&x)
-
 	return x.Cantidad
 }

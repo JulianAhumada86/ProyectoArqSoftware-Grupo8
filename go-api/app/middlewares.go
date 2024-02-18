@@ -48,6 +48,7 @@ func AdminTokenMiddleware() gin.HandlerFunc {
 					if ok && isAdmin == 1 {
 						text := strconv.FormatFloat(claims["id"].(float64), 'f', -1, 64)
 						c.AddParam("idUser", text)
+						c.AddParam("admin", "1")
 						c.Next()
 
 						c.Next()

@@ -35,7 +35,8 @@ func (s *hotelService) GetHotelbyid(id int) (hdto.HotelDto, error) {
 	var hotelDto hdto.HotelDto
 
 	hotelDto.Name = model_hotel.Name
-	//hotelDto.RoomsAvailable = model_hotel.RoomsAvailable
+	//hotelDto.Habitaciones = model_hotel.Habitaciones
+
 	hotelDto.Description = model_hotel.Description
 	hotelDto.Id = id
 
