@@ -19,12 +19,16 @@ func mapUrls() {
 	routerAdmin := router.Group("/admin")
 	routerAdmin.Use(AdminTokenMiddleware())
 
+	//Habitacion
+
 	//Hotel
 	router.GET("/hotelId/:id", hotelc.GetHotelbyid)
 	router.GET("/hotels", hotelc.GetHotelsC)
-	router.POST("/insertHotel", hotelc.InsertHotel)
 	routerAdmin.POST("/insertHotel", hotelc.InsertHotel)
 	routerAdmin.GET("/hotels", hotelc.GetHotels)
+
+	routerAdmin.POST("/AgregarHabitacion/:name/:camas/:piezas", hotelc.AgregarHabitacion)
+	routerAdmin.GET("/Habitaciones", hotelc.GetHabitaciones)
 
 	//Image
 	router.GET("/getImagesByHotelId/:idHotel", imagec.GetImagesByHotelId)
@@ -53,6 +57,7 @@ func mapUrls() {
 
 	//borrar al terminar
 	router.POST("/image/:idHotel", imagec.InsertImage)
+	router.POST("/insertHotel", hotelc.InsertHotel)
 
 	log.Info("Urls Cargadas")
 }

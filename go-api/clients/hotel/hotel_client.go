@@ -12,6 +12,7 @@ var Db *gorm.DB
 func GetHotelbyid(id int) model.Hotel {
 	var hotel model.Hotel
 	Db.Preload("Amenities").Preload("Habitaciones").Where("id = ?", id).First(&hotel)
+
 	log.Debug("hotel:", hotel)
 	return hotel
 }
@@ -92,4 +93,19 @@ func CantHabitaciones(idH int, idA int) int {
 	Db.Where("hotel_id = ? and habitacion_id = ?", idH, idA).First(&x)
 
 	return x.Cantidad
+}
+
+func InsertHabitacion(habitacion model.Habitacion) model.Habitacion {
+	result := Db.Create(&habitacion)
+	if result.Error != nil {
+		log.Error(result.Error)
+	}
+	log.Println(habitacion)
+	return habitacion
+}
+
+func GetHabitaciones() (model.Habitaciones, error) {
+	var habitaciones model.Habitaciones
+	Db.Find(&habitaciones)
+	return habitaciones, nil
 }

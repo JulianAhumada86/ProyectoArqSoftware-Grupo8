@@ -1,5 +1,6 @@
 package services
 
+/*
 import (
 	hClient "go-api/clients/hotel"
 	adto "go-api/dto/amenitie_dto"
@@ -29,6 +30,7 @@ func (s *amenitiesService) GetAmenitiesbyid(id int) (adto.AmenitieDto, error) {
 	var amenitieDto adto.AmenitieDto
 
 	/*agrego contemplar error*/
+/*
 	if amenitieDto.Id == 0 {
 		return amenitieDto, e.NewBadRequestErrorApi("No se ha encontrado un amenitie")
 	}
@@ -63,3 +65,4 @@ func (s *amenitiesService) GetAmenities() (adto.AmenitiesDto, error) {
 		Amenities: amenitiesList,
 	}, nil
 }
+*/

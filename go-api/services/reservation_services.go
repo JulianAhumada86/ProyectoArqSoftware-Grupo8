@@ -135,7 +135,8 @@ func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.Re
 			if reserva.InitialDate.Before(dia.AddDate(0, 0, -1)) && reserva.FinalDate.After(dia.AddDate(0, 0, 1)) {
 				conteoDias[c]++
 				if conteoDias[c] >= cantHabitaciones {
-					return e.NewConflictErrorApi(fmt.Sprintf("El dia en la posicion %d no hay disponibilidad", c))
+					return e.NewBadRequestErrorApi(fmt.Sprintf("El dia %d/%d/%d no hay disponibilidad", listaDias[c].Day(), int(listaDias[c].Month()), listaDias[c].Year()))
+
 				}
 			}
 		}

@@ -1,9 +1,8 @@
 package amenitie
 
 import (
-	amenities_dto "go-api/dto/amenitie_dto"
 	"go-api/errors"
-	service "go-api/services"
+	//service "go-api/services"
 	"net/http"
 	"strconv"
 
@@ -12,58 +11,55 @@ import (
 )
 
 func GetAmenitieById(c *gin.Context) {
-    log.Debug("Amenitie ID to load: " + c.Param("id"))
+	log.Debug("Amenitie ID to load: " + c.Param("id"))
 
-    id, err := strconv.Atoi(c.Param("id"))
-    if err != nil {
-        errMsg := "Error al convertir ID a entero"
-        log.Error(errMsg)
-        apiErr := errors.NewBadRequestErrorApi(errMsg)
-        c.JSON(apiErr.Status(), apiErr)
-        return
-    }
-
-    var amenitieDto amenities_dto.AmenitieDto
-    amenitieDto, err = service.AmenitiesService.GetAmenitiesbyid(id)
-
-    if err != nil {
-        log.Error(err)
-        apiErr := errors.NewInternalServerErrorApi("Error al obtener amenitie por ID", err)
-        c.JSON(apiErr.Status(), apiErr)
-        return
-    }
-    c.JSON(http.StatusOK, amenitieDto)
-}
-
-
-func GetAmenities(c *gin.Context) {
-	var amenitiesDto amenities_dto.AmenitiesDto
-	amenitiesDto, err := service.AmenitiesService.GetAmenities()
-
+	_, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK, amenitiesDto)
-}
-
-func InsertAmenitie(c *gin.Context) {
-	var amenitieDto amenities_dto.AmenitieDto
-	err := c.BindJSON(&amenitieDto)
-
-	if err != nil {
-		log.Error(err.Error())
-		apiErr := errors.NewBadRequestErrorApi("Error al procesar la solicitud")
+		errMsg := "Error al convertir ID a entero"
+		log.Error(errMsg)
+		apiErr := errors.NewBadRequestErrorApi(errMsg)
 		c.JSON(apiErr.Status(), apiErr)
 		return
 	}
 
-	amenitieDto, er := service.AmenitiesService.InsertAmenitie(amenitieDto)
-	if er != nil {
-		c.JSON(http.StatusBadRequest, er.Error())
+	//_, err = service.AmenitiesService.GetAmenitiesbyid(id)
+
+	if err != nil {
+		log.Error(err)
+		apiErr := errors.NewInternalServerErrorApi("Error al obtener amenitie por ID", err)
+		c.JSON(apiErr.Status(), apiErr)
 		return
 	}
+	c.JSON(http.StatusOK, err)
+}
 
-	c.JSON(http.StatusCreated, amenitieDto)
+func GetAmenities(c *gin.Context) {
+	//amenitiesDto, err := service.AmenitiesService.GetAmenities()
+	err := c.Param("hola")
+	/*
+		if err != nil {
+			c.JSON(http.StatusBadRequest, err.Error())
+			return
+		}
+	*/
+	c.JSON(http.StatusOK, err)
+}
+
+func InsertAmenitie(c *gin.Context) {
+	err := c.Param("hola")
+	/*
+		if err != nil {
+			log.Error(err.Error())
+			apiErr := errors.NewBadRequestErrorApi("Error al procesar la solicitud")
+			c.JSON(apiErr.Status(), apiErr)
+			return
+		}
+
+		amenitieDto, er := service.AmenitiesService.InsertAmenitie(amenitieDto)
+		if er != nil {
+			c.JSON(http.StatusBadRequest, er.Error())
+			return
+		}
+	*/
+	c.JSON(http.StatusCreated, err)
 }

@@ -4,6 +4,7 @@ import (
 	hClient "go-api/clients/hotel"
 
 	hdto "go-api/dto/hotels_dto"
+
 	e "go-api/errors"
 
 	//hotel_dto "go-api/dto/hotels_dto"
@@ -18,6 +19,8 @@ type hotelServicesInterface interface {
 	InsertHotel(hotelDto hdto.HotelConHabitaciones) (hdto.HotelConHabitaciones, error)
 	GetHotels() (hdto.HotelsDto, e.ErrorApi)
 	GetHotelsC() (hdto.HotelsDto, e.ErrorApi)
+	AgregarHabitacion(hdto.HabitacionNueva) (hdto.HabitacionNueva, error)
+	GetHabitaciones() (hdto.Habitaciones, error)
 }
 
 var (
@@ -32,13 +35,26 @@ func (s *hotelService) GetHotelbyid(id int) (hdto.HotelDto, error) {
 
 	model_hotel := hClient.GetHotelbyid(id)
 	var hotelDto hdto.HotelDto
-
 	hotelDto.Name = model_hotel.Name
-	//hotelDto.Habitaciones = model_hotel.Habitaciones
-
 	hotelDto.Description = model_hotel.Description
 	hotelDto.Id = id
 
+	for _, habitacionModel := range model_hotel.Habitaciones {
+		var habitacionDto hdto.Habitacion
+		habitacionDto.Nombre = habitacionModel.Name
+		habitacionDto.Id = habitacionModel.Id
+		habitacionDto.Cantidad = hClient.CantHabitaciones(model_hotel.Id, habitacionModel.Id)
+
+		hotelDto.Habitaciones = append(hotelDto.Habitaciones, habitacionDto)
+	}
+
+	for _, amenitieModel := range model_hotel.Amenities {
+		var amenitieDto hdto.Amenitie
+		amenitieDto.Id = amenitieModel.Id
+		amenitieDto.Name = amenitieModel.Name
+
+		hotelDto.Amenities = append(hotelDto.Amenities, amenitieDto)
+	}
 	return hotelDto, nil
 }
 
@@ -109,7 +125,7 @@ func (s *hotelService) InsertHotel(hotelDto hdto.HotelConHabitaciones) (hdto.Hot
 	hotelDto.Hotel.Id = model_hotel.Id
 	var modelUnionHA model.Hotel_amenitie
 	for i := nAmenities; i > 0; i-- {
-		modelUnionHA.AmenitieID = hotelDto.Hotel.Amenities[i-1]
+		modelUnionHA.AmenitieID = hotelDto.Hotel.Amenities[i-1].Id
 		modelUnionHA.HotelID = hotelDto.Hotel.Id
 		hClient.AmenitieInHotel(modelUnionHA)
 
@@ -124,4 +140,38 @@ func (s *hotelService) InsertHotel(hotelDto hdto.HotelConHabitaciones) (hdto.Hot
 	}
 
 	return hotelDto, nil
+}
+
+func (s *hotelService) AgregarHabitacion(habitacion hdto.HabitacionNueva) (hdto.HabitacionNueva, error) {
+	var mHabitacion model.Habitacion
+	mHabitacion.Name = habitacion.Nombre
+	mHabitacion.Camas = habitacion.Camas
+	mHabitacion.Piezas = habitacion.Piezas
+
+	mHabitacion = hClient.InsertHabitacion(mHabitacion)
+
+	habitacion.Id = mHabitacion.Id
+	return habitacion, nil
+}
+
+func (s *hotelService) GetHabitaciones() (hdto.Habitaciones, error) {
+	modelHabitaciones, err := hClient.GetHabitaciones()
+	if err != nil {
+		return hdto.Habitaciones{}, err
+	}
+
+	habitacionesList := make([]hdto.HabitacionNueva, 0)
+
+	for _, habitacionM := range modelHabitaciones {
+		var habitacion hdto.HabitacionNueva
+		habitacion.Id = habitacionM.Id
+		habitacion.Camas = habitacionM.Camas
+		habitacion.Nombre = habitacionM.Name
+		habitacion.Piezas = habitacionM.Piezas
+
+		habitacionesList = append(habitacionesList, habitacion)
+	}
+	return hdto.Habitaciones{
+		Habitaciones: habitacionesList,
+	}, nil
 }

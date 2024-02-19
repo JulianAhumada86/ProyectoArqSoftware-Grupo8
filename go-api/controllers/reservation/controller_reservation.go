@@ -67,8 +67,6 @@ func NewReserva(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, reservationDTO)
 }
 
-//TOKEN Cliente
-
 func GetReservaById(ctx *gin.Context) {
 	var create reservationDTO.ReservationDto
 	id, err := strconv.Atoi(ctx.Param("id"))
@@ -82,7 +80,7 @@ func GetReservaById(ctx *gin.Context) {
 	create = se.ReservationService.GetReservaById(id)
 
 	ctx.JSON(http.StatusOK, create)
-} //Token Admin
+}
 
 func GetReservas(ctx *gin.Context) {
 	var reservasDto reservations_dto.ReservationsDto
@@ -132,8 +130,8 @@ func Disponibilidad_de_reserva(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, reserva)
 	} else {
 		log.Error(err)
-		apiErr := errors.NewBadRequestErrorApi("Error al verificar disponibilidad de reserva")
-		ctx.JSON(apiErr.Status(), apiErr)
+		apiErr := errors.NewBadRequestErrorApi(err.Error())
+		ctx.JSON(apiErr.Status(), err)
 	}
 }
 
@@ -159,5 +157,3 @@ func GetReservasByUserId(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, reservasDto)
 }
-
-//Token Client

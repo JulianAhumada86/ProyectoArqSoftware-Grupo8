@@ -48,7 +48,7 @@ func GetHotels(ctx *gin.Context) {
 	}
 	log.Println(hotelesDto)
 	ctx.JSON(http.StatusOK, hotelesDto)
-} //TOken Client
+}
 
 func GetHotelsC(ctx *gin.Context) {
 	var hotelesDto hotel_dto.HotelsDto
@@ -60,7 +60,7 @@ func GetHotelsC(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, hotelesDto)
-} //TOken Client
+}
 
 func InsertHotel(ctx *gin.Context) {
 
@@ -79,4 +79,40 @@ func InsertHotel(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, hotelDto)
 
-} //ADMIN Token
+}
+
+func AgregarHabitacion(ctx *gin.Context) {
+
+	var nuevoHotel hotel_dto.HabitacionNueva
+	nuevoHotel.Nombre = ctx.Param("name")
+	piezas, err := strconv.Atoi(ctx.Param("piezas"))
+	if err != nil {
+		errMsg := "Piezas no es un numero"
+		log.Error(errMsg)
+		apiErr := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(apiErr.Status(), apiErr)
+		return
+	}
+	nuevoHotel.Piezas = piezas
+	nuevoHotel.Camas, err = strconv.Atoi(ctx.Param("camas"))
+	if err != nil {
+		errMsg := "Camas no es un numero"
+		log.Error(errMsg)
+		apiErr := errors.NewBadRequestErrorApi(errMsg)
+		ctx.JSON(apiErr.Status(), apiErr)
+		return
+	}
+	nuevoHotel, err = se.HotelService.AgregarHabitacion(nuevoHotel)
+	log.Println(nuevoHotel)
+	ctx.JSON(http.StatusOK, nuevoHotel)
+}
+
+func GetHabitaciones(ctx *gin.Context) {
+	hoteles, err := se.HotelService.GetHabitaciones()
+	if nil != err {
+		apiErr := errors.NewBadRequestErrorApi(err.Error())
+		ctx.JSON(apiErr.Status(), apiErr)
+		return
+	}
+	ctx.JSON(http.StatusOK, hoteles)
+}
