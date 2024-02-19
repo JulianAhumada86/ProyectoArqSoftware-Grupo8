@@ -13,10 +13,11 @@ import (
 var Db *gorm.DB
 
 func NewReserva(reserva model.Reservation) model.Reservation {
-	log.Println(reserva)
 	Db.Create(&reserva)
+	var reservaNueva model.Reservation
 
-	return reserva
+	Db.Where("id = ?", reserva.Id).Preload("Hotel").Preload("Habitacion").Preload("User").First(&reservaNueva)
+	return reservaNueva
 }
 
 func GetReservaById(id int) model.Reservation {
@@ -34,7 +35,7 @@ func ComprobarReserva(reserva model.Reservation) (model.Reservations, error) {
 	inicio := reserva.InitialDate
 	final := reserva.FinalDate
 	final = final.AddDate(0, 0, 1) //Agrego un dia para comprobar el ultimo dia en el bucle de abajo
-	log.Println(habitacion.Id)
+
 	Db.Where("? < final_date AND hotel_id = ? AND habitacion_id = ?", inicio, hId, habitacion.Id).Find(&reservas)
 
 	return reservas, nil

@@ -54,13 +54,17 @@ func (s *reservationService) NewReserva(reserva reservationDTO.ReservationCreate
 	}
 	Mreserva.FinalDate = parseFinal
 	Mreserva.UserID = reserva.UserId
+
 	Mreserva = cl.NewReserva(Mreserva)
+
 	rf.FinalDate = Mreserva.FinalDate.String()
+	rf.Habitacion = Mreserva.Habitacion.Id
+	rf.HotelId = Mreserva.Hotel.Id
 	rf.HotelName = Mreserva.Hotel.Name
 	rf.Id = Mreserva.Id
 	rf.InitialDate = Mreserva.InitialDate.String()
 	rf.UserName = Mreserva.User.Name
-	log.Println(Mreserva)
+	rf.UserId = Mreserva.User.Id
 	return rf, nil
 }
 
@@ -99,7 +103,6 @@ func (s *reservationService) GetReservas() (reservations_dto.ReservationsDto, e.
 }
 
 func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.ReservationCreateDto) error {
-	log.Println(reserva)
 	var Mreserva model.Reservation
 	Mreserva.HabitacionId = reserva.HabitacionId
 	Mreserva.Habitacion.Id = reserva.HabitacionId
@@ -114,7 +117,6 @@ func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.Re
 	Mreserva.FinalDate = parseFinal
 	Mreserva.UserID = reserva.UserId
 
-	log.Println(Mreserva)
 	if parseFinal.Before(parseInitial) {
 		return e.NewBadRequestErrorApi("Fecha inicial despues de final")
 	}
@@ -125,7 +127,6 @@ func (s *reservationService) Disponibilidad_de_reserva(reserva reservationDTO.Re
 	}
 
 	cantHabitaciones := cl.CantHabitaciones(Mreserva.HotelID, Mreserva.Habitacion.Id)
-
 	listaReservas, _ := cl.ComprobarReserva(Mreserva)
 
 	conteoDias := make([]int, len(listaDias))
