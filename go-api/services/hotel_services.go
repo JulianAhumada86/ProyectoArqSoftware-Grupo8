@@ -2,7 +2,6 @@ package services
 
 import (
 	hClient "go-api/clients/hotel"
-	"log"
 
 	hdto "go-api/dto/hotels_dto"
 	e "go-api/errors"
@@ -121,7 +120,7 @@ func (s *hotelService) InsertHotel(hotelDto hdto.HotelConHabitaciones) (hdto.Hot
 		modelUnionHH.HabitacionID = hotelDto.Habitaciones[j-1].Id
 		modelUnionHH.HotelID = hotelDto.Hotel.Id
 		hClient.HabitacionInHotel(modelUnionHH)
-		log.Println(hClient.CantHabitaciones(hotelDto.Hotel.Id, hotelDto.Habitaciones[j-1].Id))
+		//log.Println(hClient.CantHabitaciones(hotelDto.Hotel.Id, hotelDto.Habitaciones[j-1].Id))
 	}
 
 	return hotelDto, nil

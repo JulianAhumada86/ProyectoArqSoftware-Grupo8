@@ -19,7 +19,7 @@ func GetHotelbyid(id int) model.Hotel {
 func GetHotels() model.Hotels {
 	var hotels model.Hotels
 	Db.Preload("Amenities").Preload("Habitaciones").Find(&hotels)
-	log.Debug("Hotels: ", hotels)
+	//log.Debug("Hotels: ", hotels)
 	return hotels
 }
 
