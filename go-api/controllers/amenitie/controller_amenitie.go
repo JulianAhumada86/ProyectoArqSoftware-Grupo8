@@ -2,7 +2,7 @@ package amenitie
 
 import (
 	"go-api/errors"
-	//service "go-api/services"
+	service "go-api/services"
 	"net/http"
 	"strconv"
 
@@ -34,15 +34,14 @@ func GetAmenitieById(c *gin.Context) {
 }
 
 func GetAmenities(c *gin.Context) {
-	//amenitiesDto, err := service.AmenitiesService.GetAmenities()
-	err := c.Param("hola")
-	/*
-		if err != nil {
-			c.JSON(http.StatusBadRequest, err.Error())
-			return
-		}
-	*/
-	c.JSON(http.StatusOK, err)
+	amenitiesDto, err := service.AmenitiesService.GetAmenities()
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, amenitiesDto)
 }
 
 func InsertAmenitie(c *gin.Context) {

@@ -56,14 +56,6 @@ func (s *hotelService) GetHotelbyid(id int) (hdto.HotelDto, error) {
 		hotelDto.Amenities = append(hotelDto.Amenities, amenitieDto)
 	}
 
-	for _, amenitiesModle := range model_hotel.Amenities {
-		var amenitieDto hdto.Amenitie
-		amenitieDto.Id = amenitiesModle.Id
-		amenitieDto.Name = amenitiesModle.Name
-
-		hotelDto.Amenities = append(hotelDto.Amenities, amenitieDto)
-	}
-
 	return hotelDto, nil
 }
 

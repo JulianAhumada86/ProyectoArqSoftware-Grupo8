@@ -63,7 +63,6 @@ func InsertAmenitie(amenitie_model model.Amenitie) model.Amenitie {
 
 func GetAmenities() model.Amenities {
 	var amenities model.Amenities
-
 	Db.Find(&amenities)
 	log.Debug("Amenities: ", amenities)
 
